@@ -101,6 +101,52 @@ export async function POST(req: NextRequest) {
       }
     }
     
+    // Handle email.received event - when someone sends email to support@kavinweb.info
+    if (eventType === 'email.received') {
+      await connectDB();
+      
+      const { from, to, subject, text, html } = evt.data;
+      
+      // Extract sender information
+      const senderEmail = typeof from === 'string' ? from : from.email || from.address;
+      const senderName = typeof from === 'string' ? from : from.name || senderEmail.split('@')[0];
+      
+      // Try to find existing contact by email
+      let contact = await Contact.findOne({ 
+        email: senderEmail 
+      }).sort({ createdAt: -1 });
+      
+      const messageContent = text || html || 'No message content';
+      
+      if (contact) {
+        // Existing contact - add as a reply
+        contact.replies.push({
+          message: messageContent,
+          sentAt: new Date(),
+          sentBy: contact.name,
+          isFromUser: true,
+        });
+        
+        // Update status
+        if (contact.status !== 'replied') {
+          contact.status = 'replied';
+        }
+        
+        await contact.save();
+        console.log(`✅ Email from existing contact stored: ${contact._id}`);
+      } else {
+        // New contact - create new entry
+        contact = await Contact.create({
+          name: senderName,
+          email: senderEmail,
+          message: messageContent,
+          status: 'new',
+          replies: [],
+        });
+        console.log(`✅ New email contact created: ${contact._id}`);
+      }
+    }
+    
     // Handle other email events
     if (eventType === 'email.sent') {
       console.log('✅ Email sent successfully');

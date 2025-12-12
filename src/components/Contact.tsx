@@ -201,7 +201,7 @@ const Contact = () => {
                       type="text"
                       className={`w-full bg-tm-navy/50 border-2 ${errors.name ? 'border-red-500' : 'border-tm-navy-lighter'
                         } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus:bg-tm-navy transition-all duration-300`}
-                      placeholder="John Doe"
+                      placeholder="Full Name"
                     />
                     <AnimatePresence>
                       {errors.name && (
@@ -237,7 +237,7 @@ const Contact = () => {
                       type="email"
                       className={`w-full bg-tm-navy/50 border-2 ${errors.email ? 'border-red-500' : 'border-tm-navy-lighter'
                         } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus:bg-tm-navy transition-all duration-300`}
-                      placeholder="john@example.com"
+                      placeholder="Email"
                     />
                     <AnimatePresence>
                       {errors.email && (
