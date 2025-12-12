@@ -4,8 +4,6 @@ import { useState, useEffect, Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle, AlertCircle, Sparkles, Mail, User, MessageSquare } from 'lucide-react';
-import { Canvas } from '@react-three/fiber';
-import { Preload } from '@react-three/drei';
 import GlassCard from './ui/GlassCard';
 import GlowButton from './ui/GlowButton';
 import { WaveBackground } from '@/lib/three/ShaderMaterials';
@@ -65,12 +63,29 @@ const Contact = () => {
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log(data);
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    reset();
-    setTimeout(() => setIsSuccess(false), 5000);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      setIsSuccess(true);
+      reset();
+      setTimeout(() => setIsSuccess(false), 5000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // You might want to add error state handling here
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
