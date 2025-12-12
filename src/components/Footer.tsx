@@ -215,7 +215,7 @@ const Footer = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              Start a Project
+              Get In Touch
               <span className="w-2 h-2 bg-tm-green rounded-full animate-pulse" />
             </motion.a>
           </motion.div>
@@ -234,10 +234,6 @@ const Footer = () => {
           <p className="text-tm-slate-light font-mono flex items-center gap-2">
             &copy; {currentYear} All Rights Reserved By{' '}
             <span className="text-tm-green">TeamMistake Technologies</span>
-          </p>
-
-          <p className="text-tm-slate text-xs flex items-center gap-1">
-            TeamMistake Technologies
           </p>
         </motion.div>
       </div>

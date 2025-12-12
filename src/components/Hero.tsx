@@ -159,7 +159,7 @@ const Hero = () => {
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <GlowButton href="#contact" variant="secondary" size="lg">
-            Start a Project
+            Get In Touch
             <ArrowRight className="w-5 h-5" />
           </GlowButton>
 
