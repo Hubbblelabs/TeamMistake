@@ -120,9 +120,18 @@ const Hero = () => {
         >
           <Sparkles className="w-4 h-4 text-tm-green" />
           <span className="text-tm-green font-mono text-sm tracking-wide">
-            Hi, we are TeamMistake
+            Hi, we are Team Mistake Technologies
           </span>
         </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="text-tm-green font-mono text-base md:text-lg mb-6 tracking-wide"
+        >
+          Experience the Excellence in Our Solution
+        </motion.p>
 
         <motion.h1
           initial={{ opacity: 0, y: 20 }}

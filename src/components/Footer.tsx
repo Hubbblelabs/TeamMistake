@@ -119,22 +119,6 @@ const Footer = () => {
               Delivering technology-driven business solutions that meet your needs.
               We transform challenges into opportunities.
             </p>
-
-            {/* Social Links */}
-            <div className="flex gap-3">
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="p-3 rounded-lg bg-tm-navy-lighter/50 text-tm-slate hover:text-tm-green hover:bg-tm-navy-lighter border border-transparent hover:border-tm-green/20 transition-all duration-300"
-                  whileHover={{ y: -4 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
-            </div>
           </motion.div>
 
           {/* Quick Links */}
