@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import connectDB from '@/lib/mongodb';
+import Contact from '@/models/Contact';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -27,6 +29,16 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    // Connect to database and save contact
+    await connectDB();
+    const contact = await Contact.create({
+      name,
+      email,
+      message,
+      status: 'new',
+      replies: [],
+    });
 
     const adminEmail = process.env.ADMIN_EMAIL;
     const resendFrom = process.env.RESEND_FROM;
@@ -58,6 +70,8 @@ export async function POST(req: Request) {
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Message:</strong></p>
         <p>${message}</p>
+        <br/>
+        <p><a href="${process.env.NEXTAUTH_URL}/admin/dashboard">View in Dashboard</a></p>
       `,
     });
 
@@ -74,7 +88,10 @@ export async function POST(req: Request) {
       `,
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ 
+      success: true,
+      contactId: contact._id 
+    });
   } catch (error) {
     console.error('Error sending email:', error);
     return NextResponse.json(
