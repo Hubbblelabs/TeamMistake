@@ -21,8 +21,6 @@
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.68.0",
-    "resend": "^6.6.0",
-    "svix": "^1.82.0",
     "three": "^0.182.0"
   },
   "devDependencies": {

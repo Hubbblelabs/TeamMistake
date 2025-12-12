@@ -64,8 +64,8 @@ const Footer = () => {
   ];
 
   const contactInfo = [
-    { icon: <Mail className="w-4 h-4" />, text: 'hello@teammistake.com' },
-    { icon: <MapPin className="w-4 h-4" />, text: 'India' },
+    { icon: <Mail className="w-4 h-4" />, text: 'support@teammistake.com' },
+    { icon: <MapPin className="w-4 h-4" />, text: 'Coimbatore, Tamil Nadu, India' },
   ];
 
   return (
@@ -237,7 +237,7 @@ const Footer = () => {
           </p>
 
           <p className="text-tm-slate text-xs flex items-center gap-1">
-            Built with <Heart className="w-3 h-3 text-red-400 fill-red-400" /> and innovation
+            TeamMistake Technologies
           </p>
         </motion.div>
       </div>

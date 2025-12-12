@@ -71,14 +71,14 @@ const Navbar = () => {
             <Image
               src="/team-mistake.png"
               alt="TeamMistake Logo"
-              width={40}
-              height={40}
+              width={56}
+              height={56}
               className="transition-transform"
             />
             {/* Glow effect on hover */}
             <div className="absolute inset-0 bg-tm-green/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>
-          <span className="text-xl font-bold text-tm-white tracking-tight">
+          <span className="text-2xl font-bold text-tm-white tracking-tight">
             Team<span className="text-tm-green">Mistake</span>
           </span>
         </a>

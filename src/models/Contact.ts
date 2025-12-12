@@ -4,7 +4,6 @@ export interface IReply {
   message: string;
   sentAt: Date;
   sentBy: string;
-  emailId?: string; // Resend email ID for tracking
   isFromUser?: boolean; // true if user replied, false if admin sent
 }
 
@@ -15,8 +14,6 @@ export interface IContact extends Document {
   status: 'new' | 'read' | 'replied';
   createdAt: Date;
   replies: IReply[];
-  emailThreadId?: string; // To track email thread
-  lastEmailId?: string; // Last email sent in this conversation
 }
 
 const ReplySchema = new Schema<IReply>({
@@ -31,10 +28,6 @@ const ReplySchema = new Schema<IReply>({
   sentBy: {
     type: String,
     required: true,
-  },
-  emailId: {
-    type: String,
-    required: false,
   },
   isFromUser: {
     type: Boolean,
@@ -62,14 +55,6 @@ const ContactSchema = new Schema<IContact>(
       default: 'new',
     },
     replies: [ReplySchema],
-    emailThreadId: {
-      type: String,
-      required: false,
-    },
-    lastEmailId: {
-      type: String,
-      required: false,
-    },
   },
   {
     timestamps: true,

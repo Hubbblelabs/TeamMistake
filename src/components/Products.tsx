@@ -71,7 +71,7 @@ const Products = () => {
       icon: <Palette className="w-10 h-10 text-tm-green" />,
     },
     {
-      title: 'Jewellery Sales & Inventory',
+      title: 'Sales & Inventory',
       description:
         'Specialized management tools for jewellery businesses to track sales and stock effortlessly.',
       icon: <Gem className="w-10 h-10 text-tm-green" />,

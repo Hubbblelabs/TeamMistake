@@ -96,7 +96,7 @@ const About = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="lg:col-span-3 space-y-6"
           >
-            <GlassCard className="p-8" tiltEnabled={false}>
+            <GlassCard className="p-10 md:p-12" tiltEnabled={false}>
               <p className="text-tm-slate text-lg leading-relaxed mb-6">
                 We are a global services provider delivering technology-driven
                 business solutions that meet the planned objectives of our
@@ -143,7 +143,7 @@ const About = () => {
             {stats.map((stat, index) => (
               <GlassCard
                 key={index}
-                className="p-8 text-center"
+                className="p-10 md:p-12 text-center"
                 glowColor="rgba(100, 255, 218, 0.15)"
               >
                 <motion.h3
