@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Webhook } from 'svix';
+import connectDB from '@/lib/mongodb';
+import Contact from '@/models/Contact';
 
 export async function POST(req: NextRequest) {
   const WEBHOOK_SECRET = process.env.RESEND_WEBHOOK_SECRET;
@@ -50,8 +52,86 @@ export async function POST(req: NextRequest) {
   console.log(`Received webhook with type: ${eventType}`);
   console.log('Webhook payload:', evt.data);
 
-  // You can add your custom logic here based on the event type
-  // For example, if (eventType === 'email.sent') { ... }
+  try {
+    // Handle email.replied event - when a user replies to our email
+    if (eventType === 'email.replied') {
+      await connectDB();
+      
+      const { from, to, subject, text, html, headers } = evt.data;
+      
+      // Try to find the contact by email
+      let contact = null;
+      
+      // First try to find by X-Contact-ID header if available
+      const contactId = headers?.['x-contact-id'];
+      if (contactId) {
+        contact = await Contact.findById(contactId);
+      }
+      
+      // If not found, try to find by sender email
+      if (!contact && from) {
+        const senderEmail = typeof from === 'string' ? from : from.email || from.address;
+        contact = await Contact.findOne({ 
+          email: senderEmail 
+        }).sort({ createdAt: -1 }); // Get most recent contact
+      }
+      
+      if (contact) {
+        // Extract the reply message (try to get text content)
+        const replyMessage = text || html || 'No message content';
+        
+        // Add the user's reply to the contact
+        contact.replies.push({
+          message: replyMessage,
+          sentAt: new Date(),
+          sentBy: contact.name,
+          isFromUser: true, // This is from the user
+        });
+        
+        // Update status if it was just 'read'
+        if (contact.status === 'read') {
+          contact.status = 'replied';
+        }
+        
+        await contact.save();
+        
+        console.log(`✅ User reply stored for contact: ${contact._id}`);
+      } else {
+        console.log('⚠️ Could not find matching contact for reply');
+      }
+    }
+    
+    // Handle other email events
+    if (eventType === 'email.sent') {
+      console.log('✅ Email sent successfully');
+    }
+    
+    if (eventType === 'email.delivered') {
+      console.log('✅ Email delivered successfully');
+    }
+    
+    if (eventType === 'email.bounced') {
+      console.log('❌ Email bounced');
+      await connectDB();
+      const { headers } = evt.data;
+      const contactId = headers?.['x-contact-id'];
+      
+      if (contactId) {
+        const contact = await Contact.findById(contactId);
+        if (contact) {
+          // You could add a 'bounced' status or flag here
+          console.log(`Email bounced for contact: ${contact._id}`);
+        }
+      }
+    }
+    
+    if (eventType === 'email.complained') {
+      console.log('⚠️ Email marked as spam');
+    }
+  } catch (error) {
+    console.error('Error processing webhook:', error);
+    // Don't return error to Resend, so they don't retry
+  }
 
   return new NextResponse('Webhook received', { status: 200 });
 }

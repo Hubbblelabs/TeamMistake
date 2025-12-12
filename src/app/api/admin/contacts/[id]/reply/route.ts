@@ -42,15 +42,6 @@ export async function POST(
       );
     }
 
-    // Add reply to contact
-    contact.replies.push({
-      message,
-      sentAt: new Date(),
-      sentBy: session.user.name || session.user.email || 'Admin',
-    });
-    contact.status = 'replied';
-    await contact.save();
-
     // Send email to user
     const resendFrom = process.env.RESEND_FROM;
 
@@ -62,7 +53,8 @@ export async function POST(
       );
     }
 
-    await resend.emails.send({
+    // Send email via Resend
+    const emailResponse = await resend.emails.send({
       from: resendFrom,
       to: contact.email,
       subject: 'Re: Your message to Team Mistake',
@@ -81,7 +73,22 @@ export async function POST(
           ${contact.message}
         </p>
       `,
+      headers: {
+        'X-Contact-ID': id, // Custom header to track which contact this email is for
+      },
     });
+
+    // Add reply to contact with email ID
+    contact.replies.push({
+      message,
+      sentAt: new Date(),
+      sentBy: session.user.name || session.user.email || 'Admin',
+      emailId: emailResponse.data?.id,
+      isFromUser: false,
+    });
+    contact.status = 'replied';
+    contact.lastEmailId = emailResponse.data?.id;
+    await contact.save();
 
     return NextResponse.json({ 
       success: true,

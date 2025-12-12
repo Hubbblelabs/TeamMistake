@@ -284,25 +284,43 @@ export default function AdminDashboard() {
                   <div className="mb-6">
                     <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                       <Check size={18} />
-                      Reply History
+                      Conversation History ({selectedContact.replies.length})
                     </h3>
                     <div className="space-y-3">
-                      {selectedContact.replies.map((reply, index) => (
-                        <div
-                          key={index}
-                          className="bg-green-500/10 rounded-lg p-4 border border-green-500/30"
-                        >
-                          <div className="flex justify-between items-start mb-2">
-                            <span className="text-sm font-semibold text-green-400">
-                              {reply.sentBy}
-                            </span>
-                            <span className="text-xs text-gray-400">
-                              {formatDate(reply.sentAt)}
-                            </span>
+                      {selectedContact.replies.map((reply, index) => {
+                        const isFromUser = (reply as any).isFromUser === true;
+                        return (
+                          <div
+                            key={index}
+                            className={`rounded-lg p-4 border ${
+                              isFromUser
+                                ? 'bg-blue-500/10 border-blue-500/30 ml-0 mr-4'
+                                : 'bg-green-500/10 border-green-500/30 ml-4 mr-0'
+                            }`}
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex items-center gap-2">
+                                <span className={`text-sm font-semibold ${
+                                  isFromUser ? 'text-blue-400' : 'text-green-400'
+                                }`}>
+                                  {reply.sentBy}
+                                </span>
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                  isFromUser
+                                    ? 'bg-blue-500/20 text-blue-300'
+                                    : 'bg-green-500/20 text-green-300'
+                                }`}>
+                                  {isFromUser ? 'User' : 'Admin'}
+                                </span>
+                              </div>
+                              <span className="text-xs text-gray-400">
+                                {formatDate(reply.sentAt)}
+                              </span>
+                            </div>
+                            <p className="text-white whitespace-pre-wrap">{reply.message}</p>
                           </div>
-                          <p className="text-white whitespace-pre-wrap">{reply.message}</p>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 )}

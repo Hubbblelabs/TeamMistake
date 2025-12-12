@@ -73,10 +73,13 @@ export async function POST(req: Request) {
         <br/>
         <p><a href="${process.env.NEXTAUTH_URL}/admin/dashboard">View in Dashboard</a></p>
       `,
+      headers: {
+        'X-Contact-ID': contact._id.toString(),
+      },
     });
 
     // Send confirmation email to user
-    await resend.emails.send({
+    const userEmailResponse = await resend.emails.send({
       from: resendFrom,
       to: email,
       subject: 'We received your message!',
@@ -86,7 +89,14 @@ export async function POST(req: Request) {
         <p>Best regards,</p>
         <p>Team Mistake</p>
       `,
+      headers: {
+        'X-Contact-ID': contact._id.toString(),
+      },
     });
+
+    // Store the email ID for tracking
+    contact.lastEmailId = userEmailResponse.data?.id;
+    await contact.save();
 
     return NextResponse.json({ 
       success: true,
