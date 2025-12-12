@@ -6,7 +6,7 @@ import Contact from '@/models/Contact';
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -18,9 +18,10 @@ export async function GET(
       );
     }
 
+    const { id } = await params;
     await connectDB();
 
-    const contact = await Contact.findById(params.id);
+    const contact = await Contact.findById(id);
 
     if (!contact) {
       return NextResponse.json(
@@ -41,7 +42,7 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -62,10 +63,11 @@ export async function PATCH(
       );
     }
 
+    const { id } = await params;
     await connectDB();
 
     const contact = await Contact.findByIdAndUpdate(
-      params.id,
+      id,
       { status },
       { new: true }
     );

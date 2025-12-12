@@ -9,7 +9,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -30,9 +30,10 @@ export async function POST(
       );
     }
 
+    const { id } = await params;
     await connectDB();
 
-    const contact = await Contact.findById(params.id);
+    const contact = await Contact.findById(id);
 
     if (!contact) {
       return NextResponse.json(
