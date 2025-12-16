@@ -59,9 +59,9 @@ const Products = () => {
 
   const products = [
     {
-      title: 'Billing Softwares',
+      title: 'Billing, Sales & Inventory',
       description:
-        'Streamline your invoicing and financial tracking with our robust billing solutions.',
+        'Complete business management solution for invoicing, financial tracking, and inventory control.',
       icon: <Receipt className="w-10 h-10 text-tm-green" />,
     },
     {
@@ -71,10 +71,10 @@ const Products = () => {
       icon: <Palette className="w-10 h-10 text-tm-green" />,
     },
     {
-      title: 'Sales & Inventory',
+      title: 'Virtual Assistance for Students',
       description:
-        'Specialized management tools for jewellery businesses to track sales and stock effortlessly.',
-      icon: <Gem className="w-10 h-10 text-tm-green" />,
+        'Dedicated support for school students to help with academic tasks and organization.',
+      icon: <Users className="w-10 h-10 text-tm-green" />,
     },
     {
       title: 'Student Management',
@@ -107,13 +107,13 @@ const Products = () => {
             gl={{ antialias: true, alpha: true }}
             style={{ background: 'transparent' }}
           >
-          <ProductsScene />
+            <ProductsScene />
             <Suspense fallback={null}>
-            <Preload all />
+              <Preload all />
             </Suspense>
-            </Canvas>
-            </div>
-            )}
+          </Canvas>
+        </div>
+      )}
 
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div

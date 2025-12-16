@@ -33,14 +33,15 @@ const Navbar = () => {
   const navLinks = [
     { name: 'About', href: '#about' },
     { name: 'Products', href: '#products' },
+    { name: 'Support', href: '/support' },
     { name: 'Contact', href: '#contact' },
   ];
 
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-500 ${scrolled
-          ? 'py-3'
-          : 'py-5'
+        ? 'py-3'
+        : 'py-5'
         }`}
     >
       {/* Glassmorphic background */}

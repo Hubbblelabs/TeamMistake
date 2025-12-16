@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import GlowButton from '@/components/ui/GlowButton';
-import GradientText from '@/components/ui/GradientText';
+import { Lock, Mail, ArrowLeft, Shield } from 'lucide-react';
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -40,80 +39,138 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex items-center justify-center px-4">
-      <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">
-            <GradientText>Admin Login</GradientText>
+    <div className="min-h-screen bg-[#0a0a0f] flex">
+      {/* Left Panel - Branding */}
+      <div className="hidden lg:flex lg:w-1/2 bg-[#0d0d14] flex-col justify-between p-12 border-r border-gray-800/50">
+        <div>
+          <div className="flex items-center gap-3 mb-16">
+            <div className="w-10 h-10 bg-tm-green/10 rounded-lg flex items-center justify-center">
+              <Shield className="w-5 h-5 text-tm-green" />
+            </div>
+            <span className="text-xl font-semibold text-white tracking-tight">TeamMistake</span>
+          </div>
+
+          <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
+            Admin<br />
+            <span className="text-tm-green">Control Center</span>
           </h1>
-          <p className="text-gray-400">Access the dashboard</p>
+          <p className="text-gray-400 text-lg max-w-md leading-relaxed">
+            Manage contacts, support tickets, and monitor your platform from a unified dashboard.
+          </p>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
+        <div className="space-y-6">
+          <div className="flex items-center gap-4 text-gray-500">
+            <div className="w-10 h-10 rounded-lg bg-gray-800/50 flex items-center justify-center">
+              <Lock className="w-4 h-4" />
+            </div>
+            <span className="text-sm">256-bit SSL Encryption</span>
+          </div>
+          <p className="text-gray-600 text-sm">
+            © 2024 TeamMistake Technologies. All rights reserved.
+          </p>
+        </div>
+      </div>
+
+      {/* Right Panel - Login Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+        <div className="w-full max-w-md">
+          {/* Mobile Logo */}
+          <div className="lg:hidden flex items-center gap-3 mb-12">
+            <div className="w-10 h-10 bg-tm-green/10 rounded-lg flex items-center justify-center">
+              <Shield className="w-5 h-5 text-tm-green" />
+            </div>
+            <span className="text-xl font-semibold text-white tracking-tight">TeamMistake</span>
+          </div>
+
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold text-white mb-2">Welcome back</h2>
+            <p className="text-gray-500">Enter your credentials to access the dashboard</p>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-200 mb-2"
+                className="block text-sm font-medium text-gray-300 mb-2"
               >
-                Email
+                Email Address
               </label>
-              <input
-                type="email"
-                id="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="admin@example.com"
-                required
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-gray-500" />
+                </div>
+                <input
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  className="w-full pl-12 pr-4 py-3.5 bg-[#12121a] border border-gray-800 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-tm-green/50 focus:border-tm-green/50 transition-all"
+                  placeholder="admin@teammistake.com"
+                  required
+                />
+              </div>
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-200 mb-2"
+                className="block text-sm font-medium text-gray-300 mb-2"
               >
                 Password
               </label>
-              <input
-                type="password"
-                id="password"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="••••••••"
-                required
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-500" />
+                </div>
+                <input
+                  type="password"
+                  id="password"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  className="w-full pl-12 pr-4 py-3.5 bg-[#12121a] border border-gray-800 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-tm-green/50 focus:border-tm-green/50 transition-all"
+                  placeholder="••••••••"
+                  required
+                />
+              </div>
             </div>
 
             {error && (
-              <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3">
-                <p className="text-red-400 text-sm">{error}</p>
+              <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+                <p className="text-red-400 text-sm font-medium">{error}</p>
               </div>
             )}
 
-            <GlowButton
+            <button
               type="submit"
               disabled={isLoading}
-              className="w-full"
+              className="w-full py-3.5 bg-tm-green text-tm-navy font-semibold rounded-xl hover:bg-tm-green/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-tm-green/20"
             >
-              {isLoading ? 'Signing in...' : 'Sign In'}
-            </GlowButton>
+              {isLoading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Signing in...
+                </span>
+              ) : 'Sign In'}
+            </button>
           </form>
-        </div>
 
-        <div className="mt-6 text-center">
-          <a
-            href="/"
-            className="text-gray-400 hover:text-white transition-colors text-sm"
-          >
-            ← Back to homepage
-          </a>
+          <div className="mt-8 text-center">
+            <a
+              href="/"
+              className="inline-flex items-center gap-2 text-gray-500 hover:text-tm-green transition-colors text-sm"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to homepage
+            </a>
+          </div>
         </div>
       </div>
     </div>
