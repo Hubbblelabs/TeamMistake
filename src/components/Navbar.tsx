@@ -65,23 +65,27 @@ const Navbar = () => {
         <a href="#" className="flex items-center gap-3 group">
           <motion.div
             className="relative"
-            whileHover={{ rotateY: 180 }}
-            transition={{ duration: 0.6 }}
-            style={{ transformStyle: 'preserve-3d' }}
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
           >
             <Image
               src="/team-mistake.png"
               alt="TeamMistake Logo"
-              width={56}
-              height={56}
+              width={48}
+              height={48}
               className="transition-transform"
             />
             {/* Glow effect on hover */}
             <div className="absolute inset-0 bg-tm-green/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.div>
-          <span className="text-2xl font-bold text-tm-white tracking-tight">
-            Team<span className="text-tm-green">Mistake</span>
-          </span>
+          <div className="flex flex-col">
+            <span className="text-lg md:text-xl font-bold text-tm-white tracking-tight leading-tight">
+              Team<span className="text-tm-green">Mistake</span> Technologies
+            </span>
+            <span className="text-[10px] md:text-xs text-tm-slate font-medium tracking-wide hidden sm:block">
+              Experience the Excellence in Our Solution
+            </span>
+          </div>
         </a>
 
         {/* Desktop Menu */}

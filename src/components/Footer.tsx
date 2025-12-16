@@ -1,47 +1,10 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Twitter, Mail, MapPin, Heart } from 'lucide-react';
-import { Canvas } from '@react-three/fiber';
-import { Preload } from '@react-three/drei';
 import Image from 'next/image';
-import ParticleGrid, { ParticleConnections } from '@/lib/three/ParticleGrid';
-
-// Three.js Scene Component
-function FooterScene() {
-  return (
-    <>
-      {/* Star-like particles */}
-      <ParticleGrid
-        count={80}
-        size={2}
-        color="#64ffda"
-        opacity={0.5}
-        spread={30}
-        speed={0.05}
-        mouseInteraction={false}
-      />
-
-      {/* Constellation lines */}
-      <ParticleConnections
-        count={30}
-        spread={25}
-        color="#64ffda"
-        opacity={0.2}
-        maxDistance={6}
-      />
-    </>
-  );
-}
 
 const Footer = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
@@ -70,23 +33,6 @@ const Footer = () => {
 
   return (
     <footer className="relative overflow-hidden bg-tm-navy pt-20 pb-8 border-t border-tm-navy-lighter/30">
-      {/* Three.js Constellation Background */}
-      {mounted && (
-        <div className="absolute inset-0 z-0 opacity-50">
-          <Canvas
-            dpr={[1, 1.5]}
-            camera={{ position: [0, 0, 15], fov: 75 }}
-            gl={{ antialias: true, alpha: true }}
-            style={{ background: 'transparent' }}
-          >
-            <Suspense fallback={null}>
-              <FooterScene />
-              <Preload all />
-            </Suspense>
-          </Canvas>
-        </div>
-      )}
-
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">

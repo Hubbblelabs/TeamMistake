@@ -1,62 +1,18 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import {
   Receipt,
   Palette,
-  Gem,
   GraduationCap,
   BookOpen,
   Users,
   ArrowUpRight,
 } from 'lucide-react';
-import { Canvas } from '@react-three/fiber';
-import { Preload } from '@react-three/drei';
 import GlassCard from './ui/GlassCard';
 import { SectionHeader } from './ui/Section';
-import { ParticleConnections } from '@/lib/three/ParticleGrid';
-import { Icosahedron, Octahedron } from '@/lib/three/LowPolyShapes';
-
-// Three.js Scene Component
-function ProductsScene() {
-  return (
-    <>
-      <ParticleConnections
-        count={80}
-        spread={35}
-        color="#64ffda"
-        opacity={0.25}
-        maxDistance={5}
-      />
-      {/* Floating shapes in background
-      <Icosahedron
-        position={[-8, 4, -5]}
-        scale={1.5}
-        color="#64ffda"
-        wireframe={true}
-        rotationSpeed={0.1}
-        floatIntensity={0.5}
-      />
-      <Octahedron
-        position={[9, -3, -6]}
-        scale={1.2}
-        color="#8892b0"
-        wireframe={true}
-        rotationSpeed={0.15}
-        floatIntensity={0.7}
-      /> */}
-    </>
-  );
-}
 
 const Products = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const products = [
     {
       title: 'Billing, Sales & Inventory',
@@ -98,23 +54,6 @@ const Products = () => {
 
   return (
     <section id="products" className="py-24 px-6 relative overflow-hidden bg-tm-navy">
-      {/* {/* Three.js Background with particle connections and floating shapes */}
-      {mounted && (
-        <div className="absolute inset-0 z-0">
-          <Canvas
-            dpr={[1, 2]}
-            camera={{ position: [0, 0, 15], fov: 75 }}
-            gl={{ antialias: true, alpha: true }}
-            style={{ background: 'transparent' }}
-          >
-            <ProductsScene />
-            <Suspense fallback={null}>
-              <Preload all />
-            </Suspense>
-          </Canvas>
-        </div>
-      )}
-
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

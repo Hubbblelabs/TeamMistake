@@ -1,9 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function FloatingSupport() {
     const [isHovered, setIsHovered] = useState(false);
+    const pathname = usePathname();
+
+    // Hide on admin pages
+    if (pathname?.startsWith('/admin')) {
+        return null;
+    }
 
     // Dummy WhatsApp number - replace with actual number
     const whatsappNumber = '919876543210';

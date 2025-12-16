@@ -1,79 +1,26 @@
 'use client';
 
-import { useRef, useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Canvas } from '@react-three/fiber';
 import { Preload } from '@react-three/drei';
 import GlowButton from './ui/GlowButton';
 import GradientText from './ui/GradientText';
-import ParticleGrid, { ParticleConnections } from '@/lib/three/ParticleGrid';
-//import { Icosahedron, Octahedron, Torus } from '@/lib/three/LowPolyShapes';
-import { ParallaxGroup } from '@/lib/three/ParallaxElements';
+import ParticleGrid from '@/lib/three/ParticleGrid';
 
-// Three.js Scene Component
+// Three.js Scene Component - Dots only, no lines
 function HeroScene() {
   return (
-    <>
-      {/* Particle Grid Background */}
-      <ParticleGrid
-        count={600}
-        size={3}
-        color="#64ffda"
-        opacity={0.5}
-        spread={25}
-        speed={0.15}
-        mouseInteraction={true}
-      />
-
-      {/* Particle Connections */}
-      <ParticleConnections
-        count={60}
-        spread={25}
-        color="#64ffda"
-        opacity={0.15}
-        maxDistance={4}
-      />
-
-      {/* Floating Geometric Shapes with Parallax */}
-      {/* <ParallaxGroup intensity={0.8}>
-        <Icosahedron
-          position={[-6, 3, -2]}
-          scale={1.5}
-          color="#64ffda"
-          wireframe={true}
-          rotationSpeed={0.2}
-          floatIntensity={0.8}
-        />
-
-        <Octahedron
-          position={[7, -2, -3]}
-          scale={1.2}
-          color="#64ffda"
-          wireframe={true}
-          rotationSpeed={0.15}
-          floatIntensity={1}
-        />
-
-        <Torus
-          position={[5, 4, -4]}
-          scale={0.9}
-          color="#a8b2d1"
-          wireframe={true}
-          rotationSpeed={0.25}
-          floatIntensity={0.6}
-        />
-
-        <Icosahedron
-          position={[-5, -4, -5]}
-          scale={0.8}
-          color="#8892b0"
-          wireframe={true}
-          rotationSpeed={0.3}
-          floatIntensity={0.7}
-        />
-      </ParallaxGroup> */}
-    </>
+    <ParticleGrid
+      count={600}
+      size={3}
+      color="#64ffda"
+      opacity={0.5}
+      spread={25}
+      speed={0.15}
+      mouseInteraction={true}
+    />
   );
 }
 
@@ -86,7 +33,7 @@ const Hero = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center pt-20 px-6 relative overflow-hidden">
-      {/* Three.js Background Canvas */}
+      {/* Three.js Background Canvas - Dots only */}
       {mounted && (
         <div className="fixed inset-0 z-0">
           <Canvas
@@ -189,25 +136,7 @@ const Hero = () => {
         </motion.p>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-6 h-10 rounded-full border-2 border-tm-green/30 flex items-start justify-center p-2"
-        >
-          <motion.div
-            className="w-1.5 h-3 bg-tm-green rounded-full"
-            animate={{ opacity: [1, 0.3, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </motion.div>
-      </motion.div>
+
     </section>
   );
 };

@@ -1,14 +1,11 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle, AlertCircle, Sparkles, Mail, User, MessageSquare } from 'lucide-react';
 import GlassCard from './ui/GlassCard';
 import GlowButton from './ui/GlowButton';
-import { WaveBackground } from '@/lib/three/ShaderMaterials';
-import ParticleGrid from '@/lib/three/ParticleGrid';
-import { GlowingSphere } from '@/lib/three/LowPolyShapes';
 
 type FormData = {
   name: string;
@@ -16,41 +13,7 @@ type FormData = {
   message: string;
 };
 
-// Three.js Scene Component
-function ContactScene() {
-  return (
-    <>
-      <WaveBackground
-        colorA="#0a192f"
-        colorB="#64ffda"
-        amplitude={0.08}
-        frequency={4}
-      />
-
-      {/* Accent particles */}
-      <ParticleGrid
-        count={100}
-        size={2}
-        color="#64ffda"
-        opacity={0.4}
-        spread={15}
-        speed={0.1}
-        mouseInteraction={false}
-      />
-
-      {/* Glowing accents */}
-      <GlowingSphere position={[-6, 3, -3]} scale={0.5} color="#64ffda" />
-      <GlowingSphere position={[7, -2, -4]} scale={0.3} color="#64ffda" />
-    </>
-  );
-}
-
 const Contact = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const {
     register,
@@ -63,7 +26,7 @@ const Contact = () => {
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    
+
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -91,7 +54,7 @@ const Contact = () => {
   return (
     <section id="contact" className="py-24 px-6 relative overflow-hidden">
       {/* Three.js Wave Background */}
-   
+
 
       {/* Content */}
       <div className="max-w-4xl mx-auto relative z-10">

@@ -62,14 +62,8 @@ export default function AdminLogin() {
         </div>
 
         <div className="space-y-6">
-          <div className="flex items-center gap-4 text-gray-500">
-            <div className="w-10 h-10 rounded-lg bg-gray-800/50 flex items-center justify-center">
-              <Lock className="w-4 h-4" />
-            </div>
-            <span className="text-sm">256-bit SSL Encryption</span>
-          </div>
           <p className="text-gray-600 text-sm">
-            © 2024 TeamMistake Technologies. All rights reserved.
+            © 2025 TeamMistake Technologies. All rights reserved.
           </p>
         </div>
       </div>
