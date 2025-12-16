@@ -24,12 +24,14 @@ export default function AdminLogin() {
         email: formData.email,
         password: formData.password,
         redirect: false,
+        callbackUrl: '/admin/dashboard',
       });
 
       if (result?.error) {
         setError(result.error);
       } else if (result?.ok) {
-        router.push('/admin/dashboard');
+        // Use window.location for more reliable redirect in production
+        window.location.href = '/admin/dashboard';
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
