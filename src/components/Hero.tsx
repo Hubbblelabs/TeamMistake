@@ -3,26 +3,18 @@
 import { useEffect, useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import { Canvas } from '@react-three/fiber';
-import { Preload } from '@react-three/drei';
+import dynamic from 'next/dynamic';
 import GlowButton from './ui/GlowButton';
 import GradientText from './ui/GradientText';
-import ParticleGrid from '@/lib/three/ParticleGrid';
 
-// Three.js Scene Component - Dots only, no lines
-function HeroScene() {
-  return (
-    <ParticleGrid
-      count={600}
-      size={3}
-      color="#64ffda"
-      opacity={0.5}
-      spread={25}
-      speed={0.15}
-      mouseInteraction={true}
-    />
-  );
-}
+// Lazy-load Three.js Canvas to reduce initial JS bundle and main thread blocking
+const ThreeCanvas = dynamic(
+  () => import('./HeroCanvas'),
+  {
+    ssr: false,
+    loading: () => null // No loading indicator - seamless experience
+  }
+);
 
 const Hero = () => {
   const [mounted, setMounted] = useState(false);
@@ -33,24 +25,10 @@ const Hero = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center pt-20 px-6 relative overflow-hidden">
-      {/* Three.js Background Canvas - Dots only */}
+      {/* Three.js Background Canvas - Lazy loaded */}
       {mounted && (
         <div className="fixed inset-0 z-0">
-          <Canvas
-            dpr={[1, 2]}
-            camera={{ position: [0, 0, 10], fov: 75 }}
-            gl={{
-              antialias: true,
-              alpha: true,
-              powerPreference: 'high-performance',
-            }}
-            style={{ background: 'transparent' }}
-          >
-            <Suspense fallback={null}>
-              <HeroScene />
-              <Preload all />
-            </Suspense>
-          </Canvas>
+          <ThreeCanvas />
         </div>
       )}
 

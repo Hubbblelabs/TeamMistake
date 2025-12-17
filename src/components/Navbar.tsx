@@ -119,6 +119,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <motion.button
           className="md:hidden relative p-2 text-tm-green focus:outline-none"
+          aria-label={isOpen ? "Close menu" : "Open menu"}
           onClick={() => setIsOpen(!isOpen)}
           whileTap={{ scale: 0.95 }}
         >

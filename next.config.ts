@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
   },
   // Enable source maps for production debugging
   productionBrowserSourceMaps: true,
+  // Optimize package imports to reduce duplicate chunks
+  experimental: {
+    optimizePackageImports: ['framer-motion', 'lucide-react', '@react-three/fiber', '@react-three/drei'],
+  },
 };
 
 export default nextConfig;
