@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {
   Mail,
+  MailOpen,
   Send,
   LogOut,
   Search,
@@ -13,13 +14,14 @@ import {
   LifeBuoy,
   Clock,
   Shield,
-  Users,
   Plus,
   Edit2,
   Trash2,
   Key,
   Eye,
-  EyeOff
+  EyeOff,
+  CheckCircle,
+  XCircle
 } from 'lucide-react';
 
 // Types
@@ -27,6 +29,7 @@ interface Reply {
   message: string;
   sentAt: string;
   sentBy: string;
+  isFromUser: boolean;
 }
 
 interface Contact {
@@ -41,6 +44,7 @@ interface Contact {
 
 interface SupportTicket {
   _id: string;
+  ticketId: string;
   name: string;
   email: string;
   subject: string;
@@ -138,6 +142,27 @@ export default function AdminDashboard() {
     setFilteredTickets(filtered);
   }, [ticketFilter, tickets, searchQuery]);
 
+  // Auto-refresh selected ticket every 10 seconds
+  const refreshSelectedTicket = useCallback(async () => {
+    if (!selectedTicket) return;
+    try {
+      const res = await fetch(`/api/admin/support/${selectedTicket._id}`);
+      if (res.ok) {
+        const data = await res.json();
+        setSelectedTicket(data.ticket);
+        setTickets(prev => prev.map(t => t._id === selectedTicket._id ? data.ticket : t));
+      }
+    } catch (error) {
+      console.error('Error refreshing ticket:', error);
+    }
+  }, [selectedTicket]);
+
+  useEffect(() => {
+    if (!selectedTicket) return;
+    const interval = setInterval(refreshSelectedTicket, 10000);
+    return () => clearInterval(interval);
+  }, [selectedTicket, refreshSelectedTicket]);
+
   // Fetch Functions
   const fetchContacts = async () => {
     try {
@@ -200,27 +225,61 @@ export default function AdminDashboard() {
     setReplyMessage('');
   };
 
+  const handleMarkUnread = async () => {
+    if (!selectedContact) return;
+    try {
+      const res = await fetch(`/api/admin/contacts/${selectedContact._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'new' }),
+      });
+      if (res.ok) {
+        setContacts(prev => prev.map(c => c._id === selectedContact._id ? { ...c, status: 'new' } : c));
+        setSelectedContact({ ...selectedContact, status: 'new' });
+      }
+    } catch (error) {
+      console.error('Error marking as unread:', error);
+    }
+  };
+
+  const handleUpdateTicketStatus = async (newStatus: 'open' | 'closed') => {
+    if (!selectedTicket) return;
+    try {
+      const res = await fetch(`/api/admin/support/${selectedTicket._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (res.ok) {
+        setTickets(prev => prev.map(t => t._id === selectedTicket._id ? { ...t, status: newStatus } : t));
+        setSelectedTicket({ ...selectedTicket, status: newStatus });
+      }
+    } catch (error) {
+      console.error('Error updating ticket status:', error);
+    }
+  };
+
   const handleSendReply = async () => {
     if (!replyMessage.trim()) return;
     setIsSending(true);
 
     try {
-      if (activeTab === 'contacts' && selectedContact) {
-        const res = await fetch(`/api/admin/contacts/${selectedContact._id}/reply`, {
+      if (activeTab === 'support' && selectedTicket) {
+        const res = await fetch(`/api/admin/support/${selectedTicket._id}/reply`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: replyMessage }),
         });
+        const data = await res.json();
         if (res.ok) {
-          const data = await res.json();
-          setContacts(prev => prev.map(c => c._id === selectedContact._id ? data.contact : c));
-          setSelectedContact(data.contact);
-          alert('Reply sent!');
+          // Update the ticket with new reply
+          setTickets(prev => prev.map(t => t._id === selectedTicket._id ? data.ticket : t));
+          setSelectedTicket(data.ticket);
+          setReplyMessage('');
+        } else {
+          alert(data.error || 'Failed to send reply');
         }
-      } else if (activeTab === 'support' && selectedTicket) {
-        alert('Support reply feature coming soon!');
       }
-      setReplyMessage('');
     } catch (error) {
       console.error('Error sending reply:', error);
       alert('Failed to send reply');
@@ -407,7 +466,7 @@ export default function AdminDashboard() {
       return {
         total: contacts.length,
         new: contacts.filter(c => c.status === 'new').length,
-        replied: contacts.filter(c => c.status === 'replied').length,
+        read: contacts.filter(c => c.status === 'read').length,
       };
     }
     if (activeTab === 'support') {
@@ -420,7 +479,7 @@ export default function AdminDashboard() {
     return {
       total: admins.length,
       new: 0,
-      replied: 0,
+      read: 0,
     };
   };
 
@@ -492,7 +551,7 @@ export default function AdminDashboard() {
             className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${activeTab === 'admins' ? 'bg-[#12121a] text-white' : 'text-gray-400 hover:bg-[#12121a]/50 hover:text-gray-300'}`}
           >
             <div className="flex items-center gap-3">
-              <Users size={18} />
+              <Shield size={18} />
               <span className="font-medium">Admins</span>
             </div>
             <span className="bg-gray-800 text-gray-400 text-xs font-medium px-2 py-0.5 rounded-full">
@@ -522,6 +581,14 @@ export default function AdminDashboard() {
         </div>
       </aside>
 
+      {/* Mobile Sidebar Backdrop */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Main Content */}
       <main className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
         {/* Top Header */}
@@ -545,7 +612,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Stats Pills */}
-            {activeTab !== 'admins' && (
+            {(activeTab === 'contacts' || activeTab === 'support') && (
               <div className="hidden md:flex items-center gap-3">
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-[#12121a] rounded-lg">
                   <span className="text-gray-500 text-sm">Total:</span>
@@ -556,8 +623,8 @@ export default function AdminDashboard() {
                   <span className="text-blue-400 font-semibold">{stats.new}</span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 rounded-lg">
-                  <span className="text-emerald-400 text-sm">{activeTab === 'contacts' ? 'Replied:' : 'Closed:'}</span>
-                  <span className="text-emerald-400 font-semibold">{activeTab === 'contacts' ? stats.replied : stats.closed}</span>
+                  <span className="text-emerald-400 text-sm">{activeTab === 'contacts' ? 'Read:' : 'Closed:'}</span>
+                  <span className="text-emerald-400 font-semibold">{activeTab === 'contacts' ? stats.read : stats.closed}</span>
                 </div>
               </div>
             )}
@@ -632,7 +699,7 @@ export default function AdminDashboard() {
                 </table>
                 {admins.length === 0 && (
                   <div className="flex flex-col items-center justify-center py-16 text-gray-500">
-                    <Users size={40} className="mb-3 opacity-30" />
+                    <Shield size={40} className="mb-3 opacity-30" />
                     <p className="font-medium text-gray-400">No admins found</p>
                     <p className="text-sm mt-1">Create your first admin to get started</p>
                   </div>
@@ -657,7 +724,7 @@ export default function AdminDashboard() {
                     />
                   </div>
                   <div className="flex gap-2">
-                    {['all', 'new', activeTab === 'contacts' ? 'replied' : 'closed'].map((filter) => (
+                    {['all', activeTab === 'contacts' ? 'new' : 'open', activeTab === 'contacts' ? 'read' : 'closed'].map((filter) => (
                       <button
                         key={filter}
                         onClick={() => activeTab === 'contacts' ? setContactFilter(filter) : setTicketFilter(filter)}
@@ -693,9 +760,14 @@ export default function AdminDashboard() {
                         {getStatusBadge(item.status)}
                       </div>
                       <p className="text-sm text-gray-400 truncate mb-2">{item.subject || item.message?.slice(0, 50)}</p>
-                      <div className="flex items-center gap-1 text-xs text-gray-500">
-                        <Clock size={12} />
-                        {formatDate(item.createdAt)}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1 text-xs text-gray-500">
+                          <Clock size={12} />
+                          {formatDate(item.createdAt)}
+                        </div>
+                        {activeTab === 'support' && (
+                          <span className="text-xs text-gray-600 font-mono">#{item.ticketId}</span>
+                        )}
                       </div>
                     </button>
                   ))}
@@ -728,11 +800,45 @@ export default function AdminDashboard() {
                             </p>
                           </div>
                         </div>
-                        {getStatusBadge((activeTab === 'contacts' ? selectedContact : selectedTicket)?.status || 'new')}
+                        <div className="flex items-center gap-2">
+                          {getStatusBadge((activeTab === 'contacts' ? selectedContact : selectedTicket)?.status || 'new')}
+                          {/* Action Buttons */}
+                          {activeTab === 'contacts' && selectedContact?.status === 'read' && (
+                            <button
+                              onClick={handleMarkUnread}
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 transition-all text-xs font-medium"
+                            >
+                              <MailOpen size={14} />
+                              Mark Unread
+                            </button>
+                          )}
+                          {activeTab === 'support' && selectedTicket && (
+                            <>
+                              {selectedTicket.status !== 'closed' && (
+                                <button
+                                  onClick={() => handleUpdateTicketStatus('closed')}
+                                  className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20 transition-all text-xs font-medium"
+                                >
+                                  <XCircle size={14} />
+                                  Close
+                                </button>
+                              )}
+                              {selectedTicket.status === 'closed' && (
+                                <button
+                                  onClick={() => handleUpdateTicketStatus('open')}
+                                  className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg hover:bg-emerald-500/20 transition-all text-xs font-medium"
+                                >
+                                  <CheckCircle size={14} />
+                                  Reopen
+                                </button>
+                              )}
+                            </>
+                          )}
+                        </div>
                       </div>
 
                       {/* Message Content */}
-                      <div className="bg-[#12121a] rounded-xl p-5 border border-gray-800/50">
+                      <div className="bg-[#12121a] rounded-xl p-5 border border-gray-800/50 mt-4">
                         <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">
                           {(activeTab === 'contacts' ? selectedContact : selectedTicket)?.message}
                         </p>
@@ -741,30 +847,56 @@ export default function AdminDashboard() {
 
                     {/* Conversation Area */}
                     <div className="flex-1 overflow-y-auto p-6">
-                      <div className="flex items-center justify-center gap-2 text-gray-500 text-sm">
+                      <div className="flex items-center justify-center gap-2 text-gray-500 text-sm mb-6">
                         <Clock size={14} />
                         Received on {formatDate((activeTab === 'contacts' ? selectedContact : selectedTicket)?.createdAt || '')}
                       </div>
+
+                      {/* Replies - Only for Support Tickets */}
+                      {activeTab === 'support' && selectedTicket?.replies && selectedTicket.replies.length > 0 && (
+                        <div className="space-y-3">
+                          <p className="text-sm font-medium text-gray-400 mb-3">Conversation ({selectedTicket.replies.length})</p>
+                          {selectedTicket.replies.map((reply, idx) => (
+                            <div
+                              key={idx}
+                              className={`p-4 rounded-xl ${reply.isFromUser
+                                ? 'bg-blue-500/10 border border-blue-500/20 mr-12'
+                                : 'bg-tm-green/10 border border-tm-green/20 ml-12'
+                                }`}
+                            >
+                              <p className="text-gray-300 whitespace-pre-wrap mb-2">{reply.message}</p>
+                              <div className="flex items-center gap-2 text-xs text-gray-500">
+                                <span className={reply.isFromUser ? 'text-blue-400' : 'text-tm-green'}>
+                                  {reply.isFromUser ? 'Customer' : 'Admin'}
+                                </span>
+                                • {formatDate(reply.sentAt)}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
-                    {/* Reply Input */}
-                    <div className="p-4 border-t border-gray-800/50 bg-[#0a0a0f]">
-                      <div className="relative">
-                        <textarea
-                          value={replyMessage}
-                          onChange={(e) => setReplyMessage(e.target.value)}
-                          placeholder="Type your reply..."
-                          className="w-full bg-[#12121a] border border-gray-800 rounded-xl p-4 pr-14 min-h-[100px] text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50 resize-none transition-colors"
-                        />
-                        <button
-                          onClick={handleSendReply}
-                          disabled={!replyMessage.trim() || isSending}
-                          className="absolute bottom-4 right-4 p-3 bg-tm-green text-tm-navy rounded-xl hover:bg-tm-green/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-tm-green/20"
-                        >
-                          <Send size={18} />
-                        </button>
+                    {/* Reply Input - Only for Support Tickets */}
+                    {activeTab === 'support' && (
+                      <div className="p-4 border-t border-gray-800/50 bg-[#0a0a0f]">
+                        <div className="relative">
+                          <textarea
+                            value={replyMessage}
+                            onChange={(e) => setReplyMessage(e.target.value)}
+                            placeholder="Type your reply..."
+                            className="w-full bg-[#12121a] border border-gray-800 rounded-xl p-4 pr-14 min-h-[100px] text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50 resize-none transition-colors"
+                          />
+                          <button
+                            onClick={handleSendReply}
+                            disabled={!replyMessage.trim() || isSending}
+                            className="absolute bottom-4 right-4 p-3 bg-tm-green text-tm-navy rounded-xl hover:bg-tm-green/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-tm-green/20"
+                          >
+                            <Send size={18} />
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </>
                 ) : (
                   <div className="h-full flex flex-col items-center justify-center text-gray-500">

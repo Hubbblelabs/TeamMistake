@@ -31,10 +31,10 @@ const Navbar = () => {
   }, [isOpen]);
 
   const navLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Products', href: '#products' },
+    { name: 'About', href: '/#about' },
+    { name: 'Products', href: '/#products' },
     { name: 'Support', href: '/support' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Contact', href: '/#contact' },
   ];
 
   return (
@@ -110,7 +110,7 @@ const Navbar = () => {
           ))}
 
           <div className="ml-4">
-            <GlowButton href="#contact" variant="secondary" size="sm">
+            <GlowButton href="/#contact" variant="secondary" size="sm">
               Get in Touch
             </GlowButton>
           </div>
@@ -214,9 +214,6 @@ const Navbar = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 * index }}
                   >
-                    <span className="text-tm-green text-xs font-mono opacity-50">
-                      0{index + 1}.
-                    </span>
                     {link.name}
                     <motion.span
                       className="h-0.5 bg-tm-green rounded-full"
@@ -234,7 +231,7 @@ const Navbar = () => {
                   className="mt-4"
                 >
                   <GlowButton
-                    href="#contact"
+                    href="/#contact"
                     variant="secondary"
                     size="lg"
                     onClick={() => setIsOpen(false)}

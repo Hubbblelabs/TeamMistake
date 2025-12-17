@@ -8,10 +8,12 @@ const replySchema = new mongoose.Schema({
 });
 
 const supportTicketSchema = new mongoose.Schema({
+    ticketId: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     email: { type: String, required: true },
     subject: { type: String, required: true },
     message: { type: String, required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     status: {
         type: String,
         enum: ['new', 'open', 'closed'],
