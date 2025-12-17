@@ -74,10 +74,10 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
-            <h4 className="text-tm-white font-semibold mb-6 flex items-center gap-2">
+            <h3 className="text-tm-white font-semibold mb-6 flex items-center gap-2">
               <span className="w-2 h-2 bg-tm-green rounded-full" />
               Quick Links
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
@@ -100,10 +100,10 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <h4 className="text-tm-white font-semibold mb-6 flex items-center gap-2">
+            <h3 className="text-tm-white font-semibold mb-6 flex items-center gap-2">
               <span className="w-2 h-2 bg-tm-green rounded-full" />
               Services
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {services.map((service, index) => (
                 <li key={index}>
@@ -123,10 +123,10 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <h4 className="text-tm-white font-semibold mb-6 flex items-center gap-2">
+            <h3 className="text-tm-white font-semibold mb-6 flex items-center gap-2">
               <span className="w-2 h-2 bg-tm-green rounded-full" />
               Contact Us
-            </h4>
+            </h3>
             <ul className="space-y-4">
               {contactInfo.map((info, index) => (
                 <li key={index} className="flex items-center gap-3 text-tm-slate text-sm">

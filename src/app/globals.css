@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+/* Google Fonts now loaded via Next.js font optimization in layout.tsx */
 
 @import "tailwindcss";
 
@@ -12,8 +12,9 @@
   --color-tm-slate-light: #a8b2d1;
   --color-tm-white: #e6f1ff;
 
-  --font-sans: 'Outfit', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  /* Use CSS variables from Next.js font optimization, with fallbacks */
+  --font-sans: var(--font-outfit), 'Outfit', sans-serif;
+  --font-body: var(--font-inter), 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   --backdrop-blur-glass: 20px;
@@ -114,7 +115,7 @@
 body {
   background-color: var(--tm-navy);
   color: var(--tm-slate);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-inter), 'Inter', sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -126,7 +127,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-outfit), 'Outfit', sans-serif;
   color: var(--tm-white);
 }
 

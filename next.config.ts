@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
+  // Enable source maps for production debugging
+  productionBrowserSourceMaps: true,
 };
 
 export default nextConfig;
