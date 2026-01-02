@@ -14,7 +14,7 @@ export default function FloatingSupport() {
     }
 
     // WhatsApp configuration
-    const whatsappNumber = '919876543210';
+    const whatsappNumber = '6369842363';
     const whatsappMessage = encodeURIComponent('Hello! I need support.');
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
