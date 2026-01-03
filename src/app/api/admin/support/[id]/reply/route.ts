@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/mongodb';
 import SupportTicket from '@/models/SupportTicket';
 import { authOptions } from '@/lib/auth';
+import { sendEmail } from '@/lib/email';
 
 export async function POST(
     request: NextRequest,
@@ -15,7 +16,7 @@ export async function POST(
         }
 
         const { id } = await params;
-        const { message } = await request.json();
+        const { message, sendEmail: shouldSendEmail } = await request.json();
 
         if (!message) {
             return NextResponse.json({ error: 'Message is required' }, { status: 400 });
@@ -46,7 +47,29 @@ export async function POST(
 
         await ticket.save();
 
-        return NextResponse.json({ ticket }, { status: 200 });
+        // Send email notification to user if requested
+        let emailResult = { success: true, error: null };
+        if (shouldSendEmail) {
+            const result = await sendEmail({
+                to: ticket.email,
+                subject: `Re: ${ticket.subject} [Ticket #${ticket.ticketId}]`,
+                html: `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2>New Reply to your Ticket</h2>
+                    <p>Hello ${ticket.name},</p>
+                    <p>You have received a new reply to your support ticket <strong>#${ticket.ticketId}</strong>.</p>
+                    <div style="background-color: #f4f4f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <p style="margin: 0; white-space: pre-wrap;">${message}</p>
+                    </div>
+                    <p>Best regards,<br>TeamMistake Support</p>
+                </div>
+            `,
+            });
+            // @ts-ignore
+            emailResult = result;
+        }
+
+        return NextResponse.json({ ticket, emailResult }, { status: 200 });
     } catch (error) {
         console.error('Error adding admin reply:', error);
         return NextResponse.json({ error: 'Failed to send reply' }, { status: 500 });

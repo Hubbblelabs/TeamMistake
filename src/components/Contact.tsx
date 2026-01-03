@@ -163,7 +163,7 @@ const Contact = () => {
                       {...register('name', { required: 'Name is required' })}
                       type="text"
                       className={`w-full bg-tm-navy/50 border-2 ${errors.name ? 'border-red-500' : 'border-tm-navy-lighter'
-                        } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus:bg-tm-navy transition-all duration-300`}
+                        } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus-visible:outline-none focus:bg-tm-navy transition-all duration-300`}
                       placeholder="Full Name"
                     />
                     <AnimatePresence>
@@ -199,7 +199,7 @@ const Contact = () => {
                       })}
                       type="email"
                       className={`w-full bg-tm-navy/50 border-2 ${errors.email ? 'border-red-500' : 'border-tm-navy-lighter'
-                        } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus:bg-tm-navy transition-all duration-300`}
+                        } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus-visible:outline-none focus:bg-tm-navy transition-all duration-300`}
                       placeholder="Email"
                     />
                     <AnimatePresence>
@@ -229,7 +229,7 @@ const Contact = () => {
                       {...register('message', { required: 'Message is required' })}
                       rows={4}
                       className={`w-full bg-tm-navy/50 border-2 ${errors.message ? 'border-red-500' : 'border-tm-navy-lighter'
-                        } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus:bg-tm-navy transition-all duration-300 resize-none`}
+                        } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus-visible:outline-none focus:bg-tm-navy transition-all duration-300 resize-none`}
                       placeholder="Tell us about your project..."
                     />
                     <AnimatePresence>

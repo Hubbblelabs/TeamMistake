@@ -21,7 +21,8 @@ import {
   Eye,
   EyeOff,
   CheckCircle,
-  XCircle
+  XCircle,
+  ArrowLeft
 } from 'lucide-react';
 
 // Types
@@ -96,6 +97,7 @@ export default function AdminDashboard() {
 
   // Shared State
   const [replyMessage, setReplyMessage] = useState('');
+  const [sendEmailNotification, setSendEmailNotification] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -215,6 +217,8 @@ export default function AdminDashboard() {
           body: JSON.stringify({ status: 'read' }),
         });
         setContacts(prev => prev.map(c => c._id === contact._id ? { ...c, status: 'read' } : c));
+        // Update the detailed view as well
+        setSelectedContact(prev => prev?._id === contact._id ? { ...prev, status: 'read' } : prev);
       } catch (error) {
         console.error('Error updating status:', error);
       }
@@ -269,7 +273,7 @@ export default function AdminDashboard() {
         const res = await fetch(`/api/admin/support/${selectedTicket._id}/reply`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: replyMessage }),
+          body: JSON.stringify({ message: replyMessage, sendEmail: sendEmailNotification }),
         });
         const data = await res.json();
         if (res.ok) {
@@ -277,6 +281,27 @@ export default function AdminDashboard() {
           setTickets(prev => prev.map(t => t._id === selectedTicket._id ? data.ticket : t));
           setSelectedTicket(data.ticket);
           setReplyMessage('');
+          if (data.emailResult && !data.emailResult.success) {
+            alert(`Reply saved, but failed to send email: ${JSON.stringify(data.emailResult.error)}`);
+          }
+        } else {
+          alert(data.error || 'Failed to send reply');
+        }
+      } else if (activeTab === 'contacts' && selectedContact) {
+        const res = await fetch(`/api/admin/contacts/${selectedContact._id}/reply`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: replyMessage, sendEmail: sendEmailNotification }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          // Update the contact with new reply
+          setContacts(prev => prev.map(c => c._id === selectedContact._id ? data.contact : c));
+          setSelectedContact(data.contact);
+          setReplyMessage('');
+          if (data.emailResult && !data.emailResult.success) {
+            alert(`Reply saved, but failed to send email: ${JSON.stringify(data.emailResult.error)}`);
+          }
         } else {
           alert(data.error || 'Failed to send reply');
         }
@@ -380,14 +405,14 @@ export default function AdminDashboard() {
     setIsAdminLoading(true);
 
     try {
-      const endpoint = isContact 
-        ? `/api/admin/contacts/${item._id}` 
+      const endpoint = isContact
+        ? `/api/admin/contacts/${item._id}`
         : `/api/admin/support/${item._id}`;
-      
+
       const res = await fetch(endpoint, {
         method: 'DELETE',
       });
-      
+
       if (res.ok) {
         if (isContact) {
           setContacts(prev => prev.filter(c => c._id !== item._id));
@@ -611,9 +636,9 @@ export default function AdminDashboard() {
           </div>
           <button
             onClick={() => signOut({ callbackUrl: '/admin/login' })}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all text-sm font-medium"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all text-xs font-medium"
           >
-            <LogOut size={16} />
+            <LogOut size={14} />
             Sign Out
           </button>
         </div>
@@ -630,7 +655,7 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <main className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
         {/* Top Header */}
-        <header className="bg-[#0d0d14] border-b border-gray-800/50 px-6 py-4">
+        <header className="bg-[#0d0d14] border-b border-gray-800/50 px-3 py-2 md:px-6 md:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
@@ -640,10 +665,10 @@ export default function AdminDashboard() {
                 {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
               <div>
-                <h1 className="text-xl font-semibold text-white">
-                  {activeTab === 'contacts' ? 'Contact Inquiries' : activeTab === 'support' ? 'Support Tickets' : 'Admin Management'}
+                <h1 className="text-lg md:text-xl font-semibold text-white">
+                  {activeTab === 'contacts' ? 'Inquiries' : activeTab === 'support' ? 'Tickets' : 'Admins'}
                 </h1>
-                <p className="text-sm text-gray-500">
+                <p className="hidden md:block text-sm text-gray-500">
                   {activeTab === 'admins' ? 'Create, update, and manage admin accounts' : 'Manage and respond to messages'}
                 </p>
               </div>
@@ -679,7 +704,7 @@ export default function AdminDashboard() {
         </header>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-hidden p-6">
+        <div className="flex-1 overflow-hidden p-2 md:p-6">
           {activeTab === 'admins' ? (
             /* Admin Management View */
             <div className="h-full bg-[#0d0d14] rounded-2xl border border-gray-800/50 overflow-hidden">
@@ -748,7 +773,8 @@ export default function AdminDashboard() {
             /* Contacts/Support View */
             <div className="h-full flex gap-6">
               {/* List Panel */}
-              <div className="w-full lg:w-96 flex flex-col bg-[#0d0d14] rounded-2xl border border-gray-800/50 overflow-hidden">
+              {/* List Panel */}
+              <div className={`w-full lg:w-96 flex flex-col bg-[#0d0d14] rounded-2xl border border-gray-800/50 overflow-hidden ${(activeTab === 'contacts' ? selectedContact : selectedTicket) ? 'hidden lg:flex' : 'flex'}`}>
                 {/* Search & Filter Bar */}
                 <div className="p-4 border-b border-gray-800/50 space-y-3">
                   <div className="relative">
@@ -819,27 +845,36 @@ export default function AdminDashboard() {
               </div>
 
               {/* Detail Panel */}
-              <div className="hidden lg:flex flex-1 flex-col bg-[#0d0d14] rounded-2xl border border-gray-800/50 overflow-hidden">
+              <div className={`flex-1 flex-col bg-[#0d0d14] rounded-2xl border border-gray-800/50 overflow-hidden ${(activeTab === 'contacts' ? selectedContact : selectedTicket) ? 'flex' : 'hidden lg:flex'}`}>
                 {(activeTab === 'contacts' ? selectedContact : selectedTicket) ? (
                   <>
                     {/* Detail Header */}
-                    <div className="p-6 border-b border-gray-800/50">
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex items-center gap-4">
-                          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-tm-green/20 to-tm-green/5 flex items-center justify-center text-xl font-semibold text-tm-green">
+                    <div className="p-3 md:px-6 border-b border-gray-800/50">
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-2 md:gap-4">
+                          <button
+                            onClick={() => activeTab === 'contacts' ? setSelectedContact(null) : setSelectedTicket(null)}
+                            className="lg:hidden p-1.5 -ml-1 text-gray-400 hover:text-white"
+                          >
+                            <ArrowLeft size={18} />
+                          </button>
+                          <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-tm-green/20 to-tm-green/5 flex items-center justify-center text-lg md:text-xl font-semibold text-tm-green">
                             {(activeTab === 'contacts' ? selectedContact : selectedTicket)?.name?.[0]?.toUpperCase()}
                           </div>
                           <div>
-                            <h2 className="text-xl font-semibold text-white mb-1">
-                              {(activeTab === 'contacts' ? selectedContact : selectedTicket)?.name}
-                            </h2>
+                            <div className="flex items-center gap-3 mb-1">
+                              <h2 className="text-xl font-semibold text-white">
+                                {(activeTab === 'contacts' ? selectedContact : selectedTicket)?.name}
+                              </h2>
+                              {getStatusBadge((activeTab === 'contacts' ? selectedContact : selectedTicket)?.status || 'new')}
+                            </div>
                             <p className="text-tm-green text-sm">
                               {(activeTab === 'contacts' ? selectedContact : selectedTicket)?.email}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          {getStatusBadge((activeTab === 'contacts' ? selectedContact : selectedTicket)?.status || 'new')}
+                          {/* Action Buttons */}
                           {/* Action Buttons */}
                           {activeTab === 'contacts' && selectedContact?.status === 'read' && (
                             <button
@@ -877,60 +912,74 @@ export default function AdminDashboard() {
                             className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20 transition-all text-xs font-medium"
                           >
                             <Trash2 size={14} />
-                            Delete
+                            <span className="hidden md:inline">Delete</span>
                           </button>
                         </div>
                       </div>
 
-                      {/* Message Content */}
-                      <div className="bg-[#12121a] rounded-xl p-5 border border-gray-800/50 mt-4">
-                        <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">
-                          {(activeTab === 'contacts' ? selectedContact : selectedTicket)?.message}
-                        </p>
-                      </div>
+
                     </div>
 
                     {/* Conversation Area */}
-                    <div className="flex-1 overflow-y-auto p-6">
-                      <div className="flex items-center justify-center gap-2 text-gray-500 text-sm mb-6">
-                        <Clock size={14} />
-                        Received on {formatDate((activeTab === 'contacts' ? selectedContact : selectedTicket)?.createdAt || '')}
-                      </div>
-
-                      {/* Replies - Only for Support Tickets */}
-                      {activeTab === 'support' && selectedTicket?.replies && selectedTicket.replies.length > 0 && (
-                        <div className="space-y-3">
-                          <p className="text-sm font-medium text-gray-400 mb-3">Conversation ({selectedTicket.replies.length})</p>
-                          {selectedTicket.replies.map((reply, idx) => (
-                            <div
-                              key={idx}
-                              className={`p-4 rounded-xl ${reply.isFromUser
-                                ? 'bg-blue-500/10 border border-blue-500/20 mr-12'
-                                : 'bg-tm-green/10 border border-tm-green/20 ml-12'
-                                }`}
-                            >
-                              <p className="text-gray-300 whitespace-pre-wrap mb-2">{reply.message}</p>
-                              <div className="flex items-center gap-2 text-xs text-gray-500">
-                                <span className={reply.isFromUser ? 'text-blue-400' : 'text-tm-green'}>
-                                  {reply.isFromUser ? 'Customer' : 'Admin'}
-                                </span>
-                                • {formatDate(reply.sentAt)}
-                              </div>
-                            </div>
-                          ))}
+                    <div className="flex-1 overflow-y-auto p-3 md:p-6">
+                      <div className="space-y-3">
+                        {/* Initial Message */}
+                        <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 mr-12">
+                          <p className="text-gray-300 whitespace-pre-wrap mb-2">
+                            {(activeTab === 'contacts' ? selectedContact : selectedTicket)?.message}
+                          </p>
+                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <span className="text-blue-400">Customer</span>
+                            • {formatDate((activeTab === 'contacts' ? selectedContact : selectedTicket)?.createdAt || '')}
+                          </div>
                         </div>
-                      )}
+
+                        {/* Replies */}
+                        {((activeTab === 'support' ? selectedTicket?.replies : selectedContact?.replies) || []).map((reply, idx) => (
+                          <div
+                            key={idx}
+                            className={`p-4 rounded-xl ${reply.isFromUser
+                              ? 'bg-blue-500/10 border border-blue-500/20 mr-12'
+                              : 'bg-tm-green/10 border border-tm-green/20 ml-12'
+                              }`}
+                          >
+                            <p className="text-gray-300 whitespace-pre-wrap mb-2">{reply.message}</p>
+                            <div className="flex items-center gap-2 text-xs text-gray-500">
+                              <span className={reply.isFromUser ? 'text-blue-400' : 'text-tm-green'}>
+                                {reply.isFromUser ? 'Customer' : 'Admin'}
+                              </span>
+                              • {formatDate(reply.sentAt)}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
-                    {/* Reply Input - Only for Support Tickets */}
-                    {activeTab === 'support' && (
-                      <div className="p-4 border-t border-gray-800/50 bg-[#0a0a0f]">
+                    {/* Reply Input */}
+                    {(activeTab === 'support' || activeTab === 'contacts') && (
+                      <div className="p-3 border-t border-gray-800/50 bg-[#0a0a0f]">
+                        <div className="flex items-center justify-between mb-2 px-1">
+                          <label className="flex items-center cursor-pointer gap-2 group">
+                            <div className="relative flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={sendEmailNotification}
+                                onChange={(e) => setSendEmailNotification(e.target.checked)}
+                                className="peer sr-only"
+                              />
+                              <div className="w-9 h-5 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-tm-green/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-tm-green"></div>
+                            </div>
+                            <span className={`text-sm font-medium transition-colors ${sendEmailNotification ? 'text-tm-green' : 'text-gray-500'}`}>
+                              {sendEmailNotification ? 'Email Notification Enabled' : 'Email Notification Disabled'}
+                            </span>
+                          </label>
+                        </div>
                         <div className="relative">
                           <textarea
                             value={replyMessage}
                             onChange={(e) => setReplyMessage(e.target.value)}
                             placeholder="Type your reply..."
-                            className="w-full bg-[#12121a] border border-gray-800 rounded-xl p-4 pr-14 min-h-[100px] text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50 resize-none transition-colors"
+                            className="w-full bg-[#12121a] border border-gray-800 rounded-xl p-3 pr-12 h-16 md:min-h-[100px] text-sm text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50 resize-none transition-colors"
                           />
                           <button
                             onClick={handleSendReply}

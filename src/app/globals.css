@@ -284,6 +284,12 @@ h6 {
   outline-offset: 2px;
 }
 
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
 /* Canvas Container for Three.js */
 .three-canvas-container {
   position: absolute;
