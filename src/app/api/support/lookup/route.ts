@@ -5,32 +5,29 @@ import SupportTicket from '@/models/SupportTicket';
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
-        const ticketId = searchParams.get('ticketId');
         const email = searchParams.get('email');
 
-        if (!ticketId || !email) {
+        if (!email) {
             return NextResponse.json(
-                { error: 'Ticket ID and email are required' },
+                { error: 'Email is required' },
                 { status: 400 }
             );
         }
 
         await connectDB();
 
-        // Look up by ticketId field (not _id)
-        const ticket = await SupportTicket.findOne({
-            ticketId: ticketId.toUpperCase(),
+        const tickets = await SupportTicket.find({
             email: email.toLowerCase()
-        });
+        }).sort({ createdAt: -1 });
 
-        if (!ticket) {
+        if (!tickets || tickets.length === 0) {
             return NextResponse.json(
-                { error: 'Ticket not found. Please check your ticket ID and email.' },
+                { error: 'No tickets found for this email.' },
                 { status: 404 }
             );
         }
 
-        return NextResponse.json({ ticket }, { status: 200 });
+        return NextResponse.json({ tickets }, { status: 200 });
     } catch (error) {
         console.error('Error fetching ticket:', error);
         return NextResponse.json(

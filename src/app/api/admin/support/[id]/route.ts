@@ -60,3 +60,29 @@ export async function PATCH(
         return NextResponse.json({ error: 'Failed to update ticket' }, { status: 500 });
     }
 }
+
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const { id } = await params;
+        await connectDB();
+
+        const ticket = await SupportTicket.findByIdAndDelete(id);
+
+        if (!ticket) {
+            return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
+        }
+
+        return NextResponse.json({ message: 'Ticket deleted successfully' }, { status: 200 });
+    } catch (error) {
+        console.error('Error deleting ticket:', error);
+        return NextResponse.json({ error: 'Failed to delete ticket' }, { status: 500 });
+    }
+}

@@ -35,8 +35,9 @@ export default function SupportPage() {
         subject: '',
         message: '',
     });
-    const [lookupData, setLookupData] = useState({ ticketId: '', email: '' });
+    const [lookupData, setLookupData] = useState({ email: '' });
     const [createdTicketId, setCreatedTicketId] = useState('');
+    const [tickets, setTickets] = useState<SupportTicket[]>([]);
     const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
     const [replyMessage, setReplyMessage] = useState('');
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error' | 'loading' | 'replying'>('idle');
@@ -75,19 +76,20 @@ export default function SupportPage() {
         e.preventDefault();
         setStatus('loading');
         setErrorMessage('');
+        setTickets([]);
 
         try {
             const response = await fetch(
-                `/api/support/lookup?ticketId=${encodeURIComponent(lookupData.ticketId)}&email=${encodeURIComponent(lookupData.email)}`
+                `/api/support/lookup?email=${encodeURIComponent(lookupData.email)}`
             );
             const data = await response.json();
 
-            if (response.ok && data.ticket) {
-                setSelectedTicket(data.ticket);
+            if (response.ok && data.tickets) {
+                setTickets(data.tickets);
                 setStatus('idle');
             } else {
                 setStatus('error');
-                setErrorMessage(data.error || 'Ticket not found. Please check your ticket ID and email.');
+                setErrorMessage(data.error || 'No tickets found for this email.');
             }
         } catch (error) {
             setStatus('error');
@@ -131,11 +133,14 @@ export default function SupportPage() {
         if (!selectedTicket || !lookupData.email) return;
         try {
             const response = await fetch(
-                `/api/support/lookup?ticketId=${encodeURIComponent(selectedTicket.ticketId)}&email=${encodeURIComponent(lookupData.email)}`
+                `/api/support/lookup?email=${encodeURIComponent(lookupData.email)}`
             );
             const data = await response.json();
-            if (response.ok && data.ticket) {
-                setSelectedTicket(data.ticket);
+            if (response.ok && data.tickets) {
+                const updatedTicket = data.tickets.find((t: SupportTicket) => t._id === selectedTicket._id);
+                if (updatedTicket) {
+                    setSelectedTicket(updatedTicket);
+                }
             }
         } catch (error) {
             console.error('Error refreshing ticket:', error);
@@ -196,7 +201,7 @@ export default function SupportPage() {
                         <p className="text-lg text-tm-slate max-w-2xl mx-auto">
                             {view === 'menu' && 'Need help? Create a new ticket or check an existing one.'}
                             {view === 'new' && 'Submit a new support ticket and our team will get back to you.'}
-                            {view === 'existing' && 'Enter your ticket ID and email to view and reply to your ticket.'}
+                            {view === 'existing' && 'Enter your email address to view and reply to your tickets.'}
                         </p>
                     </motion.div>
 
@@ -250,20 +255,11 @@ export default function SupportPage() {
                                         </div>
                                         <h2 className="text-2xl font-bold text-tm-white mb-2">Ticket Submitted!</h2>
                                         <p className="text-tm-slate mb-6">
-                                            Save your ticket ID to track your request:
+                                            Your ticket has been received! Our team will review it and get back to you shortly.
                                         </p>
-                                        <div className="inline-flex items-center gap-3 bg-tm-navy/50 border border-tm-green/30 rounded-xl px-6 py-4 mb-8">
-                                            <code className="text-tm-green font-mono text-lg">{createdTicketId}</code>
-                                            <button
-                                                onClick={() => copyToClipboard(createdTicketId)}
-                                                className="p-2 hover:bg-tm-green/10 rounded-lg transition-colors"
-                                                title="Copy to clipboard"
-                                            >
-                                                {copied ? <Check size={18} className="text-green-400" /> : <Copy size={18} className="text-tm-slate" />}
-                                            </button>
-                                        </div>
+
                                         <p className="text-sm text-tm-slate mb-8">
-                                            Use this ID along with your email to check status and reply.
+                                            You can check the status of your tickets at any time using your email address.
                                         </p>
                                         <div className="flex gap-3 justify-center">
                                             <GlowButton onClick={() => { setStatus('idle'); setCreatedTicketId(''); }}>
@@ -353,7 +349,7 @@ export default function SupportPage() {
                         {view === 'existing' && (
                             <>
                                 <button
-                                    onClick={() => { setView('menu'); setSelectedTicket(null); setLookupData({ ticketId: '', email: '' }); setStatus('idle'); }}
+                                    onClick={() => { setView('menu'); setSelectedTicket(null); setTickets([]); setLookupData({ email: '' }); setStatus('idle'); }}
                                     className="flex items-center gap-2 text-tm-slate hover:text-tm-white mb-6 transition-colors"
                                 >
                                     <ArrowLeft size={18} />
@@ -367,7 +363,7 @@ export default function SupportPage() {
                                             className="flex items-center gap-2 text-tm-slate hover:text-tm-white mb-4 transition-colors"
                                         >
                                             <ArrowLeft size={16} />
-                                            Enter different ticket
+                                            Back to ticket list
                                         </button>
 
                                         {/* Ticket Details */}
@@ -446,21 +442,37 @@ export default function SupportPage() {
                                             </div>
                                         )}
                                     </div>
+                                ) : tickets.length > 0 ? (
+                                    <div className="space-y-4">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h3 className="text-lg font-semibold text-tm-white">Your Tickets</h3>
+                                            <button
+                                                onClick={() => { setTickets([]); setLookupData({ email: '' }); }}
+                                                className="text-sm text-tm-slate hover:text-tm-white"
+                                            >
+                                                Search different email
+                                            </button>
+                                        </div>
+                                        {tickets.map((ticket) => (
+                                            <button
+                                                key={ticket._id}
+                                                onClick={() => setSelectedTicket(ticket)}
+                                                className="w-full bg-tm-navy/50 border border-tm-slate/20 rounded-xl p-4 text-left hover:border-tm-green/50 transition-all group"
+                                            >
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <h4 className="font-medium text-tm-white group-hover:text-tm-green transition-colors">{ticket.subject}</h4>
+                                                    {getStatusBadge(ticket.status)}
+                                                </div>
+                                                <p className="text-sm text-tm-slate/70 mb-2 line-clamp-2">{ticket.message}</p>
+                                                <div className="flex items-center justify-between text-xs text-tm-slate/50">
+                                                    <span>ID: {ticket.ticketId}</span>
+                                                    <span>{formatDate(ticket.createdAt)}</span>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
                                 ) : (
                                     <form onSubmit={handleLookupTicket} className="space-y-6">
-                                        <div className="space-y-2">
-                                            <label htmlFor="ticketId" className="text-sm font-medium text-tm-white">Ticket ID</label>
-                                            <input
-                                                type="text"
-                                                id="ticketId"
-                                                required
-                                                value={lookupData.ticketId}
-                                                onChange={(e) => setLookupData({ ...lookupData, ticketId: e.target.value })}
-                                                className="w-full px-4 py-3 bg-tm-navy/50 border border-tm-slate/20 rounded-lg text-tm-white focus:outline-none focus:border-tm-green focus:ring-1 focus:ring-tm-green transition-all font-mono"
-                                                placeholder="Enter your ticket ID"
-                                            />
-                                        </div>
-
                                         <div className="space-y-2">
                                             <label htmlFor="lookupEmail" className="text-sm font-medium text-tm-white">Email Address</label>
                                             <input
@@ -482,7 +494,7 @@ export default function SupportPage() {
                                         )}
 
                                         <GlowButton type="submit" className="w-full justify-center" disabled={status === 'loading'}>
-                                            {status === 'loading' ? 'Finding Ticket...' : 'View My Ticket'}
+                                            {status === 'loading' ? 'Finding Tickets...' : 'View My Tickets'}
                                         </GlowButton>
                                     </form>
                                 )}

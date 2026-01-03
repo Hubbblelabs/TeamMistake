@@ -86,6 +86,7 @@ export default function AdminDashboard() {
   const [showAdminModal, setShowAdminModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showConversationDeleteConfirm, setShowConversationDeleteConfirm] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
   const [adminForm, setAdminForm] = useState({ name: '', email: '', password: '' });
   const [passwordForm, setPasswordForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
@@ -366,6 +367,43 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       alert('Failed to delete admin');
+    } finally {
+      setIsAdminLoading(false);
+    }
+  };
+
+  const handleDeleteConversation = async () => {
+    const isContact = activeTab === 'contacts';
+    const item = isContact ? selectedContact : selectedTicket;
+    if (!item) return;
+
+    setIsAdminLoading(true);
+
+    try {
+      const endpoint = isContact 
+        ? `/api/admin/contacts/${item._id}` 
+        : `/api/admin/support/${item._id}`;
+      
+      const res = await fetch(endpoint, {
+        method: 'DELETE',
+      });
+      
+      if (res.ok) {
+        if (isContact) {
+          setContacts(prev => prev.filter(c => c._id !== item._id));
+          setFilteredContacts(prev => prev.filter(c => c._id !== item._id));
+          setSelectedContact(null);
+        } else {
+          setTickets(prev => prev.filter(t => t._id !== item._id));
+          setFilteredTickets(prev => prev.filter(t => t._id !== item._id));
+          setSelectedTicket(null);
+        }
+        setShowConversationDeleteConfirm(false);
+      } else {
+        alert('Failed to delete conversation');
+      }
+    } catch (error) {
+      alert('Failed to delete conversation');
     } finally {
       setIsAdminLoading(false);
     }
@@ -834,6 +872,13 @@ export default function AdminDashboard() {
                               )}
                             </>
                           )}
+                          <button
+                            onClick={() => setShowConversationDeleteConfirm(true)}
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500/20 transition-all text-xs font-medium"
+                          >
+                            <Trash2 size={14} />
+                            Delete
+                          </button>
                         </div>
                       </div>
 
@@ -1074,6 +1119,37 @@ export default function AdminDashboard() {
               </button>
               <button
                 onClick={handleDeleteAdmin}
+                disabled={isAdminLoading}
+                className="flex-1 px-4 py-3 bg-red-500 text-white font-medium rounded-xl hover:bg-red-600 disabled:opacity-50 transition-all"
+              >
+                {isAdminLoading ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Conversation Delete Confirmation Modal */}
+      {showConversationDeleteConfirm && (activeTab === 'contacts' ? selectedContact : selectedTicket) && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#0d0d14] rounded-2xl border border-gray-800/50 w-full max-w-md">
+            <div className="p-6 border-b border-gray-800/50">
+              <h3 className="text-lg font-semibold text-white">Delete Conversation</h3>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-300">
+                Are you sure you want to delete this conversation with <span className="font-semibold text-white">{(activeTab === 'contacts' ? selectedContact : selectedTicket)?.name}</span>? This action cannot be undone.
+              </p>
+            </div>
+            <div className="p-6 border-t border-gray-800/50 flex gap-3">
+              <button
+                onClick={() => setShowConversationDeleteConfirm(false)}
+                className="flex-1 px-4 py-3 bg-gray-800 text-gray-300 font-medium rounded-xl hover:bg-gray-700 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteConversation}
                 disabled={isAdminLoading}
                 className="flex-1 px-4 py-3 bg-red-500 text-white font-medium rounded-xl hover:bg-red-600 disabled:opacity-50 transition-all"
               >

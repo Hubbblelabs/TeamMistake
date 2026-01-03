@@ -3,4 +3,6 @@ import { authOptions } from '@/lib/auth';
 
 const handler = NextAuth(authOptions);
 
+console.log('NextAuth route initialized');
+
 export { handler as GET, handler as POST };
