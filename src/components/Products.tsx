@@ -40,44 +40,63 @@ const Products = () => {
   return (
     <section id="products" className="py-24 px-6 md:px-12 bg-tm-navy relative z-10">
 
-      <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-        <h2 className="text-4xl md:text-8xl font-bold text-tm-white tracking-tighter">
-          SELECTED<br />
-          <span className="text-tm-slate/20">WORK</span>
-        </h2>
+      {/* Section Header */}
+      <div className="flex flex-col md:flex-row justify-between items-end mb-16 md:mb-24 gap-8">
+        <div>
+          <span className="font-mono text-xs text-tm-green uppercase tracking-[0.2em] mb-4 block">
+            [ Selected Work ]
+          </span>
+          <h2 className="text-5xl md:text-7xl lg:text-9xl font-bold text-tm-white tracking-[-0.04em] uppercase leading-[0.9]">
+            Projects
+          </h2>
+        </div>
 
-        <a href="#" className="font-mono text-xs uppercase tracking-widest text-tm-green border-b border-tm-green pb-1 hover:border-tm-white hover:text-tm-white transition-colors">
-          View All Projects
+        <a
+          href="#"
+          className="group font-mono text-xs uppercase tracking-widest text-tm-slate flex items-center gap-2 hover:text-tm-green transition-colors"
+        >
+          View All
+          <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
         </a>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-tm-slate/10">
+      {/* Projects Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[1px] bg-tm-slate/10">
         {products.map((product, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: index * 0.1 }}
-            className="group border-r border-b border-tm-slate/10 p-8 md:p-12 hover:bg-tm-slate/5 transition-colors aspect-square flex flex-col justify-between"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            viewport={{ once: true }}
+            className="group relative bg-tm-navy p-8 md:p-10 aspect-square flex flex-col justify-between cursor-pointer overflow-hidden"
           >
-            <div className="flex justify-between items-start">
+            {/* Hover Background */}
+            <div className="absolute inset-0 bg-tm-slate/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+            {/* Top Row */}
+            <div className="relative z-10 flex justify-between items-start">
               <span className="font-mono text-xs text-tm-slate/40 uppercase tracking-widest">
                 0{index + 1}
               </span>
-              <ArrowUpRight className="w-5 h-5 text-tm-slate/40 group-hover:text-tm-green group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+              <ArrowUpRight className="w-5 h-5 text-tm-slate/30 group-hover:text-tm-green group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
             </div>
 
-            <div>
-              <span className="font-mono text-xs text-tm-green uppercase tracking-widest mb-2 block">
+            {/* Bottom Content */}
+            <div className="relative z-10">
+              <span className="font-mono text-[10px] text-tm-green uppercase tracking-widest mb-3 block">
                 {product.category}
               </span>
-              <h3 className="text-2xl md:text-3xl font-bold text-tm-white mb-2 leading-none group-hover:underline decoration-tm-green underline-offset-4">
+              <h3 className="text-2xl md:text-3xl font-bold text-tm-white mb-3 leading-[1.1] tracking-tight group-hover:text-tm-green transition-colors duration-300">
                 {product.title}
               </h3>
-              <p className="text-tm-slate/60 text-sm leading-relaxed max-w-xs">
+              <p className="text-sm text-tm-slate/50 leading-relaxed max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 {product.description}
               </p>
             </div>
+
+            {/* Bottom Border Animation */}
+            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-tm-green scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
           </motion.div>
         ))}
       </div>

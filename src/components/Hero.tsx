@@ -1,11 +1,8 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import GlowButton from './ui/GlowButton';
-import GradientText from './ui/GradientText';
 
 // Lazy-load Three.js Canvas to reduce initial JS bundle and main thread blocking
 const ThreeCanvas = dynamic(
@@ -24,7 +21,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden bg-tm-navy px-4">
+    <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden bg-tm-navy">
       {/* Three.js Background Canvas - Lazy loaded */}
       {mounted && (
         <div className="fixed inset-0 z-0">
@@ -33,32 +30,48 @@ const Hero = () => {
       )}
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl flex flex-col items-center justify-center text-center mix-blend-exclusion">
+      <div className="relative z-10 w-full flex flex-col items-center justify-center text-center px-6">
 
         {/* Top Tagline */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-8 overflow-hidden"
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="mb-8"
         >
-          <span className="font-mono text-sm md:text-base text-tm-slate tracking-[0.2em] uppercase">
+          <span className="font-mono text-xs md:text-sm text-tm-slate tracking-[0.2em] uppercase">
             Interactive Production Studio
           </span>
         </motion.div>
 
-        {/* Main Heading - Split for impact */}
+        {/* Main Heading - Extra Large Typography */}
         <motion.h1
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center leading-[0.85] font-bold text-tm-white tracking-tighter"
+          transition={{ duration: 0.8, delay: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col items-center leading-[0.82] font-bold text-tm-white tracking-[-0.06em] uppercase mix-blend-exclusion"
         >
-          <span className="text-[15vw] md:text-[12vw] 2xl:text-[180px]">TEAM</span>
-          <span className="text-[15vw] md:text-[12vw] 2xl:text-[180px] text-transparent stroke-text" style={{ WebkitTextStroke: '2px #dfff00', color: 'transparent' }}>
+          <span className="text-[18vw] md:text-[14vw] lg:text-[12vw]">TEAM</span>
+          <span
+            className="text-[18vw] md:text-[14vw] lg:text-[12vw] text-transparent"
+            style={{
+              WebkitTextStroke: '2px var(--tm-green)',
+              color: 'transparent'
+            }}
+          >
             MISTAKE
           </span>
         </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4 }}
+          className="mt-8 text-base md:text-lg text-tm-slate/70 max-w-md font-mono"
+        >
+          An interactive production studio for every screen, spanning e-comms, experiential, and retail innovation.
+        </motion.p>
 
       </div>
 
@@ -66,11 +79,18 @@ const Hero = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        className="absolute bottom-12 flex flex-col items-center gap-2"
+        transition={{ delay: 1.8, duration: 1 }}
+        className="absolute bottom-12 flex flex-col items-center gap-3"
       >
-        <span className="font-mono text-[10px] uppercase tracking-widest text-tm-slate/50">Scroll to Explore</span>
-        <div className="w-[1px] h-12 bg-gradient-to-b from-tm-slate/0 via-tm-slate/50 to-tm-slate/0" />
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-tm-slate/40">
+          Scroll
+        </span>
+        <motion.div
+          className="w-[1px] h-12 bg-gradient-to-b from-tm-slate/50 to-transparent"
+          animate={{ scaleY: [1, 0.5, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ transformOrigin: 'top' }}
+        />
       </motion.div>
     </section>
   );

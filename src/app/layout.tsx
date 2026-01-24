@@ -4,6 +4,7 @@ import './globals.css';
 import AuthProvider from '@/components/AuthProvider';
 import FloatingSupport from '@/components/FloatingSupport';
 import Preloader from '@/components/Preloader';
+import CookieBanner from '@/components/CookieBanner';
 
 // Configure fonts with Next.js optimization
 const geist = Geist({
@@ -19,10 +20,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'TeamMistake - Digital Studio',
-  description: 'Interactive production studio for every screen.',
+  title: 'TeamMistake - Digital Production Studio',
+  description: 'An interactive production studio for every screen, spanning e-comms, experiential, and retail innovation.',
   icons: {
     icon: '/favicon.ico',
+  },
+  openGraph: {
+    type: 'website',
+    title: 'TeamMistake - Digital Production Studio',
+    description: 'An interactive production studio for every screen, spanning e-comms, experiential, and retail innovation.',
   },
 };
 
@@ -37,6 +43,7 @@ export default function RootLayout({
         <Preloader />
         <AuthProvider>{children}</AuthProvider>
         <FloatingSupport />
+        <CookieBanner />
       </body>
     </html>
   );

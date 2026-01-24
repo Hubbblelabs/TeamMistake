@@ -18,10 +18,10 @@ export default function Preloader() {
                     return 100;
                 }
                 // Random increment for more realistic feel
-                const increment = Math.floor(Math.random() * 10) + 1;
+                const increment = Math.floor(Math.random() * 8) + 2;
                 return Math.min(prev + increment, 100);
             });
-        }, 150);
+        }, 120);
 
         return () => clearInterval(timer);
     }, []);
@@ -32,43 +32,80 @@ export default function Preloader() {
                 <motion.div
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0, transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
-                    className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-tm-navy text-tm-slate overflow-hidden font-mono"
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-tm-navy overflow-hidden"
                 >
-                    {/* Top/Center Content */}
-                    <div className="relative w-full max-w-5xl px-6 flex flex-col items-start md:items-center">
+                    {/* Center Content */}
+                    <div className="relative flex flex-col items-start px-6 md:px-0">
 
-                        {/* Animated Icons / Graphic Placeholder */}
-                        <div className="flex gap-1 mb-4 select-none">
-                            {[1, 2, 3].map((i) => (
+                        {/* Animated Icons */}
+                        <div className="flex gap-1 mb-6">
+                            {[0, 1, 2].map((i) => (
                                 <motion.div
                                     key={i}
                                     initial={{ scale: 0, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
-                                    transition={{ delay: 0.2 + (i * 0.1), duration: 0.4 }}
-                                    className="w-4 h-4 md:w-6 md:h-6 bg-tm-slate"
-                                    style={{ clipPath: i === 2 ? 'circle(50% at 50% 50%)' : 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' }}
+                                    transition={{
+                                        delay: 0.4 - (i * 0.1),
+                                        duration: 0.3,
+                                        ease: 'easeOut'
+                                    }}
+                                    className="w-5 h-5 md:w-6 md:h-6 bg-tm-slate"
+                                    style={{
+                                        clipPath: i === 0
+                                            ? 'polygon(50% 0%, 0% 100%, 100% 100%)'
+                                            : i === 1
+                                                ? 'circle(50% at 50% 50%)'
+                                                : 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'
+                                    }}
                                 />
                             ))}
                         </div>
 
-                        {/* Loader Text */}
+                        {/* Main Logo / Title */}
                         <motion.div
-                            initial={{ opacity: 0, y: 10 }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5 }}
-                            className="text-xs md:text-sm tracking-widest font-bold mb-2 uppercase"
+                            transition={{ delay: 0.5, duration: 0.5 }}
+                            className="mb-4"
                         >
-                            [ LOADING ... <span className="tabular-nums">{progress}</span>% ]
+                            <h1 className="text-[12vw] md:text-[6vw] font-bold text-tm-slate leading-[0.85] tracking-[-0.06em] uppercase">
+                                TEAM<br />
+                                MISTAKE
+                            </h1>
                         </motion.div>
 
+                        {/* Loading Status */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.7 }}
+                            className="font-mono text-[10px] md:text-xs text-tm-slate tracking-widest uppercase"
+                        >
+                            [ LOADING ... <span className="tabular-nums w-8 inline-block text-right">{progress}</span>% ]
+                        </motion.div>
                     </div>
 
-                    {/* Bottom Line Progress Bar */}
-                    <div className="absolute bottom-10 left-6 right-6 md:left-12 md:right-12 h-[1px] bg-tm-navy-lighter overflow-hidden">
+                    {/* Bottom Progress Bar */}
+                    <div className="absolute bottom-8 md:bottom-12 left-6 md:left-12 right-6 md:right-12">
+                        {/* Dashed background track */}
+                        <div
+                            className="h-[1px] w-full"
+                            style={{
+                                background: `repeating-linear-gradient(
+                                    to right,
+                                    var(--tm-slate) 0,
+                                    var(--tm-slate) 4px,
+                                    transparent 4px,
+                                    transparent 8px
+                                )`,
+                                opacity: 0.3
+                            }}
+                        />
+                        {/* Solid progress */}
                         <motion.div
-                            className="h-full bg-tm-slate"
+                            className="absolute top-0 left-0 h-[1px] bg-tm-slate"
                             style={{ width: `${progress}%` }}
-                            transition={{ ease: "linear" }}
+                            transition={{ ease: 'linear' }}
                         />
                     </div>
                 </motion.div>

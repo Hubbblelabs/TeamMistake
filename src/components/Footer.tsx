@@ -1,7 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -12,45 +10,70 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-tm-navy text-tm-slate px-6 pb-12 pt-0 md:px-12 relative z-10 mix-blend-exclusion">
-      <div className="border-t border-tm-slate/20 pt-12 flex flex-col md:flex-row justify-between items-start gap-12">
+    <footer className="bg-tm-navy text-tm-slate px-6 md:px-12 pt-24 pb-8 relative z-10">
 
-        {/* Left Column: Contact / Info */}
-        <div className="flex flex-col gap-8 max-w-sm">
+      {/* Top Border */}
+      <div className="absolute top-0 left-6 right-6 md:left-12 md:right-12 h-[1px] bg-tm-slate/10" />
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 mb-24">
+
+        {/* Left Column: Contact */}
+        <div className="lg:col-span-4 flex flex-col gap-12">
           <div>
-            <span className="font-mono text-xs uppercase tracking-widest text-tm-slate/50 block mb-4">Location</span>
-            <p className="text-xl md:text-2xl font-medium leading-relaxed">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-tm-slate/40 block mb-4">
+              Location
+            </span>
+            <p className="text-xl md:text-2xl text-tm-white leading-relaxed tracking-tight">
               Coimbatore, Tamil Nadu<br />
               India
             </p>
           </div>
 
           <div>
-            <span className="font-mono text-xs uppercase tracking-widest text-tm-slate/50 block mb-4">Inquiries</span>
-            <a href="mailto:support@teammistake.com" className="text-xl md:text-2xl font-medium hover:text-tm-green transition-colors">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-tm-slate/40 block mb-4">
+              Inquiries
+            </span>
+            <a
+              href="mailto:support@teammistake.com"
+              className="text-xl md:text-2xl text-tm-white hover:text-tm-green transition-colors tracking-tight"
+            >
               support@teammistake.com
             </a>
           </div>
         </div>
 
-        {/* Right Column: Social Links */}
-        <div className="flex flex-col gap-4 items-start md:items-end">
-          <span className="font-mono text-xs uppercase tracking-widest text-tm-slate/50 block mb-2 md:mb-4">Social</span>
-          {links.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="text-4xl md:text-5xl font-bold hover:text-tm-green transition-colors tracking-tighter"
-            >
-              {link.name}
-            </a>
-          ))}
+        {/* Right Column: Social */}
+        <div className="lg:col-span-8 lg:flex lg:flex-col lg:items-end">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-tm-slate/40 block mb-6">
+            Social
+          </span>
+          <div className="flex flex-col gap-2 lg:items-end">
+            {links.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-4xl md:text-6xl lg:text-7xl font-bold text-tm-white hover:text-tm-green transition-colors tracking-[-0.04em] uppercase"
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="mt-24 flex flex-col md:flex-row justify-between items-end gap-6 font-mono text-xs uppercase tracking-widest text-tm-slate/40">
-        <span>© {currentYear} Team Mistake</span>
-        <span>Privacy / Terms</span>
+      {/* Bottom Row */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pt-8 border-t border-tm-slate/10">
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-tm-slate/30">
+          © {currentYear} Team Mistake. All rights reserved.
+        </span>
+        <div className="flex gap-6">
+          <a href="#" className="font-mono text-[10px] uppercase tracking-[0.2em] text-tm-slate/30 hover:text-tm-slate transition-colors">
+            Privacy
+          </a>
+          <a href="#" className="font-mono text-[10px] uppercase tracking-[0.2em] text-tm-slate/30 hover:text-tm-slate transition-colors">
+            Terms
+          </a>
+        </div>
       </div>
     </footer>
   );
