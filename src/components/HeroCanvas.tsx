@@ -9,13 +9,10 @@ import ParticleGrid from '@/lib/three/ParticleGrid';
 function HeroScene() {
     return (
         <ParticleGrid
-            count={600}
-            size={3}
-            color="#64ffda"
-            opacity={0.5}
-            spread={25}
-            speed={0.15}
-            mouseInteraction={true}
+            count={2000}
+            size={0.015}
+            color="#d2d2d2"
+            radius={2.5}
         />
     );
 }

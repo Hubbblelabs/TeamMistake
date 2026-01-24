@@ -1,156 +1,74 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Zap, Shield, Users, TrendingUp, CheckCircle } from 'lucide-react';
-import GlassCard from './ui/GlassCard';
-import { SectionHeader } from './ui/Section';
 
 const About = () => {
-  const features = [
-    { icon: <Zap className="w-5 h-5" />, text: 'Process Excellence' },
-    { icon: <Shield className="w-5 h-5" />, text: 'Quality Frameworks' },
-    { icon: <TrendingUp className="w-5 h-5" />, text: 'Service Delivery Innovation' },
-    { icon: <Users className="w-5 h-5" />, text: 'Client-Centric Approach' },
+
+  const capabilities = [
+    "Digital Strategy",
+    "Brand Identity",
+    "Web Development",
+    "Mobile Applications",
+    "E-Commerce",
+    "Content Creation"
   ];
-
-  const stats = [
-    { value: '5+', label: 'Years of Excellence' },
-    { value: '50+', label: 'Projects Delivered' },
-    { value: '30+', label: 'Happy Clients' },
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: 'easeOut' as const },
-    },
-  };
 
   return (
-    <section id="about" className="py-24 px-6 relative overflow-hidden bg-tm-navy">
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-tm-navy via-tm-navy-light/30 to-tm-navy pointer-events-none" />
+    <section id="about" className="py-24 px-6 md:px-12 bg-tm-navy relative overflow-hidden">
 
-      {/* Subtle decorative elements */}
-      <div className="absolute top-20 left-10 w-64 h-64 bg-tm-green/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-20 right-10 w-80 h-80 bg-tm-green/3 rounded-full blur-3xl pointer-events-none" />
+      {/* Decorative Grid Line */}
+      <div className="absolute top-0 left-6 right-6 h-[1px] bg-tm-slate/10" />
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <SectionHeader title="About Us" />
-        </motion.div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
 
-        <div className="grid lg:grid-cols-5 gap-12 items-start">
-          {/* Content - 3 columns */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="lg:col-span-3 space-y-6"
-          >
-            <motion.div variants={itemVariants}>
-              <GlassCard className="p-8 md:p-10" tiltEnabled={false}>
-                <p className="text-tm-slate text-lg leading-relaxed mb-6">
-                  We are a global services provider delivering technology-driven
-                  business solutions that meet the planned objectives of our
-                  clients.
-                </p>
-                <p className="text-tm-slate text-lg leading-relaxed">
-                  We deliver unmatched business value through process excellence,
-                  quality frameworks, and service delivery innovation. Our team is
-                  dedicated to understanding your unique challenges and crafting
-                  bespoke solutions that drive growth and efficiency.
-                </p>
-              </GlassCard>
-            </motion.div>
-
-            {/* Features Grid */}
-            <motion.div
-              variants={containerVariants}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8"
-            >
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  whileHover={{
-                    scale: 1.02,
-                    borderColor: 'rgba(100, 255, 218, 0.3)',
-                  }}
-                  className="flex items-center gap-3 p-4 rounded-lg bg-tm-navy-lighter/30 backdrop-blur-sm border border-tm-navy-lighter/50 transition-all duration-300 cursor-default group"
-                >
-                  <motion.div
-                    className="p-2 rounded-lg bg-tm-green/10 text-tm-green"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {feature.icon}
-                  </motion.div>
-                  <span className="text-tm-slate-light font-medium group-hover:text-tm-white transition-colors duration-300">
-                    {feature.text}
-                  </span>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          {/* Stats Cards - 2 columns */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="lg:col-span-2 space-y-6"
-          >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-              >
-                <GlassCard
-                  className="p-8 md:p-10 text-center"
-                  glowColor="rgba(100, 255, 218, 0.08)"
-                >
-                  <motion.h3
-                    className="text-5xl font-bold text-tm-green mb-2"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.4,
-                      delay: 0.2 + index * 0.1,
-                      ease: 'easeOut',
-                    }}
-                  >
-                    {stat.value}
-                  </motion.h3>
-                  <p className="text-tm-slate-light font-mono text-sm">
-                    {stat.label}
-                  </p>
-                </GlassCard>
-              </motion.div>
-            ))}
-          </motion.div>
+        {/* Sticker / Label */}
+        <div className="lg:col-span-3">
+          <span className="font-mono text-xs text-tm-green uppercase tracking-[0.2em] border border-tm-green/30 px-3 py-1 rounded-full">
+            Who We Are
+          </span>
         </div>
+
+        {/* Main Content */}
+        <div className="lg:col-span-9 flex flex-col gap-16">
+
+          {/* Introduction Statement */}
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-tm-white leading-[1.1] tracking-tight">
+            We are a digital production studio crafting <span className="text-tm-slate/50">immersive experiences</span> for the modern web.
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-12">
+            <p className="text-tm-slate text-lg leading-relaxed">
+              At Team Mistake, we don't just build websites; we create digital ecosystems.
+              Our approach combines technical precision with artistic direction to deliver
+              platforms that look stunning and perform flawlessly.
+            </p>
+            <p className="text-tm-slate text-lg leading-relaxed">
+              We believe in the power of "mistakes" — the happy accidents and iterative
+              processes that lead to true innovation. We push boundaries to deliver
+              what you need, not just what's expected.
+            </p>
+          </div>
+
+          {/* Capabilities List */}
+          <div className="pt-12 border-t border-tm-slate/10">
+            <span className="font-mono text-xs text-tm-slate/50 uppercase tracking-widest block mb-8">Capabilities</span>
+            <div className="flex flex-wrap gap-x-12 gap-y-4">
+              {capabilities.map((item, i) => (
+                <motion.span
+                  key={item}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="text-2xl md:text-3xl font-bold text-tm-white hover:text-tm-green transition-colors cursor-default"
+                >
+                  {item}
+                </motion.span>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
   );

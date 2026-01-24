@@ -24,7 +24,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="min-h-screen flex items-center justify-center pt-20 px-6 relative overflow-hidden">
+    <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden bg-tm-navy px-4">
       {/* Three.js Background Canvas - Lazy loaded */}
       {mounted && (
         <div className="fixed inset-0 z-0">
@@ -32,89 +32,46 @@ const Hero = () => {
         </div>
       )}
 
-      {/* CSS Gradient Overlay for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-tm-navy/20 to-tm-navy/80 pointer-events-none z-[1]" />
-
       {/* Content */}
-      <div className="max-w-5xl mx-auto text-center relative z-10">
+      <div className="relative z-10 w-full max-w-7xl flex flex-col items-center justify-center text-center mix-blend-exclusion">
+
+        {/* Top Tagline */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-tm-navy-lighter/40 backdrop-blur-sm border border-tm-green/20 mb-6"
-        >
-          <Sparkles className="w-4 h-4 text-tm-green" />
-          <span className="text-tm-green font-mono text-sm tracking-wide">
-            Hi, we are Team Mistake Technologies
-          </span>
-        </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="text-tm-green font-mono text-base md:text-lg mb-6 tracking-wide"
-        >
-          Experience the Excellence in Our Solution
-        </motion.p>
-
-        <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold text-tm-white mb-6 leading-tight"
+          className="mb-8 overflow-hidden"
         >
-          We Deliver What You{' '}
-          <GradientText className="text-4xl md:text-6xl lg:text-7xl font-bold">
-            NEED
-          </GradientText>
-          ,{' '}
-          <br className="hidden md:block" />
-          Not What We{' '}
-          <span className="text-tm-slate-light">HAVE</span>.
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-tm-slate text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
-        >
-          At our core, we are a client-centric software company, driven by
-          innovation and dedicated to crafting solutions that align with your
-          unique needs. We transform challenges into opportunities through
-          cutting-edge technology and personalized service.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <GlowButton href="#contact" variant="secondary" size="lg">
-            Get In Touch
-            <ArrowRight className="w-5 h-5" />
-          </GlowButton>
-
-          <GlowButton href="#products" variant="ghost" size="lg">
-            View Our Work
-          </GlowButton>
+          <span className="font-mono text-sm md:text-base text-tm-slate tracking-[0.2em] uppercase">
+            Interactive Production Studio
+          </span>
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-16 text-sm text-tm-slate-light font-mono flex items-center justify-center gap-2"
+        {/* Main Heading - Split for impact */}
+        <motion.h1
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col items-center leading-[0.85] font-bold text-tm-white tracking-tighter"
         >
-          <span className="w-8 h-[1px] bg-tm-slate-light/30" />
-          We believe unwavering customer satisfaction is excellence.
-          <span className="w-8 h-[1px] bg-tm-slate-light/30" />
-        </motion.p>
+          <span className="text-[15vw] md:text-[12vw] 2xl:text-[180px]">TEAM</span>
+          <span className="text-[15vw] md:text-[12vw] 2xl:text-[180px] text-transparent stroke-text" style={{ WebkitTextStroke: '2px #dfff00', color: 'transparent' }}>
+            MISTAKE
+          </span>
+        </motion.h1>
+
       </div>
 
-
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="absolute bottom-12 flex flex-col items-center gap-2"
+      >
+        <span className="font-mono text-[10px] uppercase tracking-widest text-tm-slate/50">Scroll to Explore</span>
+        <div className="w-[1px] h-12 bg-gradient-to-b from-tm-slate/0 via-tm-slate/50 to-tm-slate/0" />
+      </motion.div>
     </section>
   );
 };

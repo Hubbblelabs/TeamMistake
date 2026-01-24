@@ -13,6 +13,7 @@
     "@react-three/fiber": "^9.5.0",
     "bcryptjs": "^3.0.3",
     "framer-motion": "^12.24.7",
+    "geist": "^1.5.1",
     "lucide-react": "^0.562.0",
     "mongodb": "^7.0.0",
     "mongoose": "^9.1.2",

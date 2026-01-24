@@ -1,27 +1,26 @@
 import type { Metadata } from 'next';
-import { Inter, Outfit } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import AuthProvider from '@/components/AuthProvider';
 import FloatingSupport from '@/components/FloatingSupport';
+import Preloader from '@/components/Preloader';
 
-// Configure fonts with Next.js optimization (eliminates render-blocking)
-const inter = Inter({
+// Configure fonts with Next.js optimization
+const geist = Geist({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-inter',
+  variable: '--font-geist',
   display: 'swap',
 });
 
-const outfit = Outfit({
+const geistMono = Geist_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-outfit',
+  variable: '--font-geist-mono',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'TeamMistake - We Deliver What You Need',
-  description: 'At our core, we are a client-centric software company, driven by innovation and dedicated to crafting solutions that align with your unique needs.',
+  title: 'TeamMistake - Digital Studio',
+  description: 'Interactive production studio for every screen.',
   icons: {
     icon: '/favicon.ico',
   },
@@ -33,8 +32,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <Preloader />
         <AuthProvider>{children}</AuthProvider>
         <FloatingSupport />
       </body>

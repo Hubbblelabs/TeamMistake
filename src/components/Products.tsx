@@ -1,126 +1,87 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import {
-  Receipt,
-  Palette,
-  GraduationCap,
-  BookOpen,
-  Users,
-  ArrowUpRight,
-} from 'lucide-react';
-import GlassCard from './ui/GlassCard';
-import { SectionHeader } from './ui/Section';
+import { ArrowUpRight } from 'lucide-react';
 
 const Products = () => {
   const products = [
     {
-      title: 'Billing, Sales & Inventory',
-      description:
-        'Complete business management solution for invoicing, financial tracking, and inventory control.',
-      icon: <Receipt className="w-10 h-10 text-tm-green" />,
+      title: 'Inventory & Billing',
+      category: 'Enterprise',
+      description: 'Complete business management solution.'
     },
     {
-      title: 'Website & Logo Design',
-      description:
-        'Crafting unique digital identities with stunning visuals and user-centric designs.',
-      icon: <Palette className="w-10 h-10 text-tm-green" />,
+      title: 'Custom Brand Identity',
+      category: 'Design',
+      description: 'Crafting unique digital identities.'
     },
     {
-      title: 'Virtual Assistance for Students',
-      description:
-        'Dedicated support for school students to help with academic tasks and organization.',
-      icon: <Users className="w-10 h-10 text-tm-green" />,
+      title: 'Student Assistance AI',
+      category: 'EdTech',
+      description: 'Dedicated virtual support for academics.'
     },
     {
-      title: 'Student Management',
-      description:
-        'Comprehensive systems to manage student data, attendance, and academic records.',
-      icon: <GraduationCap className="w-10 h-10 text-tm-green" />,
+      title: 'School Management',
+      category: 'Platform',
+      description: 'Comprehensive data and record systems.'
     },
     {
-      title: 'Learning Management System',
-      description:
-        'Empower education with flexible, scalable, and interactive learning platforms.',
-      icon: <BookOpen className="w-10 h-10 text-tm-green" />,
+      title: 'Learning Systems',
+      category: 'Education',
+      description: 'Interactive and scalable learning platforms.'
     },
     {
-      title: 'Customer Relationship Management',
-      description:
-        'Enhance customer engagement and drive sales with our intuitive CRM tools.',
-      icon: <Users className="w-10 h-10 text-tm-green" />,
-    },
+      title: 'CRM Solutions',
+      category: 'Enterprise',
+      description: 'Enhanced customer engagement tools.'
+    }
   ];
 
   return (
-    <section id="products" className="py-24 px-6 relative overflow-hidden bg-tm-navy">
-      <div className="max-w-6xl mx-auto relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <SectionHeader
-            title="Our Products & Services"
-            subtitle="Comprehensive solutions tailored to your business needs"
-          />
-        </motion.div>
+    <section id="products" className="py-24 px-6 md:px-12 bg-tm-navy relative z-10">
 
-        {/* Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <GlassCard
-                className="h-full p-8 group cursor-pointer"
-                glowColor="rgba(100, 255, 218, 0.15)"
-              >
-                {/* Icon */}
-                <div className="mb-6 group-hover:scale-110 transition-transform duration-300">
-                  {product.icon}
-                </div>
+      <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+        <h2 className="text-4xl md:text-8xl font-bold text-tm-white tracking-tighter">
+          SELECTED<br />
+          <span className="text-tm-slate/20">WORK</span>
+        </h2>
 
-                {/* Content */}
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-xl font-bold text-tm-white group-hover:text-tm-green transition-colors">
-                      {product.title}
-                    </h3>
-                    <ArrowUpRight className="w-5 h-5 text-tm-slate opacity-0 group-hover:opacity-100 group-hover:text-tm-green transition-all transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </div>
-
-                  <p className="text-tm-slate text-sm leading-relaxed">
-                    {product.description}
-                  </p>
-                </div>
-              </GlassCard>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* View All CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-center mt-12"
-        >
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 text-tm-green font-mono text-sm hover:underline underline-offset-4 group"
-          >
-            Looking for something custom?
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </a>
-        </motion.div>
+        <a href="#" className="font-mono text-xs uppercase tracking-widest text-tm-green border-b border-tm-green pb-1 hover:border-tm-white hover:text-tm-white transition-colors">
+          View All Projects
+        </a>
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-tm-slate/10">
+        {products.map((product, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: index * 0.1 }}
+            className="group border-r border-b border-tm-slate/10 p-8 md:p-12 hover:bg-tm-slate/5 transition-colors aspect-square flex flex-col justify-between"
+          >
+            <div className="flex justify-between items-start">
+              <span className="font-mono text-xs text-tm-slate/40 uppercase tracking-widest">
+                0{index + 1}
+              </span>
+              <ArrowUpRight className="w-5 h-5 text-tm-slate/40 group-hover:text-tm-green group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+            </div>
+
+            <div>
+              <span className="font-mono text-xs text-tm-green uppercase tracking-widest mb-2 block">
+                {product.category}
+              </span>
+              <h3 className="text-2xl md:text-3xl font-bold text-tm-white mb-2 leading-none group-hover:underline decoration-tm-green underline-offset-4">
+                {product.title}
+              </h3>
+              <p className="text-tm-slate/60 text-sm leading-relaxed max-w-xs">
+                {product.description}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
     </section>
   );
 };
