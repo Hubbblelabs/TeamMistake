@@ -7,9 +7,9 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <div className="bg-tm-navy min-h-screen text-tm-slate font-body selection:bg-tm-green selection:text-tm-navy">
+    <div className="bg-tm-navy min-h-screen text-tm-slate font-body selection:bg-tm-gold/90 selection:text-tm-navy">
       <Navbar />
-      <main>
+      <main className="relative">
         <Hero />
         <About />
         <Products />

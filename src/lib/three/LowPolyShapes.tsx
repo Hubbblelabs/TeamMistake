@@ -19,7 +19,7 @@ interface LowPolyShapeProps {
 export function Icosahedron({
     position = [0, 0, 0],
     scale = 1,
-    color = '#64ffda',
+    color = '#f5b301',
     wireframe = true,
     rotationSpeed = 0.3,
     floatIntensity = 1,
@@ -67,7 +67,7 @@ export function Icosahedron({
 export function Octahedron({
     position = [0, 0, 0],
     scale = 1,
-    color = '#64ffda',
+    color = '#f5b301',
     wireframe = true,
     rotationSpeed = 0.2,
     floatIntensity = 1,
@@ -103,7 +103,7 @@ export function Octahedron({
 export function Dodecahedron({
     position = [0, 0, 0],
     scale = 1,
-    color = '#64ffda',
+    color = '#f5b301',
     wireframe = true,
     rotationSpeed = 0.15,
     floatIntensity = 1,
@@ -139,7 +139,7 @@ export function Dodecahedron({
 export function Torus({
     position = [0, 0, 0],
     scale = 1,
-    color = '#64ffda',
+    color = '#f5b301',
     wireframe = true,
     rotationSpeed = 0.25,
     floatIntensity = 1,
@@ -175,7 +175,7 @@ export function Torus({
 export function Tetrahedron({
     position = [0, 0, 0],
     scale = 1,
-    color = '#64ffda',
+    color = '#f5b301',
     wireframe = true,
     rotationSpeed = 0.35,
     floatIntensity = 1,
@@ -211,7 +211,7 @@ export function Tetrahedron({
 export function WireframeCube({
     position = [0, 0, 0],
     scale = 1,
-    color = '#64ffda',
+    color = '#f5b301',
     rotationSpeed = 0.2,
     floatIntensity = 1,
 }: Omit<LowPolyShapeProps, 'wireframe'>) {
@@ -247,7 +247,7 @@ export function WireframeCube({
 export function GlowingSphere({
     position = [0, 0, 0],
     scale = 1,
-    color = '#64ffda',
+    color = '#f5b301',
     floatIntensity = 1,
 }: Omit<LowPolyShapeProps, 'wireframe' | 'rotationSpeed'>) {
     return (

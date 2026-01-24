@@ -18,8 +18,8 @@ export default function GlassCard({
     className = '',
     tiltEnabled = true,
     glowEnabled = true,
-    glowColor = 'rgba(100, 255, 218, 0.2)',
-    maxTilt = 10,
+    glowColor = 'rgba(212, 168, 83, 0.15)',
+    maxTilt = 8,
     onClick,
 }: GlassCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
@@ -60,7 +60,7 @@ export default function GlassCard({
     return (
         <motion.div
             ref={cardRef}
-            className={`relative overflow-hidden ${className}`}
+            className={`relative overflow-hidden rounded-2xl ${className}`}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onMouseEnter={handleMouseEnter}
@@ -69,41 +69,51 @@ export default function GlassCard({
                 transform: tiltEnabled
                     ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
                     : undefined,
-                transition: 'transform 0.15s ease-out',
+                transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
         >
-            {/* Glass background */}
+            {/* Premium glass background */}
             <div
-                className="absolute inset-0 bg-glass backdrop-blur-glass rounded-lg border border-glass"
+                className="absolute inset-0 rounded-2xl"
                 style={{
-                    background: 'rgba(17, 34, 64, 0.3)',
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    borderColor: 'rgba(100, 255, 218, 0.15)',
+                    background: 'linear-gradient(135deg, rgba(26, 31, 46, 0.8) 0%, rgba(15, 20, 25, 0.9) 100%)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(212, 168, 83, 0.08)',
+                    boxShadow: isHovered 
+                        ? '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03)'
+                        : '0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.02)',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                }}
+            />
+
+            {/* Hover border highlight */}
+            <div
+                className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500"
+                style={{
+                    border: '1px solid rgba(212, 168, 83, 0.2)',
+                    opacity: isHovered ? 1 : 0,
                 }}
             />
 
             {/* Glow effect */}
             {glowEnabled && isHovered && (
                 <div
-                    className="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-lg"
+                    className="absolute inset-0 pointer-events-none transition-opacity duration-500 rounded-2xl"
                     style={{
-                        background: `radial-gradient(circle at ${glowPosition.x}% ${glowPosition.y}%, ${glowColor}, transparent 50%)`,
+                        background: `radial-gradient(600px circle at ${glowPosition.x}% ${glowPosition.y}%, ${glowColor}, transparent 40%)`,
                         opacity: isHovered ? 1 : 0,
                     }}
                 />
             )}
 
-            {/* Border glow */}
-            {glowEnabled && isHovered && (
-                <div
-                    className="absolute inset-0 pointer-events-none rounded-lg transition-opacity duration-300"
-                    style={{
-                        boxShadow: `0 0 30px ${glowColor}`,
-                        opacity: isHovered ? 0.5 : 0,
-                    }}
-                />
-            )}
+            {/* Subtle top highlight */}
+            <div 
+                className="absolute inset-x-0 top-0 h-px rounded-t-2xl pointer-events-none"
+                style={{
+                    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent)',
+                }}
+            />
 
             {/* Content */}
             <div className="relative z-10">

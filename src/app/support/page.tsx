@@ -209,16 +209,16 @@ export default function SupportPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.1 }}
-                        className="bg-tm-light-navy/50 backdrop-blur-lg border border-tm-green/10 rounded-2xl p-8 shadow-xl"
+                        className="bg-tm-navy/50 backdrop-blur-lg border border-tm-gold/10 rounded-2xl p-8 shadow-xl"
                     >
                         {/* Main Menu */}
                         {view === 'menu' && (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <button
                                     onClick={() => setView('new')}
-                                    className="bg-tm-navy/50 border border-tm-green/20 rounded-xl p-6 text-left hover:border-tm-green/50 transition-all group"
+                                    className="bg-tm-navy/50 border border-tm-gold/20 rounded-xl p-6 text-left hover:border-tm-gold/50 transition-all group"
                                 >
-                                    <div className="w-12 h-12 rounded-xl bg-tm-green/10 flex items-center justify-center text-tm-green mb-4 group-hover:bg-tm-green/20 transition-all">
+                                    <div className="w-12 h-12 rounded-xl bg-tm-gold/10 flex items-center justify-center text-tm-gold mb-4 group-hover:bg-tm-gold/20 transition-all">
                                         <Send size={24} />
                                     </div>
                                     <h3 className="text-lg font-semibold text-tm-white mb-2">Create New Ticket</h3>
@@ -226,7 +226,7 @@ export default function SupportPage() {
                                 </button>
                                 <button
                                     onClick={() => setView('existing')}
-                                    className="bg-tm-navy/50 border border-tm-green/20 rounded-xl p-6 text-left hover:border-tm-green/50 transition-all group"
+                                    className="bg-tm-navy/50 border border-tm-gold/20 rounded-xl p-6 text-left hover:border-tm-gold/50 transition-all group"
                                 >
                                     <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-4 group-hover:bg-blue-500/20 transition-all">
                                         <Ticket size={24} />
@@ -310,7 +310,7 @@ export default function SupportPage() {
                                                 required
                                                 value={formData.subject}
                                                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                                                className="w-full px-4 py-3 bg-tm-navy/50 border border-tm-slate/20 rounded-lg text-tm-white focus:outline-none focus:border-tm-green focus:ring-1 focus:ring-tm-green transition-all"
+                                                className="w-full px-4 py-3 bg-tm-navy/50 border border-tm-slate/20 rounded-lg text-tm-white focus:outline-none focus:border-tm-gold focus:ring-1 focus:ring-tm-gold transition-all"
                                                 placeholder="How can we help?"
                                             />
                                         </div>
@@ -323,7 +323,7 @@ export default function SupportPage() {
                                                 rows={6}
                                                 value={formData.message}
                                                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                                className="w-full px-4 py-3 bg-tm-navy/50 border border-tm-slate/20 rounded-lg text-tm-white focus:outline-none focus:border-tm-green focus:ring-1 focus:ring-tm-green transition-all resize-none"
+                                                className="w-full px-4 py-3 bg-tm-navy/50 border border-tm-slate/20 rounded-lg text-tm-white focus:outline-none focus:border-tm-gold focus:ring-1 focus:ring-tm-gold transition-all resize-none"
                                                 placeholder="Describe your issue in detail..."
                                             />
                                         </div>
@@ -395,13 +395,13 @@ export default function SupportPage() {
                                                     <div
                                                         key={idx}
                                                         className={`p-4 rounded-xl ${reply.isFromUser
-                                                            ? 'bg-tm-green/10 border border-tm-green/20 ml-6'
+                                                            ? 'bg-tm-gold/10 border border-tm-gold/20 ml-6'
                                                             : 'bg-blue-500/10 border border-blue-500/20 mr-6'
                                                             }`}
                                                     >
                                                         <p className="text-tm-slate whitespace-pre-wrap mb-2">{reply.message}</p>
                                                         <div className="flex items-center gap-2 text-xs text-tm-slate/70">
-                                                            <span className={reply.isFromUser ? 'text-tm-green' : 'text-blue-400'}>
+                                                            <span className={reply.isFromUser ? 'text-tm-gold' : 'text-blue-400'}>
                                                                 {reply.isFromUser ? 'You' : 'Support Team'}
                                                             </span>
                                                             • {formatDate(reply.sentAt)}
@@ -420,7 +420,7 @@ export default function SupportPage() {
                                                     onChange={(e) => setReplyMessage(e.target.value)}
                                                     placeholder="Type your message..."
                                                     rows={3}
-                                                    className="w-full px-4 py-3 bg-tm-navy/50 border border-tm-slate/20 rounded-lg text-tm-white focus:outline-none focus:border-tm-green focus:ring-1 focus:ring-tm-green transition-all resize-none mb-3"
+                                                    className="w-full px-4 py-3 bg-tm-navy/50 border border-tm-slate/20 rounded-lg text-tm-white focus:outline-none focus:border-tm-gold focus:ring-1 focus:ring-tm-gold transition-all resize-none mb-3"
                                                 />
                                                 {status === 'error' && (
                                                     <div className="flex items-center gap-2 text-red-400 bg-red-500/10 p-3 rounded-lg mb-3 text-sm">
@@ -457,10 +457,10 @@ export default function SupportPage() {
                                             <button
                                                 key={ticket._id}
                                                 onClick={() => setSelectedTicket(ticket)}
-                                                className="w-full bg-tm-navy/50 border border-tm-slate/20 rounded-xl p-4 text-left hover:border-tm-green/50 transition-all group"
+                                                className="w-full bg-tm-navy/50 border border-tm-slate/20 rounded-xl p-4 text-left hover:border-tm-gold/50 transition-all group"
                                             >
                                                 <div className="flex justify-between items-start mb-2">
-                                                    <h4 className="font-medium text-tm-white group-hover:text-tm-green transition-colors">{ticket.subject}</h4>
+                                                    <h4 className="font-medium text-tm-white group-hover:text-tm-gold transition-colors">{ticket.subject}</h4>
                                                     {getStatusBadge(ticket.status)}
                                                 </div>
                                                 <p className="text-sm text-tm-slate/70 mb-2 line-clamp-2">{ticket.message}</p>
@@ -481,7 +481,7 @@ export default function SupportPage() {
                                                 required
                                                 value={lookupData.email}
                                                 onChange={(e) => setLookupData({ ...lookupData, email: e.target.value })}
-                                                className="w-full px-4 py-3 bg-tm-navy/50 border border-tm-slate/20 rounded-lg text-tm-white focus:outline-none focus:border-tm-green focus:ring-1 focus:ring-tm-green transition-all"
+                                                className="w-full px-4 py-3 bg-tm-navy/50 border border-tm-slate/20 rounded-lg text-tm-white focus:outline-none focus:border-tm-gold focus:ring-1 focus:ring-tm-gold transition-all"
                                                 placeholder="Email used when creating ticket"
                                             />
                                         </div>

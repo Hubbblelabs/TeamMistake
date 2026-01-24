@@ -41,20 +41,20 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex">
+    <div className="min-h-screen bg-[#1c2533] flex">
       {/* Left Panel - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-[#0d0d14] flex-col justify-between p-12 border-r border-gray-800/50">
+      <div className="hidden lg:flex lg:w-1/2 bg-[#1c2533] flex-col justify-between p-12 border-r border-gray-800/50">
         <div>
           <div className="flex items-center gap-3 mb-16">
-            <div className="w-10 h-10 bg-tm-green/10 rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-tm-green" />
+            <div className="w-10 h-10 bg-tm-gold/10 rounded-lg flex items-center justify-center">
+              <Shield className="w-5 h-5 text-tm-gold" />
             </div>
             <span className="text-xl font-semibold text-white tracking-tight">TeamMistake</span>
           </div>
 
           <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
             Admin<br />
-            <span className="text-tm-green">Control Center</span>
+            <span className="text-tm-gold">Control Center</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-md leading-relaxed">
             Manage contacts, support tickets, and monitor your platform from a unified dashboard.
@@ -73,8 +73,8 @@ export default function AdminLogin() {
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center gap-3 mb-12">
-            <div className="w-10 h-10 bg-tm-green/10 rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-tm-green" />
+            <div className="w-10 h-10 bg-tm-gold/10 rounded-lg flex items-center justify-center">
+              <Shield className="w-5 h-5 text-tm-gold" />
             </div>
             <span className="text-xl font-semibold text-white tracking-tight">TeamMistake</span>
           </div>
@@ -103,7 +103,7 @@ export default function AdminLogin() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className="w-full pl-12 pr-4 py-3.5 bg-[#12121a] border border-gray-800 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-tm-green/50 focus:border-tm-green/50 transition-all"
+                  className="w-full pl-12 pr-4 py-3.5 bg-[#1c2533] border border-gray-800 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-tm-gold/50 focus:border-tm-gold/50 transition-all"
                   placeholder="admin@teammistake.com"
                   required
                 />
@@ -128,7 +128,7 @@ export default function AdminLogin() {
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
-                  className="w-full pl-12 pr-4 py-3.5 bg-[#12121a] border border-gray-800 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-tm-green/50 focus:border-tm-green/50 transition-all"
+                  className="w-full pl-12 pr-4 py-3.5 bg-[#1c2533] border border-gray-800 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-tm-gold/50 focus:border-tm-gold/50 transition-all"
                   placeholder="••••••••"
                   required
                 />
@@ -144,7 +144,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 bg-tm-green text-tm-navy font-semibold rounded-xl hover:bg-tm-green/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-tm-green/20"
+              className="w-full py-3.5 bg-tm-gold text-tm-navy font-semibold rounded-xl hover:bg-tm-gold/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg shadow-tm-gold/20"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -161,7 +161,7 @@ export default function AdminLogin() {
           <div className="mt-8 text-center">
             <a
               href="/"
-              className="inline-flex items-center gap-2 text-gray-500 hover:text-tm-green transition-colors text-sm"
+              className="inline-flex items-center gap-2 text-gray-500 hover:text-tm-gold transition-colors text-sm"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to homepage

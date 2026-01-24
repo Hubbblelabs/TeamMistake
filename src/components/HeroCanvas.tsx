@@ -11,7 +11,7 @@ function HeroScene() {
         <ParticleGrid
             count={600}
             size={3}
-            color="#64ffda"
+            color="#f5b301"
             opacity={0.5}
             spread={25}
             speed={0.15}

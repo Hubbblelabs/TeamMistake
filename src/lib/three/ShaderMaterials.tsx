@@ -8,9 +8,9 @@ import * as THREE from 'three';
 const GradientShaderMaterial = {
     uniforms: {
         uTime: { value: 0 },
-        uColorA: { value: new THREE.Color('#020c1b') },
-        uColorB: { value: new THREE.Color('#112240') },
-        uColorC: { value: new THREE.Color('#64ffda') },
+        uColorA: { value: new THREE.Color('#1c2533') },
+        uColorB: { value: new THREE.Color('#2a3649') },
+        uColorC: { value: new THREE.Color('#f5b301') },
         uNoiseScale: { value: 2.0 },
         uNoiseSpeed: { value: 0.3 },
     },
@@ -113,8 +113,8 @@ const GradientShaderMaterial = {
 const WaveShaderMaterial = {
     uniforms: {
         uTime: { value: 0 },
-        uColorA: { value: new THREE.Color('#0a192f') },
-        uColorB: { value: new THREE.Color('#64ffda') },
+        uColorA: { value: new THREE.Color('#1c2533') },
+        uColorB: { value: new THREE.Color('#f5b301') },
         uAmplitude: { value: 0.1 },
         uFrequency: { value: 3.0 },
     },
@@ -151,9 +151,9 @@ const WaveShaderMaterial = {
 
 // Gradient Mesh Background Component
 export function GradientMeshBackground({
-    colorA = '#020c1b',
-    colorB = '#112240',
-    colorC = '#64ffda',
+    colorA = '#1c2533',
+    colorB = '#2a3649',
+    colorC = '#f5b301',
     noiseScale = 2.0,
     noiseSpeed = 0.3,
 }: {
@@ -195,8 +195,8 @@ export function GradientMeshBackground({
 
 // Wave Background Component
 export function WaveBackground({
-    colorA = '#0a192f',
-    colorB = '#64ffda',
+    colorA = '#1c2533',
+    colorB = '#f5b301',
     amplitude = 0.1,
     frequency = 3.0,
 }: {
@@ -235,7 +235,7 @@ export function WaveBackground({
 }
 
 // Glow Effect Material
-export function createGlowMaterial(color: string = '#64ffda', intensity: number = 1.0) {
+export function createGlowMaterial(color: string = '#f5b301', intensity: number = 1.0) {
     return new THREE.ShaderMaterial({
         uniforms: {
             uColor: { value: new THREE.Color(color) },

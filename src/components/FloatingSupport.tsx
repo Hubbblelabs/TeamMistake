@@ -48,14 +48,14 @@ export default function FloatingSupport() {
             >
                 {/* Tooltip */}
                 <span
-                    className={`absolute right-16 bg-tm-navy border border-tm-green/30 text-tm-white text-sm px-3 py-2 rounded-lg whitespace-nowrap shadow-lg transition-all duration-300 ${isSupportHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2 pointer-events-none'
+                    className={`absolute right-16 bg-tm-navy border border-tm-gold/30 text-tm-white text-sm px-3 py-2 rounded-lg whitespace-nowrap shadow-lg transition-all duration-300 ${isSupportHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2 pointer-events-none'
                         }`}
                 >
                     Need Support?
                 </span>
 
                 {/* Icon */}
-                <div className="w-14 h-14 bg-gradient-to-br from-tm-green to-emerald-600 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-tm-gold to-amber-600 rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"

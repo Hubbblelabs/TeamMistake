@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, CheckCircle, AlertCircle, Sparkles, Mail, User, MessageSquare } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Mail, User, MessageSquare } from 'lucide-react';
 import GlassCard from './ui/GlassCard';
 import GlowButton from './ui/GlowButton';
 
@@ -45,72 +45,75 @@ const Contact = () => {
       setTimeout(() => setIsSuccess(false), 5000);
     } catch (error) {
       console.error('Error submitting form:', error);
-      // You might want to add error state handling here
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section id="contact" className="py-24 px-6 relative overflow-hidden">
-      {/* Three.js Wave Background */}
-
+    <section id="contact" className="py-32 px-6 relative overflow-hidden bg-tm-navy">
+      {/* Premium gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-tm-navy-light/10 to-tm-navy pointer-events-none" />
+      
+      {/* Subtle radial accent */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-tm-gold/[0.02] rounded-full blur-3xl pointer-events-none" />
 
       {/* Content */}
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-tm-navy-lighter/40 backdrop-blur-sm border border-tm-green/20 mb-6"
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-tm-navy-light/60 backdrop-blur-xl border border-tm-gold/10 mb-8"
           >
-            <Sparkles className="w-4 h-4 text-tm-green" />
-            <span className="text-tm-green font-mono text-sm">What&apos;s Next?</span>
+            <span className="w-2 h-2 rounded-full bg-tm-gold animate-pulse" />
+            <span className="text-tm-slate-light text-sm tracking-wide font-medium">Let&apos;s Connect</span>
           </motion.div>
 
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-bold text-tm-white mb-6"
+            transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="text-4xl md:text-5xl font-semibold text-tm-white mb-6 tracking-tight"
           >
             Get In Touch
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-tm-slate text-lg max-w-xl mx-auto"
+            transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="text-tm-slate text-lg max-w-xl mx-auto leading-relaxed"
           >
-            Whether you have a question, a project idea, or just want to say hi,
-            our team is ready to answer all your questions.
+            Have a project in mind? We&apos;d love to hear about it. 
+            Send us a message and we&apos;ll respond within 24 hours.
           </motion.p>
         </div>
 
         {/* Form Card */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.3, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <GlassCard
-            className="max-w-xl mx-auto p-8 md:p-10"
+            className="max-w-xl mx-auto p-10 md:p-12"
             tiltEnabled={false}
-            glowColor="rgba(100, 255, 218, 0.15)"
+            glowColor="rgba(212, 168, 83, 0.1)"
           >
             <AnimatePresence mode="wait">
               {isSuccess ? (
                 <motion.div
                   key="success"
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
                   className="text-center py-12"
                 >
                   <motion.div
@@ -119,17 +122,17 @@ const Contact = () => {
                     transition={{ type: 'spring', stiffness: 200, delay: 0.1 }}
                     className="relative inline-block"
                   >
-                    <CheckCircle className="w-20 h-20 text-tm-green mx-auto" />
-                    <div className="absolute inset-0 bg-tm-green/20 rounded-full blur-xl animate-pulse" />
+                    <CheckCircle className="w-16 h-16 text-tm-gold mx-auto" strokeWidth={1.5} />
+                    <div className="absolute inset-0 bg-tm-gold/15 rounded-full blur-2xl" />
                   </motion.div>
 
                   <motion.h3
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="text-2xl font-bold text-tm-white mt-6 mb-2"
+                    className="text-2xl font-semibold text-tm-white mt-8 mb-3"
                   >
-                    Message Sent!
+                    Message Sent
                   </motion.h3>
 
                   <motion.p
@@ -156,15 +159,15 @@ const Contact = () => {
                       htmlFor="name"
                       className="flex items-center gap-2 text-sm font-medium text-tm-slate-light mb-3"
                     >
-                      <User className="w-4 h-4 text-tm-green" />
+                      <User className="w-4 h-4 text-tm-gold/70" />
                       Name
                     </label>
                     <input
                       {...register('name', { required: 'Name is required' })}
                       type="text"
-                      className={`w-full bg-tm-navy/50 border-2 ${errors.name ? 'border-red-500' : 'border-tm-navy-lighter'
-                        } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus-visible:outline-none focus:bg-tm-navy transition-all duration-300`}
-                      placeholder="Full Name"
+                      className={`w-full bg-tm-navy-light/50 border ${errors.name ? 'border-red-500/50' : 'border-tm-navy-lighter/80'
+                        } rounded-xl px-5 py-3.5 text-tm-white placeholder-tm-slate-muted focus:outline-none focus:border-tm-gold/50 focus:bg-tm-navy-light transition-all duration-300`}
+                      placeholder="Your name"
                     />
                     <AnimatePresence>
                       {errors.name && (
@@ -186,7 +189,7 @@ const Contact = () => {
                       htmlFor="email"
                       className="flex items-center gap-2 text-sm font-medium text-tm-slate-light mb-3"
                     >
-                      <Mail className="w-4 h-4 text-tm-green" />
+                      <Mail className="w-4 h-4 text-tm-gold/70" />
                       Email
                     </label>
                     <input
@@ -198,9 +201,9 @@ const Contact = () => {
                         },
                       })}
                       type="email"
-                      className={`w-full bg-tm-navy/50 border-2 ${errors.email ? 'border-red-500' : 'border-tm-navy-lighter'
-                        } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus-visible:outline-none focus:bg-tm-navy transition-all duration-300`}
-                      placeholder="Email"
+                      className={`w-full bg-tm-navy-light/50 border ${errors.email ? 'border-red-500/50' : 'border-tm-navy-lighter/80'
+                        } rounded-xl px-5 py-3.5 text-tm-white placeholder-tm-slate-muted focus:outline-none focus:border-tm-gold/50 focus:bg-tm-navy-light transition-all duration-300`}
+                      placeholder="your@email.com"
                     />
                     <AnimatePresence>
                       {errors.email && (
@@ -222,14 +225,14 @@ const Contact = () => {
                       htmlFor="message"
                       className="flex items-center gap-2 text-sm font-medium text-tm-slate-light mb-3"
                     >
-                      <MessageSquare className="w-4 h-4 text-tm-green" />
+                      <MessageSquare className="w-4 h-4 text-tm-gold/70" />
                       Message
                     </label>
                     <textarea
                       {...register('message', { required: 'Message is required' })}
-                      rows={4}
-                      className={`w-full bg-tm-navy/50 border-2 ${errors.message ? 'border-red-500' : 'border-tm-navy-lighter'
-                        } rounded-lg px-4 py-3 text-tm-white placeholder-tm-slate/50 focus:outline-none focus:border-tm-green focus-visible:outline-none focus:bg-tm-navy transition-all duration-300 resize-none`}
+                      rows={5}
+                      className={`w-full bg-tm-navy-light/50 border ${errors.message ? 'border-red-500/50' : 'border-tm-navy-lighter/80'
+                        } rounded-xl px-5 py-3.5 text-tm-white placeholder-tm-slate-muted focus:outline-none focus:border-tm-gold/50 focus:bg-tm-navy-light transition-all duration-300 resize-none`}
                       placeholder="Tell us about your project..."
                     />
                     <AnimatePresence>
@@ -247,26 +250,28 @@ const Contact = () => {
                   </div>
 
                   {/* Submit Button */}
-                  <GlowButton
-                    type="submit"
-                    variant="secondary"
-                    size="lg"
-                    disabled={isSubmitting}
-                    className="w-full"
-                  >
-                    {isSubmitting ? (
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                        className="w-5 h-5 border-2 border-tm-green border-t-transparent rounded-full"
-                      />
-                    ) : (
-                      <>
-                        Send Message
-                        <Send size={18} />
-                      </>
-                    )}
-                  </GlowButton>
+                  <div className="pt-2">
+                    <GlowButton
+                      type="submit"
+                      variant="primary"
+                      size="lg"
+                      disabled={isSubmitting}
+                      className="w-full"
+                    >
+                      {isSubmitting ? (
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                          className="w-5 h-5 border-2 border-tm-navy border-t-transparent rounded-full"
+                        />
+                      ) : (
+                        <>
+                          Send Message
+                          <Send size={18} />
+                        </>
+                      )}
+                    </GlowButton>
+                  </div>
                 </motion.form>
               )}
             </AnimatePresence>

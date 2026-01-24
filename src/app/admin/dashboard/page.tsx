@@ -550,9 +550,9 @@ export default function AdminDashboard() {
 
   if (status === 'loading' || isLoading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+      <div className="min-h-screen bg-[#1c2533] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-2 border-tm-green border-t-transparent rounded-full animate-spin" />
+          <div className="w-10 h-10 border-2 border-tm-gold border-t-transparent rounded-full animate-spin" />
           <p className="text-gray-400 text-sm">Loading dashboard...</p>
         </div>
       </div>
@@ -562,14 +562,14 @@ export default function AdminDashboard() {
   if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white flex">
+    <div className="min-h-screen bg-[#1c2533] text-white flex">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-[#0d0d14] border-r border-gray-800/50 transform transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static flex flex-col`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-[#232d3f] border-r border-gray-800/50 transform transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static flex flex-col`}>
         {/* Logo */}
         <div className="p-6 border-b border-gray-800/50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-tm-green/10 rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-tm-green" />
+            <div className="w-10 h-10 bg-tm-gold/10 rounded-lg flex items-center justify-center">
+              <Shield className="w-5 h-5 text-tm-gold" />
             </div>
             <div>
               <span className="text-lg font-semibold text-white tracking-tight">TeamMistake</span>
@@ -583,35 +583,35 @@ export default function AdminDashboard() {
           <p className="px-3 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider">Management</p>
           <button
             onClick={() => { setActiveTab('contacts'); setSelectedContact(null); }}
-            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${activeTab === 'contacts' ? 'bg-[#12121a] text-white' : 'text-gray-400 hover:bg-[#12121a]/50 hover:text-gray-300'}`}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${activeTab === 'contacts' ? 'bg-[#2a3649] text-white' : 'text-gray-400 hover:bg-[#2a3649]/50 hover:text-gray-300'}`}
           >
             <div className="flex items-center gap-3">
               <Mail size={18} />
               <span className="font-medium">Contacts</span>
             </div>
             {contacts.filter(c => c.status === 'new').length > 0 && (
-              <span className="bg-tm-green/20 text-tm-green text-xs font-medium px-2 py-0.5 rounded-full">
+              <span className="bg-tm-gold/20 text-tm-gold text-xs font-medium px-2 py-0.5 rounded-full">
                 {contacts.filter(c => c.status === 'new').length}
               </span>
             )}
           </button>
           <button
             onClick={() => { setActiveTab('support'); setSelectedTicket(null); }}
-            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${activeTab === 'support' ? 'bg-[#12121a] text-white' : 'text-gray-400 hover:bg-[#12121a]/50 hover:text-gray-300'}`}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${activeTab === 'support' ? 'bg-[#2a3649] text-white' : 'text-gray-400 hover:bg-[#2a3649]/50 hover:text-gray-300'}`}
           >
             <div className="flex items-center gap-3">
               <LifeBuoy size={18} />
               <span className="font-medium">Support</span>
             </div>
             {tickets.filter(t => t.status === 'new').length > 0 && (
-              <span className="bg-tm-green/20 text-tm-green text-xs font-medium px-2 py-0.5 rounded-full">
+              <span className="bg-tm-gold/20 text-tm-gold text-xs font-medium px-2 py-0.5 rounded-full">
                 {tickets.filter(t => t.status === 'new').length}
               </span>
             )}
           </button>
           <button
             onClick={() => { setActiveTab('admins'); }}
-            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${activeTab === 'admins' ? 'bg-[#12121a] text-white' : 'text-gray-400 hover:bg-[#12121a]/50 hover:text-gray-300'}`}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${activeTab === 'admins' ? 'bg-[#2a3649] text-white' : 'text-gray-400 hover:bg-[#2a3649]/50 hover:text-gray-300'}`}
           >
             <div className="flex items-center gap-3">
               <Shield size={18} />
@@ -625,8 +625,8 @@ export default function AdminDashboard() {
 
         {/* User Section */}
         <div className="p-4 border-t border-gray-800/50">
-          <div className="flex items-center gap-3 px-3 py-3 rounded-xl bg-[#12121a] mb-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-tm-green/30 to-tm-green/10 flex items-center justify-center text-tm-green font-semibold">
+          <div className="flex items-center gap-3 px-3 py-3 rounded-xl bg-[#2a3649] mb-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-tm-gold/30 to-tm-gold/10 flex items-center justify-center text-tm-gold font-semibold">
               {session.user?.name?.[0] || 'A'}
             </div>
             <div className="flex-1 min-w-0">
@@ -655,7 +655,7 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <main className="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
         {/* Top Header */}
-        <header className="bg-[#0d0d14] border-b border-gray-800/50 px-3 py-2 md:px-6 md:py-4">
+        <header className="bg-[#232d3f] border-b border-gray-800/50 px-3 py-2 md:px-6 md:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
@@ -677,7 +677,7 @@ export default function AdminDashboard() {
             {/* Stats Pills */}
             {(activeTab === 'contacts' || activeTab === 'support') && (
               <div className="hidden md:flex items-center gap-3">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-[#12121a] rounded-lg">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-[#2a3649] rounded-lg">
                   <span className="text-gray-500 text-sm">Total:</span>
                   <span className="text-white font-semibold">{stats.total}</span>
                 </div>
@@ -694,7 +694,7 @@ export default function AdminDashboard() {
             {activeTab === 'admins' && (
               <button
                 onClick={openCreateModal}
-                className="flex items-center gap-2 px-4 py-2 bg-tm-green text-tm-navy font-medium rounded-xl hover:bg-tm-green/90 transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-tm-gold text-tm-navy font-medium rounded-xl hover:bg-tm-gold/90 transition-all"
               >
                 <Plus size={18} />
                 Add Admin
@@ -707,10 +707,10 @@ export default function AdminDashboard() {
         <div className="flex-1 overflow-hidden p-2 md:p-6">
           {activeTab === 'admins' ? (
             /* Admin Management View */
-            <div className="h-full bg-[#0d0d14] rounded-2xl border border-gray-800/50 overflow-hidden">
+            <div className="h-full bg-[#232d3f] rounded-2xl border border-gray-800/50 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-[#12121a] border-b border-gray-800/50">
+                  <thead className="bg-[#2a3649] border-b border-gray-800/50">
                     <tr>
                       <th className="text-left px-6 py-4 text-sm font-medium text-gray-400">Name</th>
                       <th className="text-left px-6 py-4 text-sm font-medium text-gray-400">Email</th>
@@ -720,10 +720,10 @@ export default function AdminDashboard() {
                   </thead>
                   <tbody className="divide-y divide-gray-800/50">
                     {admins.map((admin) => (
-                      <tr key={admin._id} className="hover:bg-[#12121a]/50 transition-colors">
+                      <tr key={admin._id} className="hover:bg-[#2a3649]/50 transition-colors">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-tm-green/30 to-tm-green/10 flex items-center justify-center text-tm-green font-semibold">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-tm-gold/30 to-tm-gold/10 flex items-center justify-center text-tm-gold font-semibold">
                               {admin.name[0]?.toUpperCase()}
                             </div>
                             <span className="font-medium text-white">{admin.name}</span>
@@ -774,7 +774,7 @@ export default function AdminDashboard() {
             <div className="h-full flex gap-6">
               {/* List Panel */}
               {/* List Panel */}
-              <div className={`w-full lg:w-96 flex flex-col bg-[#0d0d14] rounded-2xl border border-gray-800/50 overflow-hidden ${(activeTab === 'contacts' ? selectedContact : selectedTicket) ? 'hidden lg:flex' : 'flex'}`}>
+              <div className={`w-full lg:w-96 flex flex-col bg-[#232d3f] rounded-2xl border border-gray-800/50 overflow-hidden ${(activeTab === 'contacts' ? selectedContact : selectedTicket) ? 'hidden lg:flex' : 'flex'}`}>
                 {/* Search & Filter Bar */}
                 <div className="p-4 border-b border-gray-800/50 space-y-3">
                   <div className="relative">
@@ -784,7 +784,7 @@ export default function AdminDashboard() {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search..."
-                      className="w-full bg-[#12121a] border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50 transition-colors"
+                      className="w-full bg-[#2a3649] border border-gray-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-tm-gold/50 transition-colors"
                     />
                   </div>
                   <div className="flex gap-2">
@@ -793,8 +793,8 @@ export default function AdminDashboard() {
                         key={filter}
                         onClick={() => activeTab === 'contacts' ? setContactFilter(filter) : setTicketFilter(filter)}
                         className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium capitalize transition-all ${(activeTab === 'contacts' ? contactFilter : ticketFilter) === filter
-                          ? 'bg-tm-green text-tm-navy'
-                          : 'bg-[#12121a] text-gray-400 hover:text-white'
+                          ? 'bg-tm-gold text-tm-navy'
+                          : 'bg-[#2a3649] text-gray-400 hover:text-white'
                           }`}
                       >
                         {filter}
@@ -810,8 +810,8 @@ export default function AdminDashboard() {
                       key={item._id}
                       onClick={() => activeTab === 'contacts' ? handleContactClick(item) : handleTicketClick(item)}
                       className={`w-full text-left p-4 rounded-xl transition-all ${(activeTab === 'contacts' ? selectedContact : selectedTicket)?._id === item._id
-                        ? 'bg-tm-green/10 border border-tm-green/30'
-                        : 'bg-[#12121a] border border-transparent hover:border-gray-700'
+                        ? 'bg-tm-gold/10 border border-tm-gold/30'
+                        : 'bg-[#2a3649] border border-transparent hover:border-gray-700'
                         }`}
                     >
                       <div className="flex justify-between items-start mb-2">
@@ -845,7 +845,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* Detail Panel */}
-              <div className={`flex-1 flex-col bg-[#0d0d14] rounded-2xl border border-gray-800/50 overflow-hidden ${(activeTab === 'contacts' ? selectedContact : selectedTicket) ? 'flex' : 'hidden lg:flex'}`}>
+              <div className={`flex-1 flex-col bg-[#232d3f] rounded-2xl border border-gray-800/50 overflow-hidden ${(activeTab === 'contacts' ? selectedContact : selectedTicket) ? 'flex' : 'hidden lg:flex'}`}>
                 {(activeTab === 'contacts' ? selectedContact : selectedTicket) ? (
                   <>
                     {/* Detail Header */}
@@ -858,7 +858,7 @@ export default function AdminDashboard() {
                           >
                             <ArrowLeft size={18} />
                           </button>
-                          <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-tm-green/20 to-tm-green/5 flex items-center justify-center text-lg md:text-xl font-semibold text-tm-green">
+                          <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-tm-gold/20 to-tm-gold/5 flex items-center justify-center text-lg md:text-xl font-semibold text-tm-gold">
                             {(activeTab === 'contacts' ? selectedContact : selectedTicket)?.name?.[0]?.toUpperCase()}
                           </div>
                           <div>
@@ -868,7 +868,7 @@ export default function AdminDashboard() {
                               </h2>
                               {getStatusBadge((activeTab === 'contacts' ? selectedContact : selectedTicket)?.status || 'new')}
                             </div>
-                            <p className="text-tm-green text-sm">
+                            <p className="text-tm-gold text-sm">
                               {(activeTab === 'contacts' ? selectedContact : selectedTicket)?.email}
                             </p>
                           </div>
@@ -940,12 +940,12 @@ export default function AdminDashboard() {
                             key={idx}
                             className={`p-4 rounded-xl ${reply.isFromUser
                               ? 'bg-blue-500/10 border border-blue-500/20 mr-12'
-                              : 'bg-tm-green/10 border border-tm-green/20 ml-12'
+                              : 'bg-tm-gold/10 border border-tm-gold/20 ml-12'
                               }`}
                           >
                             <p className="text-gray-300 whitespace-pre-wrap mb-2">{reply.message}</p>
                             <div className="flex items-center gap-2 text-xs text-gray-500">
-                              <span className={reply.isFromUser ? 'text-blue-400' : 'text-tm-green'}>
+                              <span className={reply.isFromUser ? 'text-blue-400' : 'text-tm-gold'}>
                                 {reply.isFromUser ? 'Customer' : 'Admin'}
                               </span>
                               • {formatDate(reply.sentAt)}
@@ -957,7 +957,7 @@ export default function AdminDashboard() {
 
                     {/* Reply Input */}
                     {(activeTab === 'support' || activeTab === 'contacts') && (
-                      <div className="p-3 border-t border-gray-800/50 bg-[#0a0a0f]">
+                      <div className="p-3 border-t border-gray-800/50 bg-[#1c2533]">
                         <div className="flex items-center justify-between mb-2 px-1">
                           <label className="flex items-center cursor-pointer gap-2 group">
                             <div className="relative flex items-center">
@@ -967,9 +967,9 @@ export default function AdminDashboard() {
                                 onChange={(e) => setSendEmailNotification(e.target.checked)}
                                 className="peer sr-only"
                               />
-                              <div className="w-9 h-5 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-tm-green/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-tm-green"></div>
+                              <div className="w-9 h-5 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-tm-gold/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-tm-gold"></div>
                             </div>
-                            <span className={`text-sm font-medium transition-colors ${sendEmailNotification ? 'text-tm-green' : 'text-gray-500'}`}>
+                            <span className={`text-sm font-medium transition-colors ${sendEmailNotification ? 'text-tm-gold' : 'text-gray-500'}`}>
                               {sendEmailNotification ? 'Email Notification Enabled' : 'Email Notification Disabled'}
                             </span>
                           </label>
@@ -979,12 +979,12 @@ export default function AdminDashboard() {
                             value={replyMessage}
                             onChange={(e) => setReplyMessage(e.target.value)}
                             placeholder="Type your reply..."
-                            className="w-full bg-[#12121a] border border-gray-800 rounded-xl p-3 pr-12 h-16 md:min-h-[100px] text-sm text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50 resize-none transition-colors"
+                            className="w-full bg-[#2a3649] border border-gray-800 rounded-xl p-3 pr-12 h-16 md:min-h-[100px] text-sm text-white placeholder-gray-500 focus:outline-none focus:border-tm-gold/50 resize-none transition-colors"
                           />
                           <button
                             onClick={handleSendReply}
                             disabled={!replyMessage.trim() || isSending}
-                            className="absolute bottom-4 right-4 p-3 bg-tm-green text-tm-navy rounded-xl hover:bg-tm-green/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-tm-green/20"
+                            className="absolute bottom-4 right-4 p-3 bg-tm-gold text-tm-navy rounded-xl hover:bg-tm-gold/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-tm-gold/20"
                           >
                             <Send size={18} />
                           </button>
@@ -994,7 +994,7 @@ export default function AdminDashboard() {
                   </>
                 ) : (
                   <div className="h-full flex flex-col items-center justify-center text-gray-500">
-                    <div className="w-20 h-20 rounded-2xl bg-[#12121a] flex items-center justify-center mb-4">
+                    <div className="w-20 h-20 rounded-2xl bg-[#2a3649] flex items-center justify-center mb-4">
                       <Mail size={32} className="opacity-30" />
                     </div>
                     <p className="font-medium text-gray-400">No message selected</p>
@@ -1010,7 +1010,7 @@ export default function AdminDashboard() {
       {/* Admin Modal */}
       {showAdminModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#0d0d14] rounded-2xl border border-gray-800/50 w-full max-w-md">
+          <div className="bg-[#232d3f] rounded-2xl border border-gray-800/50 w-full max-w-md">
             <div className="p-6 border-b border-gray-800/50">
               <h3 className="text-lg font-semibold text-white">
                 {selectedAdmin ? 'Edit Admin' : 'Create Admin'}
@@ -1028,7 +1028,7 @@ export default function AdminDashboard() {
                   type="text"
                   value={adminForm.name}
                   onChange={(e) => setAdminForm({ ...adminForm, name: e.target.value })}
-                  className="w-full bg-[#12121a] border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50"
+                  className="w-full bg-[#2a3649] border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-tm-gold/50"
                   placeholder="Admin name"
                 />
               </div>
@@ -1038,7 +1038,7 @@ export default function AdminDashboard() {
                   type="email"
                   value={adminForm.email}
                   onChange={(e) => setAdminForm({ ...adminForm, email: e.target.value })}
-                  className="w-full bg-[#12121a] border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50"
+                  className="w-full bg-[#2a3649] border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-tm-gold/50"
                   placeholder="admin@example.com"
                 />
               </div>
@@ -1050,7 +1050,7 @@ export default function AdminDashboard() {
                       type={showPassword ? 'text' : 'password'}
                       value={adminForm.password}
                       onChange={(e) => setAdminForm({ ...adminForm, password: e.target.value })}
-                      className="w-full bg-[#12121a] border border-gray-800 rounded-xl px-4 py-3 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50"
+                      className="w-full bg-[#2a3649] border border-gray-800 rounded-xl px-4 py-3 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-tm-gold/50"
                       placeholder="••••••••"
                     />
                     <button
@@ -1074,7 +1074,7 @@ export default function AdminDashboard() {
               <button
                 onClick={selectedAdmin ? handleUpdateAdmin : handleCreateAdmin}
                 disabled={isAdminLoading}
-                className="flex-1 px-4 py-3 bg-tm-green text-tm-navy font-medium rounded-xl hover:bg-tm-green/90 disabled:opacity-50 transition-all"
+                className="flex-1 px-4 py-3 bg-tm-gold text-tm-navy font-medium rounded-xl hover:bg-tm-gold/90 disabled:opacity-50 transition-all"
               >
                 {isAdminLoading ? 'Saving...' : selectedAdmin ? 'Update' : 'Create'}
               </button>
@@ -1086,7 +1086,7 @@ export default function AdminDashboard() {
       {/* Password Modal */}
       {showPasswordModal && selectedAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#0d0d14] rounded-2xl border border-gray-800/50 w-full max-w-md">
+          <div className="bg-[#232d3f] rounded-2xl border border-gray-800/50 w-full max-w-md">
             <div className="p-6 border-b border-gray-800/50">
               <h3 className="text-lg font-semibold text-white">Change Password</h3>
               <p className="text-sm text-gray-500 mt-1">Update password for {selectedAdmin.name}</p>
@@ -1103,7 +1103,7 @@ export default function AdminDashboard() {
                   type="password"
                   value={passwordForm.currentPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                  className="w-full bg-[#12121a] border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50"
+                  className="w-full bg-[#2a3649] border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-tm-gold/50"
                   placeholder="••••••••"
                 />
               </div>
@@ -1113,7 +1113,7 @@ export default function AdminDashboard() {
                   type="password"
                   value={passwordForm.newPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                  className="w-full bg-[#12121a] border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50"
+                  className="w-full bg-[#2a3649] border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-tm-gold/50"
                   placeholder="••••••••"
                 />
               </div>
@@ -1123,7 +1123,7 @@ export default function AdminDashboard() {
                   type="password"
                   value={passwordForm.confirmPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                  className="w-full bg-[#12121a] border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-tm-green/50"
+                  className="w-full bg-[#2a3649] border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-tm-gold/50"
                   placeholder="••••••••"
                 />
               </div>
@@ -1138,7 +1138,7 @@ export default function AdminDashboard() {
               <button
                 onClick={handleUpdatePassword}
                 disabled={isAdminLoading}
-                className="flex-1 px-4 py-3 bg-tm-green text-tm-navy font-medium rounded-xl hover:bg-tm-green/90 disabled:opacity-50 transition-all"
+                className="flex-1 px-4 py-3 bg-tm-gold text-tm-navy font-medium rounded-xl hover:bg-tm-gold/90 disabled:opacity-50 transition-all"
               >
                 {isAdminLoading ? 'Updating...' : 'Update Password'}
               </button>
@@ -1150,7 +1150,7 @@ export default function AdminDashboard() {
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && selectedAdmin && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#0d0d14] rounded-2xl border border-gray-800/50 w-full max-w-md">
+          <div className="bg-[#232d3f] rounded-2xl border border-gray-800/50 w-full max-w-md">
             <div className="p-6 border-b border-gray-800/50">
               <h3 className="text-lg font-semibold text-white">Delete Admin</h3>
             </div>
@@ -1181,7 +1181,7 @@ export default function AdminDashboard() {
       {/* Conversation Delete Confirmation Modal */}
       {showConversationDeleteConfirm && (activeTab === 'contacts' ? selectedContact : selectedTicket) && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#0d0d14] rounded-2xl border border-gray-800/50 w-full max-w-md">
+          <div className="bg-[#232d3f] rounded-2xl border border-gray-800/50 w-full max-w-md">
             <div className="p-6 border-b border-gray-800/50">
               <h3 className="text-lg font-semibold text-white">Delete Conversation</h3>
             </div>

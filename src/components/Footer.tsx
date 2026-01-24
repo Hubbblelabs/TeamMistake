@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, Mail, MapPin, Heart } from 'lucide-react';
+import { Github, Linkedin, Twitter, Mail, MapPin } from 'lucide-react';
 import Image from 'next/image';
 
 const Footer = () => {
@@ -32,15 +32,19 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-tm-navy pt-20 pb-8 border-t border-tm-navy-lighter/30">
+    <footer className="relative overflow-hidden bg-tm-navy pt-24 pb-8 border-t border-tm-navy-lighter/20">
+      {/* Subtle gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-tm-navy-light/20 to-transparent pointer-events-none" />
+      
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           {/* Brand Column */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-1"
           >
             <a href="#" className="flex items-center gap-3 mb-6 group">
@@ -49,22 +53,37 @@ const Footer = () => {
                 transition={{ duration: 0.8 }}
               >
                 <Image
-                  src="/team-mistake.png"
+                  src="/TeamMistakeLogo.png"
                   alt="TeamMistake Logo"
                   width={40}
                   height={40}
                   className="transition-transform"
                 />
               </motion.div>
-              <span className="text-xl font-bold text-tm-white">
-                Team<span className="text-tm-green">Mistake</span>
+              <span className="text-lg font-semibold text-tm-white">
+                Team<span className="text-tm-gold">Mistake</span>
               </span>
             </a>
 
-            <p className="text-tm-slate text-sm leading-relaxed mb-6">
+            <p className="text-tm-slate text-sm leading-relaxed mb-8">
               Delivering technology-driven business solutions that meet your needs.
               We transform challenges into opportunities.
             </p>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-3">
+              {socialLinks.map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.href}
+                  className="p-2.5 rounded-lg bg-tm-navy-lighter/40 text-tm-slate hover:text-tm-gold hover:bg-tm-navy-lighter transition-all duration-300"
+                  whileHover={{ y: -2 }}
+                  aria-label={social.label}
+                >
+                  {social.icon}
+                </motion.a>
+              ))}
+            </div>
           </motion.div>
 
           {/* Quick Links */}
@@ -72,10 +91,9 @@ const Footer = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h3 className="text-tm-white font-semibold mb-6 flex items-center gap-2">
-              <span className="w-2 h-2 bg-tm-green rounded-full" />
+            <h3 className="text-tm-white font-medium mb-6 text-sm tracking-wide uppercase">
               Quick Links
             </h3>
             <ul className="space-y-3">
@@ -83,9 +101,8 @@ const Footer = () => {
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-tm-slate hover:text-tm-green transition-colors text-sm flex items-center gap-2 group"
+                    className="text-tm-slate hover:text-tm-gold transition-colors duration-300 text-sm"
                   >
-                    <span className="w-0 group-hover:w-2 h-[2px] bg-tm-green transition-all duration-300" />
                     {link.name}
                   </a>
                 </li>
@@ -98,17 +115,15 @@ const Footer = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h3 className="text-tm-white font-semibold mb-6 flex items-center gap-2">
-              <span className="w-2 h-2 bg-tm-green rounded-full" />
+            <h3 className="text-tm-white font-medium mb-6 text-sm tracking-wide uppercase">
               Services
             </h3>
             <ul className="space-y-3">
               {services.map((service, index) => (
                 <li key={index}>
-                  <span className="text-tm-slate text-sm flex items-center gap-2 group hover:text-tm-slate-light transition-colors">
-                    <span className="w-1 h-1 bg-tm-slate/50 rounded-full" />
+                  <span className="text-tm-slate text-sm">
                     {service}
                   </span>
                 </li>
@@ -121,38 +136,26 @@ const Footer = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.3, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h3 className="text-tm-white font-semibold mb-6 flex items-center gap-2">
-              <span className="w-2 h-2 bg-tm-green rounded-full" />
-              Contact Us
+            <h3 className="text-tm-white font-medium mb-6 text-sm tracking-wide uppercase">
+              Contact
             </h3>
             <ul className="space-y-4">
               {contactInfo.map((info, index) => (
                 <li key={index} className="flex items-center gap-3 text-tm-slate text-sm">
-                  <span className="p-2 rounded-lg bg-tm-navy-lighter/50 text-tm-green">
+                  <span className="p-2 rounded-lg bg-tm-navy-lighter/40 text-tm-gold/70">
                     {info.icon}
                   </span>
-                  {info.text}
+                  <span>{info.text}</span>
                 </li>
               ))}
             </ul>
-
-            {/* CTA */}
-            <motion.a
-              href="#contact"
-              className="inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-lg border border-tm-green/30 text-tm-green text-sm font-medium hover:bg-tm-green/10 transition-colors"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Get In Touch
-              <span className="w-2 h-2 bg-tm-green rounded-full animate-pulse" />
-            </motion.a>
           </motion.div>
         </div>
 
         {/* Divider */}
-        <div className="h-[1px] bg-gradient-to-r from-transparent via-tm-navy-lighter to-transparent mb-8" />
+        <div className="h-px bg-gradient-to-r from-transparent via-tm-navy-lighter/50 to-transparent mb-8" />
 
         {/* Bottom Bar */}
         <motion.div
@@ -161,9 +164,11 @@ const Footer = () => {
           viewport={{ once: true }}
           className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm"
         >
-          <p className="text-tm-slate-light font-mono flex items-center gap-2">
-            &copy; {currentYear} All Rights Reserved By{' '}
-            <span className="text-tm-green">TeamMistake Technologies</span>
+          <p className="text-tm-slate-muted">
+            &copy; {currentYear} TeamMistake Technologies. All rights reserved.
+          </p>
+          <p className="text-tm-slate-muted">
+            Built with precision and care.
           </p>
         </motion.div>
       </div>

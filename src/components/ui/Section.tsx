@@ -33,7 +33,7 @@ export default function Section({
             className={`
         relative overflow-hidden
         ${backgroundStyles[background]}
-        ${noPadding ? '' : 'py-16 md:py-24 px-4 md:px-6'}
+        ${noPadding ? '' : 'py-20 md:py-32 px-5 md:px-6'}
         ${className}
       `}
         >
@@ -50,7 +50,7 @@ export default function Section({
     );
 }
 
-// Section header with animated underline
+// Premium section header with elegant styling
 export function SectionHeader({
     title,
     subtitle,
@@ -63,17 +63,20 @@ export function SectionHeader({
     className?: string;
 }) {
     return (
-        <div className={`mb-12 md:mb-16 ${centered ? 'text-center' : ''} ${className}`}>
-            <div className={`flex items-center gap-4 ${centered ? 'justify-center' : ''}`}>
-                <h2 className="text-3xl md:text-4xl font-bold text-tm-white">
+        <div className={`mb-14 md:mb-20 ${centered ? 'text-center' : ''} ${className}`}>
+            <div className={`flex items-center gap-5 ${centered ? 'justify-center' : ''}`}>
+                {!centered && (
+                    <div className="w-12 h-[2px] bg-gradient-to-r from-tm-gold to-transparent rounded-full" />
+                )}
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-tm-white tracking-tight">
                     {title}
                 </h2>
                 {!centered && (
-                    <div className="h-[1px] bg-gradient-to-r from-tm-green/50 to-transparent flex-grow max-w-xs" />
+                    <div className="h-[1px] bg-gradient-to-r from-tm-navy-lighter/80 to-transparent flex-grow max-w-xs" />
                 )}
             </div>
             {subtitle && (
-                <p className={`mt-4 text-tm-slate text-lg ${centered ? 'max-w-2xl mx-auto' : ''}`}>
+                <p className={`mt-5 text-tm-slate text-lg leading-relaxed ${centered ? 'max-w-2xl mx-auto' : 'pl-17'}`}>
                     {subtitle}
                 </p>
             )}

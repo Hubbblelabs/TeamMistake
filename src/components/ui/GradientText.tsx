@@ -12,7 +12,7 @@ interface GradientTextProps {
 export default function GradientText({
     children,
     className = '',
-    gradient = 'linear-gradient(90deg, #64ffda 0%, #a8b2d1 50%, #64ffda 100%)',
+    gradient = 'linear-gradient(135deg, #e8c17a 0%, #d4a853 40%, #b8923f 100%)',
     animate = true,
 }: GradientTextProps) {
     return (
@@ -24,7 +24,7 @@ export default function GradientText({
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                animation: animate ? 'shimmer 3s ease-in-out infinite' : 'none',
+                animation: animate ? 'shimmer 4s ease-in-out infinite' : 'none',
             }}
         >
             {children}
@@ -45,7 +45,7 @@ export default function GradientText({
     );
 }
 
-// Preset gradient variations
+// Premium gold gradient
 export function AccentGradientText({
     children,
     className = '',
@@ -54,7 +54,7 @@ export function AccentGradientText({
     return (
         <GradientText
             className={className}
-            gradient="linear-gradient(90deg, #64ffda 0%, #00d9ff 50%, #64ffda 100%)"
+            gradient="linear-gradient(135deg, #e8c17a 0%, #d4a853 50%, #b8923f 100%)"
             animate={animate}
         >
             {children}
@@ -65,12 +65,12 @@ export function AccentGradientText({
 export function SubtleGradientText({
     children,
     className = '',
-    animate = true,
+    animate = false,
 }: Omit<GradientTextProps, 'gradient'>) {
     return (
         <GradientText
             className={className}
-            gradient="linear-gradient(90deg, #e6f1ff 0%, #a8b2d1 50%, #e6f1ff 100%)"
+            gradient="linear-gradient(135deg, #f8fafc 0%, #d1d5db 50%, #f8fafc 100%)"
             animate={animate}
         >
             {children}

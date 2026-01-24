@@ -16,26 +16,29 @@ interface GlowButtonProps {
 }
 
 const sizeStyles = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg',
+    sm: 'px-5 py-2.5 text-sm',
+    md: 'px-7 py-3.5 text-sm',
+    lg: 'px-9 py-4 text-base',
 };
 
 const variantStyles = {
     primary: {
-        base: 'bg-tm-green text-tm-navy font-semibold',
-        hover: 'hover:bg-tm-green/90',
-        glow: 'rgba(100, 255, 218, 0.5)',
+        base: 'bg-gradient-to-r from-tm-gold via-tm-gold-light to-tm-gold text-tm-navy font-semibold',
+        hover: 'hover:from-tm-gold-light hover:via-tm-gold hover:to-tm-gold-light',
+        glow: 'rgba(212, 168, 83, 0.4)',
+        border: 'border-transparent',
     },
     secondary: {
-        base: 'bg-transparent border-2 border-tm-green text-tm-green font-medium',
-        hover: 'hover:bg-tm-green/10',
-        glow: 'rgba(100, 255, 218, 0.3)',
+        base: 'bg-transparent border border-tm-gold/40 text-tm-gold font-medium',
+        hover: 'hover:bg-tm-gold/5 hover:border-tm-gold/60',
+        glow: 'rgba(212, 168, 83, 0.25)',
+        border: '',
     },
     ghost: {
-        base: 'bg-transparent text-tm-green font-medium',
-        hover: 'hover:bg-tm-green/5',
-        glow: 'rgba(100, 255, 218, 0.2)',
+        base: 'bg-transparent text-tm-slate-light font-medium',
+        hover: 'hover:text-tm-gold hover:bg-tm-navy-lighter/50',
+        glow: 'rgba(212, 168, 83, 0.15)',
+        border: '',
     },
 };
 
@@ -59,7 +62,7 @@ export default function GlowButton({
     const buttonContent = (
         <motion.span
             className={`
-        relative inline-flex items-center justify-center gap-2 rounded-lg
+        relative inline-flex items-center justify-center gap-2.5 rounded-xl
         transition-all duration-300 overflow-hidden
         ${sizeStyles[size]}
         ${styles.base}
@@ -76,22 +79,24 @@ export default function GlowButton({
             onMouseUp={() => setIsPressed(false)}
             animate={{
                 scale: isPressed ? 0.98 : 1,
-                boxShadow: isHovered
-                    ? `0 0 30px ${effectiveGlow}, 0 0 60px ${effectiveGlow.replace('0.5', '0.2').replace('0.3', '0.1')}`
+                boxShadow: isHovered && variant === 'primary'
+                    ? `0 0 40px ${effectiveGlow}, 0 4px 20px rgba(0, 0, 0, 0.2)`
+                    : isHovered
+                    ? `0 0 30px ${effectiveGlow}`
                     : '0 0 0 transparent',
             }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         >
-            {/* Animated background on hover */}
+            {/* Shimmer effect on hover */}
             <motion.span
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
                 initial={{ x: '-100%' }}
                 animate={{ x: isHovered ? '100%' : '-100%' }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             />
 
             {/* Button content */}
-            <span className="relative z-10 flex items-center gap-2">
+            <span className="relative z-10 flex items-center gap-2.5">
                 {children}
             </span>
         </motion.span>

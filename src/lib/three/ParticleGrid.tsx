@@ -17,7 +17,7 @@ interface ParticleGridProps {
 export default function ParticleGrid({
     count = 800,
     size = 2,
-    color = '#64ffda',
+    color = '#f5b301',
     opacity = 0.6,
     spread = 20,
     speed = 0.2,
@@ -120,7 +120,7 @@ export default function ParticleGrid({
 export function ParticleConnections({
     count = 100,
     spread = 20,
-    color = '#64ffda',
+    color = '#f5b301',
     opacity = 0.15,
     maxDistance = 3,
 }: {

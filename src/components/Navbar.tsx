@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import GlowButton from './ui/GlowButton';
@@ -44,18 +44,19 @@ const Navbar = () => {
         : 'py-5'
         }`}
     >
-      {/* Glassmorphic background */}
+      {/* Premium glassmorphic background */}
       <motion.div
         className="absolute inset-0 -z-10"
         initial={{ opacity: 0 }}
         animate={{
           opacity: scrolled ? 1 : 0,
-          backdropFilter: scrolled ? 'blur(20px)' : 'blur(0px)',
         }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         style={{
-          background: 'rgba(2, 12, 27, 0.8)',
-          borderBottom: scrolled ? '1px solid rgba(100, 255, 218, 0.1)' : 'none',
+          background: 'linear-gradient(180deg, rgba(15, 20, 25, 0.95) 0%, rgba(15, 20, 25, 0.85) 100%)',
+          backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(212, 168, 83, 0.08)' : 'none',
           boxShadow: scrolled ? '0 4px 30px rgba(0, 0, 0, 0.3)' : 'none',
         }}
       />
@@ -65,25 +66,25 @@ const Navbar = () => {
         <a href="#" className="flex items-center gap-3 group">
           <motion.div
             className="relative"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.3 }}
           >
             <Image
-              src="/team-mistake.png"
+              src="/TeamMistakeLogo.png"
               alt="TeamMistake Logo"
-              width={48}
-              height={48}
+              width={44}
+              height={44}
               className="transition-transform"
             />
-            {/* Glow effect on hover */}
-            <div className="absolute inset-0 bg-tm-green/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Subtle glow effect on hover */}
+            <div className="absolute inset-0 bg-tm-gold/15 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           </motion.div>
           <div className="flex flex-col">
-            <span className="text-lg md:text-xl font-bold text-tm-white tracking-tight leading-tight">
-              Team<span className="text-tm-green">Mistake</span> Technologies
+            <span className="text-base md:text-lg font-semibold text-tm-white tracking-tight leading-tight">
+              Team<span className="text-tm-gold">Mistake</span>
             </span>
-            <span className="text-[10px] md:text-xs text-tm-slate font-medium tracking-wide hidden sm:block">
-              Experience the Excellence in Our Solution
+            <span className="text-[10px] md:text-xs text-tm-slate-muted font-medium tracking-wide hidden sm:block">
+              Technology Solutions
             </span>
           </div>
         </a>
@@ -94,23 +95,23 @@ const Navbar = () => {
             <motion.a
               key={index}
               href={link.href}
-              className="relative px-4 py-2 text-tm-slate hover:text-tm-green transition-colors text-sm font-medium group"
-              whileHover={{ y: -2 }}
+              className="relative px-4 py-2 text-tm-slate hover:text-tm-white transition-colors duration-300 text-sm font-medium group"
+              whileHover={{ y: -1 }}
               transition={{ duration: 0.2 }}
             >
               {link.name}
-              {/* Animated underline */}
+              {/* Elegant underline */}
               <motion.span
-                className="absolute bottom-0 left-1/2 h-0.5 bg-tm-green rounded-full"
+                className="absolute bottom-0 left-1/2 h-[2px] bg-gradient-to-r from-tm-gold to-tm-gold-light rounded-full"
                 initial={{ width: 0, x: '-50%' }}
-                whileHover={{ width: '60%' }}
-                transition={{ duration: 0.3 }}
+                whileHover={{ width: '50%' }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               />
             </motion.a>
           ))}
 
-          <div className="ml-4">
-            <GlowButton href="/#contact" variant="secondary" size="sm">
+          <div className="ml-6">
+            <GlowButton href="/#contact" variant="primary" size="sm">
               Get in Touch
             </GlowButton>
           </div>
@@ -118,7 +119,7 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <motion.button
-          className="md:hidden relative p-2 text-tm-green focus:outline-none"
+          className="md:hidden relative p-2 text-tm-slate-light focus:outline-none"
           aria-label={isOpen ? "Close menu" : "Open menu"}
           onClick={() => setIsOpen(!isOpen)}
           whileTap={{ scale: 0.95 }}
@@ -132,7 +133,7 @@ const Navbar = () => {
                 exit={{ rotate: 90, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <X size={28} />
+                <X size={26} />
               </motion.div>
             ) : (
               <motion.div
@@ -142,7 +143,7 @@ const Navbar = () => {
                 exit={{ rotate: -90, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <Menu size={28} />
+                <Menu size={26} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -161,7 +162,7 @@ const Navbar = () => {
           >
             {/* Backdrop */}
             <motion.div
-              className="absolute inset-0 bg-tm-navy/80 backdrop-blur-md"
+              className="absolute inset-0 bg-tm-navy/90 backdrop-blur-xl"
               onClick={() => setIsOpen(false)}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -173,71 +174,41 @@ const Navbar = () => {
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              transition={{ type: 'spring', damping: 30, stiffness: 250 }}
               className="absolute right-0 top-0 h-full w-4/5 max-w-sm"
               style={{
-                background: 'rgba(10, 25, 47, 0.95)',
-                backdropFilter: 'blur(20px)',
-                borderLeft: '1px solid rgba(100, 255, 218, 0.1)',
+                background: 'linear-gradient(180deg, rgba(26, 31, 46, 0.98) 0%, rgba(15, 20, 25, 0.98) 100%)',
+                backdropFilter: 'blur(24px)',
+                borderLeft: '1px solid rgba(212, 168, 83, 0.1)',
               }}
             >
-              {/* Decorative particles */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {[...Array(20)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-1 h-1 bg-tm-green/30 rounded-full"
-                    style={{
-                      left: `${Math.random() * 100}%`,
-                      top: `${Math.random() * 100}%`,
-                    }}
-                    animate={{
-                      opacity: [0.2, 0.5, 0.2],
-                      scale: [1, 1.5, 1],
-                    }}
-                    transition={{
-                      duration: 2 + Math.random() * 2,
-                      repeat: Infinity,
-                      delay: Math.random() * 2,
-                    }}
-                  />
-                ))}
-              </div>
-
-              <div className="flex flex-col justify-center items-center h-full gap-8 relative z-10">
+              <div className="flex flex-col justify-center items-center h-full gap-8 relative z-10 px-8">
                 {navLinks.map((link, index) => (
                   <motion.a
                     key={index}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-tm-slate hover:text-tm-green text-2xl font-medium flex flex-col items-center gap-2 group"
+                    className="text-tm-slate-light hover:text-tm-gold text-xl font-medium transition-colors duration-300"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 * index }}
+                    transition={{ delay: 0.1 * index, ease: [0.16, 1, 0.3, 1] }}
                   >
                     {link.name}
-                    <motion.span
-                      className="h-0.5 bg-tm-green rounded-full"
-                      initial={{ width: 0 }}
-                      whileHover={{ width: '100%' }}
-                      transition={{ duration: 0.3 }}
-                    />
                   </motion.a>
                 ))}
 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="mt-4"
+                  transition={{ delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="mt-6"
                 >
                   <GlowButton
                     href="/#contact"
-                    variant="secondary"
+                    variant="primary"
                     size="lg"
                     onClick={() => setIsOpen(false)}
                   >
-                    <Sparkles className="w-4 h-4" />
                     Get in Touch
                   </GlowButton>
                 </motion.div>
