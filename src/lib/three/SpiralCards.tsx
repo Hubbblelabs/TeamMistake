@@ -2,6 +2,7 @@
 
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface SpiralCardsProps {
@@ -11,8 +12,7 @@ interface SpiralCardsProps {
     scrollProgress?: number;
     cardWidth?: number;
     cardHeight?: number;
-    colors?: string[];
-    projectLetters?: string[];
+    projectImages?: string[];
     activeIndex?: number;
     onActiveIndexChange?: (index: number) => void;
 }
@@ -24,20 +24,28 @@ export default function SpiralCards({
     scrollProgress = 0,
     cardWidth = 1.8,
     cardHeight = 2.4,
-    colors = ['#dfff00', '#d2d2d2', '#404040', '#2a2a2a', '#dfff00', '#d2d2d2', '#404040', '#2a2a2a'],
-    projectLetters = ['I', 'B', 'S', 'S', 'L', 'C', 'A', 'M'],
+    projectImages = [],
     activeIndex = 0,
     onActiveIndexChange
 }: SpiralCardsProps) {
     const groupRef = useRef<THREE.Group>(null);
     const prevActiveIndex = useRef(-1);
 
+    // Load textures
+    const textures = useTexture(projectImages);
+    // Ensure textures is always an array
+    const textureArray = Array.isArray(textures) ? textures : [textures];
+
     // Calculate card positions in spiral
     const cardPositions = useMemo(() => {
         const positions: { position: THREE.Vector3; rotation: number }[] = [];
 
         for (let i = 0; i < cardCount; i++) {
-            const angle = (i / cardCount) * Math.PI * 2;
+            // Start at PI/2 (Front) and go clockwise (subtracting angle)
+            // This ensures Index 0 is at front when rotation is 0
+            const angle = Math.PI / 2 - (i / cardCount) * Math.PI * 2;
+
+            // Vertical simple helix
             const y = (i / cardCount) * spiralHeight - spiralHeight / 2;
 
             const x = Math.cos(angle) * radius;
@@ -77,9 +85,8 @@ export default function SpiralCards({
         if (!groupRef.current) return;
 
         // Calculate target rotation based on scroll progress
-        // Allow continuous rotation (no clamping)
-        const targetRotation = scrollProgress * Math.PI * 2; // One full rotation per scroll unit
-        
+        const targetRotation = scrollProgress * Math.PI * 2;
+
         // Smooth lerp to target rotation
         groupRef.current.rotation.y = THREE.MathUtils.lerp(
             groupRef.current.rotation.y,
@@ -91,17 +98,23 @@ export default function SpiralCards({
         const mouseInfluence = state.pointer.x * 0.15;
         groupRef.current.rotation.y += mouseInfluence * 0.01;
 
-        // Calculate which card is at the front (facing camera)
-        const normalizedRotation = ((groupRef.current.rotation.y % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-        const activeIndex = Math.round((normalizedRotation / (Math.PI * 2)) * cardCount) % cardCount;
-        
-        // Notify parent when active index changes
-        if (activeIndex !== prevActiveIndex.current && onActiveIndexChange) {
-            prevActiveIndex.current = activeIndex;
-            onActiveIndexChange(activeIndex);
+        // Calculate active index based on rotation
+        // With our setup, positive rotation brings subsequent cards to front (Angle PI/2)
+        // rotation / (2PI/N) = approx index
+        const rotationPerCard = (Math.PI * 2) / cardCount;
+        // Add small offset to snap correctly
+        const exactIndex = groupRef.current.rotation.y / rotationPerCard;
+        const activeIndex = Math.round(exactIndex) % cardCount;
+
+        // Handle negative wrapping just in case
+        const normalizedIndex = (activeIndex + cardCount) % cardCount;
+
+        if (normalizedIndex !== prevActiveIndex.current && onActiveIndexChange) {
+            prevActiveIndex.current = normalizedIndex;
+            onActiveIndexChange(normalizedIndex);
         }
 
-        // Slight tilt based on mouse Y position
+        // Slight tilt
         groupRef.current.rotation.x = THREE.MathUtils.lerp(
             groupRef.current.rotation.x,
             state.pointer.y * 0.08,
@@ -113,8 +126,8 @@ export default function SpiralCards({
         <group ref={groupRef}>
             {cardPositions.map((cardPos, index) => {
                 const isActive = index === activeIndex;
-                const baseColor = colors[index % colors.length];
-                
+                const texture = textureArray[index % textureArray.length];
+
                 return (
                     <mesh
                         key={index}
@@ -122,14 +135,21 @@ export default function SpiralCards({
                         rotation={[0, cardPos.rotation, 0]}
                         geometry={cardGeometry}
                     >
-                        <meshStandardMaterial
-                            color={baseColor}
+                        <meshBasicMaterial
+                            map={texture}
                             side={THREE.DoubleSide}
-                            roughness={isActive ? 0.1 : 0.3}
-                            metalness={isActive ? 0.6 : 0.2}
-                            emissive={isActive ? baseColor : '#000000'}
-                            emissiveIntensity={isActive ? 0.3 : 0}
+                            toneMapped={false}
                         />
+                        {/* Overlay for inactive cards to darken them */}
+                        {!isActive && (
+                            <mesh position={[0, 0, 0.01]} geometry={cardGeometry}>
+                                <meshBasicMaterial
+                                    color="black"
+                                    transparent
+                                    opacity={0.6}
+                                />
+                            </mesh>
+                        )}
                     </mesh>
                 );
             })}

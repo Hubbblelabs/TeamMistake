@@ -14,8 +14,8 @@ interface SpiralSceneProps {
 }
 
 function SpiralScene({ scrollProgress, activeIndex, onActiveIndexChange }: SpiralSceneProps) {
-    // Extract first letters from project titles
-    const projectLetters = projects.map(p => p.title.charAt(0).toUpperCase());
+    // Extract project images
+    const projectImages = projects.map(p => p.image);
 
     return (
         <>
@@ -31,7 +31,7 @@ function SpiralScene({ scrollProgress, activeIndex, onActiveIndexChange }: Spira
                 scrollProgress={scrollProgress}
                 cardWidth={1.6}
                 cardHeight={2.2}
-                projectLetters={projectLetters}
+                projectImages={projectImages}
                 activeIndex={activeIndex}
                 onActiveIndexChange={onActiveIndexChange}
             />
@@ -45,37 +45,38 @@ export default function SpiralShowcase() {
     const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
-        const section = sectionRef.current;
-        if (!section) return;
+        const handleScroll = () => {
+            if (!sectionRef.current) return;
 
-        const handleWheel = (e: WheelEvent) => {
-            const delta = e.deltaY * 0.0008; // Adjusted sensitivity
+            const rect = sectionRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const sectionHeight = rect.height;
+
+            // Calculate how much of the section has been scrolled through
+            // When top of section is at top of viewport, scrollProgress = 0
+            // When bottom of section is at bottom of viewport, scrollProgress = 1
+            const scrollStart = rect.top;
+            const scrollableHeight = sectionHeight - windowHeight;
+
+            let progress = 0;
+
+            if (scrollStart <= 0 && scrollStart > -scrollableHeight) {
+                // Section is being scrolled through
+                progress = Math.abs(scrollStart) / scrollableHeight;
+            } else if (scrollStart <= -scrollableHeight) {
+                // Section has been fully scrolled past
+                progress = 1;
+            }
+
+            // Map progress (0 to 1) to spiral rotation (0 to maxProgress)
             const maxProgress = (projects.length - 1) / projects.length;
-            
-            setScrollProgress(prev => {
-                const newProgress = prev + delta;
-                
-                // Check if we're at the boundaries
-                if (newProgress > maxProgress && e.deltaY > 0) {
-                    // Scrolling down beyond last project - allow page scroll to next section
-                    return maxProgress;
-                } else if (newProgress < 0 && e.deltaY < 0) {
-                    // Scrolling up beyond first project - allow page scroll to previous section
-                    return 0;
-                } else if (newProgress >= 0 && newProgress <= maxProgress) {
-                    // Within bounds - prevent default scroll
-                    e.preventDefault();
-                    return Math.max(0, Math.min(maxProgress, newProgress));
-                }
-                
-                return prev;
-            });
+            setScrollProgress(progress * maxProgress);
         };
 
-        // Add wheel event listener
-        section.addEventListener('wheel', handleWheel, { passive: false });
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll(); // Initial call
 
-        return () => section.removeEventListener('wheel', handleWheel);
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     const handleActiveIndexChange = (index: number) => {
@@ -83,11 +84,13 @@ export default function SpiralShowcase() {
     };
 
     return (
-        <section 
+        <section
             ref={sectionRef}
-            id="spiral-showcase" 
-            className="relative h-screen bg-tm-navy overflow-hidden"
+            id="spiral-showcase"
+            className="relative h-[300vh] bg-tm-navy"
         >
+            {/* Sticky container for the 3D scene and content */}
+            <div className="sticky top-0 h-screen w-full overflow-hidden">
 
                 {/* Section Header */}
                 <div className="absolute top-12 left-6 md:left-12 z-20">
@@ -112,7 +115,7 @@ export default function SpiralShowcase() {
                     >
                         <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={50} />
                         <Suspense fallback={null}>
-                            <SpiralScene 
+                            <SpiralScene
                                 scrollProgress={scrollProgress}
                                 activeIndex={activeIndex}
                                 onActiveIndexChange={handleActiveIndexChange}
@@ -122,20 +125,7 @@ export default function SpiralShowcase() {
                     </Canvas>
                 </div>
 
-                {/* Center Letter Display - HTML Overlay */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-15 pointer-events-none">
-                    <motion.div
-                        key={activeIndex}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.3 }}
-                        className="text-[120px] md:text-[180px] font-bold text-tm-green/20"
-                    >
-                        {projects[activeIndex].title.charAt(0).toUpperCase()}
-                    </motion.div>
-                </div>
 
-                {/* Project Info Overlay */}
                 <div className="absolute bottom-12 left-6 md:left-12 z-20">
                     {/* Current Project Info - Left */}
                     <motion.div
@@ -191,21 +181,7 @@ export default function SpiralShowcase() {
                             </div>
                         </div>
 
-                        {/* Navigation Dots */}
-                        <div className="flex gap-2 mt-6">
-                            {projects.map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => setActiveIndex(index)}
-                                    aria-label={`View project ${index + 1}`}
-                                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                                        index === activeIndex
-                                            ? 'bg-tm-green w-6'
-                                            : 'bg-tm-slate/30 hover:bg-tm-slate/50'
-                                    }`}
-                                />
-                            ))}
-                        </div>
+
                     </motion.div>
                 </div>
 
@@ -222,6 +198,7 @@ export default function SpiralShowcase() {
                         <span className="-rotate-90 whitespace-nowrap origin-left">Interactive 3D</span>
                     </div>
                 </div>
+            </div>
         </section>
     );
 }
