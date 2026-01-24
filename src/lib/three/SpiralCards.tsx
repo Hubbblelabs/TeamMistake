@@ -36,56 +36,54 @@ export default function SpiralCards({
     // Ensure textures is always an array
     const textureArray = Array.isArray(textures) ? textures : [textures];
 
+    // Calculate density for ribbon effect (cards touching)
+    // angle = 2 * asin(width / (2 * radius))
+    const anglePerCard = useMemo(() => {
+        return 2 * Math.asin(cardWidth / (2 * radius));
+    }, [cardWidth, radius]);
+
+    const totalAngle = anglePerCard * cardCount;
+
     // Calculate card positions in spiral
     const cardPositions = useMemo(() => {
         const positions: { position: THREE.Vector3; rotation: number }[] = [];
 
         for (let i = 0; i < cardCount; i++) {
-            // Start at PI/2 (Front) and go clockwise (subtracting angle)
-            // This ensures Index 0 is at front when rotation is 0
-            const angle = Math.PI / 2 - (i / cardCount) * Math.PI * 2;
+            // angle progress
+            const angle = Math.PI / 2 - (i * anglePerCard);
 
             // Vertical simple helix
-            const y = (i / cardCount) * spiralHeight - spiralHeight / 2;
+            // We want the spiral to go down logic
+            const progress = i / cardCount;
+            const y = progress * spiralHeight - spiralHeight / 2;
 
             const x = Math.cos(angle) * radius;
             const z = Math.sin(angle) * radius;
 
             positions.push({
                 position: new THREE.Vector3(x, y, z),
-                rotation: -angle + Math.PI / 2 // Face outward
+                rotation: -angle + Math.PI / 2
             });
         }
 
         return positions;
-    }, [cardCount, radius, spiralHeight]);
+    }, [cardCount, radius, spiralHeight, anglePerCard]);
 
-    // Create rounded rectangle geometry
+    // Create simple plane geometry for seamless strip
     const cardGeometry = useMemo(() => {
-        const shape = new THREE.Shape();
-        const width = cardWidth;
-        const height = cardHeight;
-        const cornerRadius = 0.12;
-
-        shape.moveTo(-width / 2 + cornerRadius, -height / 2);
-        shape.lineTo(width / 2 - cornerRadius, -height / 2);
-        shape.quadraticCurveTo(width / 2, -height / 2, width / 2, -height / 2 + cornerRadius);
-        shape.lineTo(width / 2, height / 2 - cornerRadius);
-        shape.quadraticCurveTo(width / 2, height / 2, width / 2 - cornerRadius, height / 2);
-        shape.lineTo(-width / 2 + cornerRadius, height / 2);
-        shape.quadraticCurveTo(-width / 2, height / 2, -width / 2, height / 2 - cornerRadius);
-        shape.lineTo(-width / 2, -height / 2 + cornerRadius);
-        shape.quadraticCurveTo(-width / 2, -height / 2, -width / 2 + cornerRadius, -height / 2);
-
-        return new THREE.ShapeGeometry(shape);
+        return new THREE.PlaneGeometry(cardWidth, cardHeight);
     }, [cardWidth, cardHeight]);
 
     // Scroll-based rotation
     useFrame((state) => {
         if (!groupRef.current) return;
 
+        // Re-calculate simply to ensure fresh values inside useFrame
+        const anglePerCard = 2 * Math.asin(cardWidth / (2 * radius));
+        const totalAngle = anglePerCard * cardCount;
+
         // Calculate target rotation based on scroll progress
-        const targetRotation = scrollProgress * Math.PI * 2;
+        const targetRotation = scrollProgress * totalAngle;
 
         // Smooth lerp to target rotation
         groupRef.current.rotation.y = THREE.MathUtils.lerp(
@@ -99,11 +97,7 @@ export default function SpiralCards({
         groupRef.current.rotation.y += mouseInfluence * 0.01;
 
         // Calculate active index based on rotation
-        // With our setup, positive rotation brings subsequent cards to front (Angle PI/2)
-        // rotation / (2PI/N) = approx index
-        const rotationPerCard = (Math.PI * 2) / cardCount;
-        // Add small offset to snap correctly
-        const exactIndex = groupRef.current.rotation.y / rotationPerCard;
+        const exactIndex = groupRef.current.rotation.y / anglePerCard;
         const activeIndex = Math.round(exactIndex) % cardCount;
 
         // Handle negative wrapping just in case

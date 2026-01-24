@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useEffect, useRef } from 'react';
+import { Suspense, useState, useEffect, useRef, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Preload, PerspectiveCamera } from '@react-three/drei';
 import { motion } from 'framer-motion';
@@ -14,8 +14,26 @@ interface SpiralSceneProps {
 }
 
 function SpiralScene({ scrollProgress, activeIndex, onActiveIndexChange }: SpiralSceneProps) {
-    // Extract project images
-    const projectImages = projects.map(p => p.image);
+    // Generate a strip of images: Main + 3 Details
+    const CARDS_PER_PROJECT = 4;
+
+    // Project references for text (repeated)
+    const stripItems = useMemo(() => projects.flatMap(p => Array(CARDS_PER_PROJECT).fill(p)), []);
+
+    // Image sources with rotating details
+    const projectImages = useMemo(() => projects.flatMap((p, pIdx) => {
+        const details = [
+            '/images/placeholders/detail-1.png',
+            '/images/placeholders/detail-2.png',
+            '/images/placeholders/detail-3.png'
+        ];
+        // Rotate start index for variety
+        const d1 = details[pIdx % 3];
+        const d2 = details[(pIdx + 1) % 3];
+        const d3 = details[(pIdx + 2) % 3];
+
+        return [p.image, d1, d2, d3];
+    }), []);
 
     return (
         <>
@@ -25,12 +43,12 @@ function SpiralScene({ scrollProgress, activeIndex, onActiveIndexChange }: Spira
             <pointLight position={[0, 0, 0]} intensity={0.5} color="#dfff00" />
 
             <SpiralCards
-                cardCount={projects.length}
-                radius={3.5}
-                spiralHeight={5}
+                cardCount={stripItems.length}
+                radius={5}
+                spiralHeight={9}
                 scrollProgress={scrollProgress}
-                cardWidth={1.6}
-                cardHeight={2.2}
+                cardWidth={2.4}
+                cardHeight={1.35} // 16:9 Aspect Ratio
                 projectImages={projectImages}
                 activeIndex={activeIndex}
                 onActiveIndexChange={onActiveIndexChange}
@@ -68,9 +86,8 @@ export default function SpiralShowcase() {
                 progress = 1;
             }
 
-            // Map progress (0 to 1) to spiral rotation (0 to maxProgress)
-            const maxProgress = (projects.length - 1) / projects.length;
-            setScrollProgress(progress * maxProgress);
+            // Map progress (0 to 1) to spiral rotation
+            setScrollProgress(progress);
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -83,11 +100,16 @@ export default function SpiralShowcase() {
         setActiveIndex(index);
     };
 
+    // Determine current project based on strip index (4 frames per project)
+    const CARDS_PER_PROJECT = 4;
+    const projectIndex = Math.floor(activeIndex / CARDS_PER_PROJECT);
+    const currentProject = projects[projectIndex] || projects[0];
+
     return (
         <section
             ref={sectionRef}
             id="spiral-showcase"
-            className="relative h-[300vh] bg-tm-navy"
+            className="relative h-[600vh] bg-tm-navy"
         >
             {/* Sticky container for the 3D scene and content */}
             <div className="sticky top-0 h-screen w-full overflow-hidden">
@@ -113,7 +135,7 @@ export default function SpiralShowcase() {
                         }}
                         style={{ background: 'transparent' }}
                     >
-                        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={50} />
+                        <PerspectiveCamera makeDefault position={[0, 0, 14]} fov={45} />
                         <Suspense fallback={null}>
                             <SpiralScene
                                 scrollProgress={scrollProgress}
@@ -126,41 +148,41 @@ export default function SpiralShowcase() {
                 </div>
 
 
-                <div className="absolute bottom-12 left-6 md:left-12 z-20">
+                <div className="absolute bottom-12 left-6 md:left-12 z-20 pointer-events-none">
                     {/* Current Project Info - Left */}
                     <motion.div
-                        key={activeIndex}
+                        key={projectIndex}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
                         className="max-w-md"
                     >
                         <span className="font-mono text-[10px] text-tm-green uppercase tracking-widest block mb-2">
-                            {projects[activeIndex].category}
+                            {currentProject.category}
                         </span>
                         <h3 className="text-2xl md:text-4xl font-bold text-tm-white tracking-tight mb-2">
-                            {projects[activeIndex].title}
+                            {currentProject.title}
                         </h3>
                         <p className="text-tm-slate/60 text-sm">
-                            {projects[activeIndex].description}
+                            {currentProject.description}
                         </p>
                     </motion.div>
                 </div>
 
                 {/* Project Explanation - Bottom Right */}
-                <div className="absolute bottom-12 right-6 md:right-12 z-20 max-w-md">
+                <div className="absolute bottom-12 right-6 md:right-12 z-20 max-w-md pointer-events-none">
                     <motion.div
-                        key={`explanation-${activeIndex}`}
+                        key={`explanation-${projectIndex}`}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: 0.1 }}
+                        transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
                     >
                         <div className="mb-4">
-                            <h4 className="text-sm font-mono text-tm-green/80 uppercase tracking-widest mb-3">
+                            {/* <h4 className="text-sm font-mono text-tm-green/80 uppercase tracking-widest mb-3">
                                 About
-                            </h4>
+                            </h4> */}
                             <p className="text-tm-slate/80 text-sm leading-relaxed mb-4">
-                                {projects[activeIndex].longDescription}
+                                {currentProject.longDescription}
                             </p>
                         </div>
 
@@ -170,7 +192,7 @@ export default function SpiralShowcase() {
                                 Tech Stack
                             </h5>
                             <div className="flex flex-wrap gap-2">
-                                {projects[activeIndex].technologies.map((tech, idx) => (
+                                {currentProject.technologies.map((tech, idx) => (
                                     <span
                                         key={idx}
                                         className="text-[10px] px-2 py-1 bg-tm-slate/10 border border-tm-slate/20 rounded text-tm-slate/70 font-mono"

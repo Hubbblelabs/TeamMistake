@@ -40,7 +40,7 @@ const Hero = () => {
           className="mb-8"
         >
           <span className="font-mono text-xs md:text-sm text-tm-slate tracking-[0.2em] uppercase">
-            Interactive Production Studio
+            Experience the Excellence in Our Solution
           </span>
         </motion.div>
 
@@ -68,9 +68,9 @@ const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4 }}
-          className="mt-8 text-base md:text-lg text-tm-slate/70 max-w-md font-mono"
+          className="mt-8 text-base md:text-lg text-tm-slate/70 max-w-[600px] font-mono"
         >
-          An interactive production studio for every screen, spanning e-comms, experiential, and retail innovation.
+          We Deliver What You NEED, Not What We HAVE
         </motion.p>
 
       </div>

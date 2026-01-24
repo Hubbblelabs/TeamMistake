@@ -15,7 +15,7 @@ export default function Home() {
 
         {/* Marquee Section */}
         <MarqueeText
-          text="Creative Solutions"
+          text="Purpose-Built Software"
           speed={60}
           direction="left"
         />
