@@ -35,7 +35,7 @@ const About = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
     },
   };
 
@@ -52,7 +52,7 @@ const About = () => {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <SectionHeader title="About Us" />
         </motion.div>
@@ -137,7 +137,7 @@ const About = () => {
                       transition={{
                         duration: 0.5,
                         delay: 0.2 + index * 0.1,
-                        ease: [0.16, 1, 0.3, 1],
+                        ease: [0.16, 1, 0.3, 1] as const,
                       }}
                     >
                       {stat.value}
