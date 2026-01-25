@@ -13,15 +13,6 @@ export default function Home() {
       <main>
         <Hero />
 
-        {/* Marquee Section */}
-        <MarqueeText
-          text="Purpose-Built Software"
-          speed={60}
-          direction="left"
-        />
-
-        <About />
-
         {/* 3D Spiral Project Showcase */}
         <SpiralShowcase />
 
