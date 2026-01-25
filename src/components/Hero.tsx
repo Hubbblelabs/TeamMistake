@@ -1,34 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
-
-// Lazy-load Three.js Canvas to reduce initial JS bundle and main thread blocking
-const ThreeCanvas = dynamic(
-  () => import('./HeroCanvas'),
-  {
-    ssr: false,
-    loading: () => null // No loading indicator - seamless experience
-  }
-);
 
 const Hero = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
-    <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden bg-tm-navy">
-      {/* Three.js Background Canvas - Lazy loaded */}
-      {mounted && (
-        <div className="fixed inset-0 z-0">
-          <ThreeCanvas />
-        </div>
-      )}
-
+    <section className="h-screen flex flex-col items-center justify-center relative overflow-hidden">
       {/* Content */}
       <div className="relative z-10 w-full flex flex-col items-center justify-center text-center px-6">
 

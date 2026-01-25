@@ -31,9 +31,9 @@ export default function SpiralCards({
     const groupRef = useRef<THREE.Group>(null);
     const prevActiveIndex = useRef(-1);
 
-    // Spaced layout with gap
+    // Spaced layout with wider gap to prevent overlap
     const anglePerCard = useMemo(() => {
-        return 2 * Math.asin((cardWidth + 1.2) / (2 * radius));
+        return 2 * Math.asin((cardWidth + 2.5) / (2 * radius));
     }, [cardWidth, radius]);
 
     const totalAngle = anglePerCard * cardCount;
@@ -92,20 +92,18 @@ export default function SpiralCards({
                 return (
                     <group key={index} position={pos.position} rotation={pos.rotation}>
 
-                        {/* Card Container with glassmorphism effect */}
-                        <mesh position={[0, 0, -0.08]}>
-                            <planeGeometry args={[cardWidth + 0.3, cardHeight + 0.3]} />
+                        {/* Solid background behind the image */}
+                        <mesh position={[0, 0, -0.05]}>
+                            <planeGeometry args={[cardWidth + 0.2, cardHeight + 0.2]} />
                             <meshBasicMaterial
                                 color={isActive ? "#dfff00" : "#1e293b"}
-                                transparent
-                                opacity={isActive ? 0.15 : 0.9}
+                                side={THREE.FrontSide}
                             />
                         </mesh>
 
                         <DreiImage
                             url={url}
-                            transparent
-                            side={THREE.DoubleSide}
+                            side={THREE.FrontSide}
                             scale={[cardWidth, cardHeight]}
                             toneMapped={false}
                         />
@@ -116,7 +114,8 @@ export default function SpiralCards({
                             <meshBasicMaterial
                                 color="#020617"
                                 transparent
-                                opacity={isActive ? 0 : 0.65}
+                                opacity={isActive ? 0 : 0.6}
+                                side={THREE.FrontSide}
                             />
                         </mesh>
                     </group>
