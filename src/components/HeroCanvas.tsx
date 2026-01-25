@@ -3,14 +3,16 @@
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Preload } from '@react-three/drei';
-import RadialParticles from '@/lib/three/RadialParticles';
+import MorphingSphere from '@/lib/three/MorphingSphere';
 
-// Three.js Scene Component - Radial Particles
+// Three.js Scene Component - Morphing Particle Sphere
 function HeroScene() {
     return (
         <>
-            <RadialParticles
-                count={2500}
+            <ambientLight intensity={0.2} />
+            <MorphingSphere
+                particleCount={4000}
+                baseRadius={3.5}
                 color="#dfff00"
             />
         </>
@@ -22,7 +24,7 @@ export default function HeroCanvas() {
     return (
         <Canvas
             dpr={[1, 2]}
-            camera={{ position: [0, 0, 10], fov: 60 }}
+            camera={{ position: [0, 0, 10], fov: 55 }}
             gl={{
                 antialias: true,
                 alpha: true,

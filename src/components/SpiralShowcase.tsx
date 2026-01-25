@@ -113,7 +113,7 @@ export default function SpiralShowcase() {
         <section
             ref={sectionRef}
             id="spiral-showcase"
-            className="relative h-[600vh] bg-tm-navy"
+            className="relative h-[600vh]"
         >
             <div className="sticky top-0 h-screen w-full overflow-hidden">
 
