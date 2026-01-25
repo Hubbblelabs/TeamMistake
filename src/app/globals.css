@@ -5,10 +5,10 @@
 /* Design Tokens - Tailwind v4 uses @theme for custom tokens */
 /* Design Tokens - Tailwind v4 uses @theme for custom tokens */
 @theme {
-  --color-tm-navy: #242424;
-  --color-tm-navy-light: #2a2a2a;
-  --color-tm-navy-lighter: #333333;
-  --color-tm-green: #dfff00;
+  --color-tm-navy: #0a1628;
+  --color-tm-navy-light: #0f1f38;
+  --color-tm-navy-lighter: #162847;
+  --color-tm-green: #ffd700;
   --color-tm-slate: #d2d2d2;
   --color-tm-slate-light: #e5e5e5;
   --color-tm-white: #ffffff;
@@ -20,9 +20,9 @@
 
   --backdrop-blur-glass: 20px;
 
-  --shadow-glow: 0 0 40px rgba(223, 255, 0, 0.3);
-  --shadow-glow-intense: 0 0 60px rgba(223, 255, 0, 0.5);
-  --shadow-glow-subtle: 0 0 20px rgba(223, 255, 0, 0.15);
+  --shadow-glow: 0 0 40px rgba(255, 215, 0, 0.3);
+  --shadow-glow-intense: 0 0 60px rgba(255, 215, 0, 0.5);
+  --shadow-glow-subtle: 0 0 20px rgba(255, 215, 0, 0.15);
   --shadow-glass: 0 4px 30px rgba(0, 0, 0, 0.3);
 
   --animate-shimmer: shimmer 3s ease-in-out infinite;
@@ -61,11 +61,11 @@
 
     0%,
     100% {
-      box-shadow: 0 0 20px rgba(223, 255, 0, 0.2);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
     }
 
     50% {
-      box-shadow: 0 0 40px rgba(223, 255, 0, 0.4);
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
     }
   }
 
@@ -94,20 +94,20 @@
 
 /* CSS Variables for use in regular CSS (referenced as --color-tm-*) */
 :root {
-  --tm-navy: #242424;
-  --tm-navy-light: #2a2a2a;
-  --tm-navy-lighter: #333333;
-  --tm-green: #dfff00;
+  --tm-navy: #0a1628;
+  --tm-navy-light: #0f1f38;
+  --tm-navy-lighter: #162847;
+  --tm-green: #ffd700;
   --tm-slate: #d2d2d2;
   --tm-slate-light: #e5e5e5;
   --tm-white: #ffffff;
 
-  --glass-bg: rgba(36, 36, 36, 0.8);
+  --glass-bg: rgba(10, 22, 40, 0.8);
   --glass-blur: 20px;
-  --glass-border: rgba(223, 255, 0, 0.1);
+  --glass-border: rgba(255, 215, 0, 0.1);
 
-  --glow-green: 0 0 40px rgba(223, 255, 0, 0.3);
-  --glow-intense: 0 0 60px rgba(223, 255, 0, 0.5);
+  --glow-green: 0 0 40px rgba(255, 215, 0, 0.3);
+  --glow-intense: 0 0 60px rgba(255, 215, 0, 0.5);
 
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -181,7 +181,7 @@ h6 {
 }
 
 .glow-text {
-  text-shadow: 0 0 20px rgba(100, 255, 218, 0.5);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
 }
 
 /* Gradient Utilities */
@@ -228,11 +228,11 @@ h6 {
 
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
   }
 
   50% {
-    box-shadow: 0 0 40px rgba(100, 255, 218, 0.4);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
   }
 }
 

@@ -3,17 +3,16 @@
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Preload } from '@react-three/drei';
-import MorphingSphere from '@/lib/three/MorphingSphere';
+import OptimizedSphere from '@/lib/three/OptimizedSphere';
 
 // Three.js Scene Component - Morphing Particle Sphere
 function HeroScene() {
     return (
         <>
             <ambientLight intensity={0.2} />
-            <MorphingSphere
-                particleCount={4000}
+            <OptimizedSphere
+                particleCount={1500}
                 baseRadius={3.5}
-                color="#dfff00"
             />
         </>
     );
