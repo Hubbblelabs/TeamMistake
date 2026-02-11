@@ -8,6 +8,7 @@ import {
   BookOpen,
   Users,
   ArrowUpRight,
+  Search,
 } from 'lucide-react';
 import GlassCard from './ui/GlassCard';
 import { SectionHeader } from './ui/Section';
@@ -43,12 +44,13 @@ const Products = () => {
       tag: 'Education',
     },
     {
-      title: 'Learning Platform',
+      title: 'SEO Services',
       description:
-        'Flexible, scalable, and interactive learning management solutions.',
-      icon: <BookOpen className="w-8 h-8" />,
-      tag: 'EdTech',
+        'Data-driven SEO strategies to improve search rankings, boost organic traffic, and increase conversions.',
+      icon: <Search className="w-8 h-8" />,
+      tag: 'Digital Marketing',
     },
+
     {
       title: 'CRM Solutions',
       description:
