@@ -84,7 +84,7 @@ const Navbar = () => {
               Team<span className="text-tm-gold">Mistake</span>
             </span>
             <span className="text-[10px] md:text-xs text-tm-slate-muted font-medium tracking-wide hidden sm:block">
-              Technology Solutions
+              Technologies
             </span>
           </div>
         </a>
